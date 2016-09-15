@@ -1,4 +1,6 @@
 #include "ConsoleLogger.h"
+using namespace std;
+
 time_t _start_time;
 time_t _end_time;
 

@@ -1,9 +1,7 @@
 #pragma once
 #include <iostream>
 #include <ctime>
-using namespace std;
 
-#pragma warning(disable : 4996)
 #define UTC (3)
 
 class ConsoleLogger

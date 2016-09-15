@@ -1,6 +1,7 @@
 #include "Lru.h"
+using namespace std;
 
-Lru::Lru(BYTE_SIZE capasity) : CACHE(capasity)
+Lru::Lru(BYTE_SIZE capasity) : Cache(capasity)
 {
 	
 }
@@ -10,7 +11,7 @@ Lru::~Lru()
 }
 
 
-void Lru::LRU(REQUEST newRequest)
+void Lru::LRU(Request newRequest)
 {
 	if (IsInCache(newRequest._lba))
 	{
@@ -34,14 +35,14 @@ void Lru::LRU(REQUEST newRequest)
 }
 
 
-void Lru::ReorganizeCache(REQUEST newRequest)
+void Lru::ReorganizeCache(Request newRequest)
 {
 	_list_store.erase(_map_store[newRequest._lba]);
 	_list_store.push_front(newRequest);
 	_map_store[newRequest._lba] = _list_store.begin();
 }
 
-void Lru::InsertNewRequest(REQUEST newRequest)
+void Lru::InsertNewRequest(Request newRequest)
 {
 	_list_store.push_front(newRequest);
 	ITERATOR it = _list_store.begin();

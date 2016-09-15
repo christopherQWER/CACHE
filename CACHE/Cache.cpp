@@ -1,7 +1,7 @@
 #include "Cache.h"
+using namespace std;
 
-
-CACHE::CACHE(BYTE_SIZE capasity)
+Cache::Cache(BYTE_SIZE capasity)
 {
 	_max_capasity = capasity;
 	_curr_capasity = 0;
@@ -11,12 +11,12 @@ CACHE::CACHE(BYTE_SIZE capasity)
 	_hit_rate = 0;
 }
 
-CACHE::~CACHE()
+Cache::~Cache()
 {
 
 }
 
-bool CACHE::IsInCache(LBA cell_address)
+bool Cache::IsInCache(LBA cell_address)
 {
 	if (_map_store.find(cell_address) == _map_store.end())
 	{
@@ -25,7 +25,7 @@ bool CACHE::IsInCache(LBA cell_address)
 	return true;
 }
 
-bool CACHE::IsCacheFull(BYTE_SIZE request_size)
+bool Cache::IsCacheFull(BYTE_SIZE request_size)
 {
 	if (_curr_capasity + request_size <= _max_capasity)
 	{
@@ -34,7 +34,7 @@ bool CACHE::IsCacheFull(BYTE_SIZE request_size)
 	return true;
 }
 
-double CACHE::CalculateHitRate()
+double Cache::CalculateHitRate()
 {
 	if (_request_counter == 0)
 	{
