@@ -1,4 +1,3 @@
-#pragma once
 #include "Request.h"
 #include <iostream>
 #include <vector>
