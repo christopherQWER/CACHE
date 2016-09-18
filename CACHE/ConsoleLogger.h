@@ -13,6 +13,7 @@ public:
 	static void StartLog();
 	//TODO: Fix signature of function: function must get unlimited number of args
 	static void ShowRequestInfo(int req_number, unsigned int asu, unsigned int lba);
+	static void ShowLogText(std::string text);
 	static void ShowHitRate(double hit_rate);
 	static void EndLog();
 };

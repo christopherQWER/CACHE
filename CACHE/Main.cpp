@@ -16,24 +16,7 @@ using namespace std;
 string financial_2 = "Stats//SPC-1//Financial2.spc";
 string web_search_1 = "Stats//WebSearch//WebSearch1.spc";
 
-enum
-{
-	SAME_REQS = 0,
-	HALF_PART_SAME,
-	DIFFERENT_REQS,
-	FROM_TRACE_LOG
-};
-
-void Process(int flag);
-
 int main()
-{
-	Process(FROM_TRACE_LOG);
-	system("pause");
-	return 0;
-}
-
-void Process(int flag)
 {
 	int req_counter = 0;
 	vector<Request> requests;
@@ -43,29 +26,9 @@ void Process(int flag)
 	ConsoleLogger::StartLog();
 #endif
 
-	switch(flag)
-	{
-		case SAME_REQS:{
-			Flow::SameRequestsFlow(requests, 200);
-			break;
-		}
-		case HALF_PART_SAME: 
-		{
-			Flow::HalfPartSameRequestsFlow(requests, 200);
-			break;
-		}
-		case DIFFERENT_REQS: 
-		{
-			Flow::DifferentRequestsFlow(requests, 200);
-			break;
-		}
-		case FROM_TRACE_LOG: 
-		{
-			Flow::TraceFileFlow(requests, 200, financial_2);
-			break;
-		}
-	}
-		
+	Flow::HalfPartSameRequestsFlow(requests, 200);
+
+
 	// Add requests to cache
 	for each (Request request in requests)
 	{
@@ -77,9 +40,12 @@ void Process(int flag)
 	}
 
 	double hit_rate = cache.CalculateHitRate();
+	unsigned long long stack_dist = cache.CalculateStackDistance();
 	ConsoleLogger::ShowHitRate(hit_rate);
 
 #ifdef DEBUG
 	ConsoleLogger::EndLog();
 #endif
+	system("pause");
+	return 0;
 }

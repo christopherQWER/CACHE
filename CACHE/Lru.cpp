@@ -1,4 +1,5 @@
 #include "Lru.h"
+#include "ConsoleLogger.h"
 using namespace std;
 
 Lru::Lru(BYTE_SIZE capasity) : Cache(capasity)
@@ -15,9 +16,10 @@ void Lru::LRU(Request newRequest)
 {
 	if (IsInCache(newRequest._lba))
 	{
+		_stack_dist += distance(_list_store.begin(), _map_store.find(newRequest._lba)->second);
 		ReorganizeCache(newRequest);
 		_hit++;
-		printf("Hit to cache.\n");
+		ConsoleLogger::ShowLogText("Hit to cache.\n");
 	}
 	else
 	{
@@ -25,11 +27,11 @@ void Lru::LRU(Request newRequest)
 		{
 			DeleteOldRequest();
 			_miss++;
-			printf("\n\tCache is full...clear... ");
+			ConsoleLogger::ShowLogText("\n\tCache is full...clear... ");
 		}
 		InsertNewRequest(newRequest);
 		_curr_capasity += newRequest._size;
-		printf("Request added to cache!\n");
+		ConsoleLogger::ShowLogText("Request added to cache!\n");
 	}
 	_request_counter++;
 }

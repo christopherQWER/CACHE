@@ -29,6 +29,11 @@ void ConsoleLogger::ShowRequestInfo(int req_number, unsigned int asu, unsigned i
 	printf("Request %d: asu - %u, lba - %u. ", req_number, asu, lba);
 }
 
+void ConsoleLogger::ShowLogText(string text)
+{
+	printf("%s", text.c_str());
+}
+
 void ConsoleLogger::ShowHitRate(double hit_rate)
 {
 	cout << endl;

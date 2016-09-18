@@ -64,3 +64,13 @@ void Flow::HalfPartSameRequestsFlow(vector<Request>& reqList, int count)
 		reqList.push_back(reqList[i]);
 	}
 }
+
+void Flow::StackDistancedFlow(std::vector<Request>& reqList, int count, int stack_dist)
+{
+	for (int i = 0; i < count; i++)
+	{
+		Request rq = Request();
+		rq._lba = Request::GetRandomLba();
+		Request::GenerateRequest(rq, rq._lba);
+	}
+}

@@ -12,5 +12,7 @@ public:
 	static void SameRequestsFlow(std::vector<Request>& reqList, int count);
 	static void DifferentRequestsFlow(std::vector<Request>& reqList, int count);
 	static void HalfPartSameRequestsFlow(std::vector<Request>& reqList, int count);
+
+	static void StackDistancedFlow(std::vector<Request>& reqList, int count, int stack_dist);
 };
 

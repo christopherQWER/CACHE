@@ -38,6 +38,14 @@ void Request::GenerateRequest(Request& rq)
 	rq._timestamp = GetCurrentTime();
 }
 
+void Request::GenerateRequest(Request& rq, LBA lba)
+{
+	rq._asu = GetRandomAsu();
+	rq._lba = lba;
+	rq._opcode = GetReadOpCode();
+	rq._size = _CELL_SIZE_;
+	rq._timestamp = GetCurrentTime();
+}
 
 void Request::ParseRequest(string request_string, vector<Request>& req_list)
 {
@@ -84,7 +92,7 @@ ASU Request::GetRandomAsu()
 
 LBA Request::GetRandomLba()
 {
-	uniform_int_distribution<int> uni(1000, 1000000); /* Guaranteed unbiased */
+	uniform_int_distribution<int> uni(1000, 10000000); /* Guaranteed unbiased */
 	return uni(rng);
 }
 
