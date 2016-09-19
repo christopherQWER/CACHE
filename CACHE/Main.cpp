@@ -19,6 +19,8 @@ string web_search_1 = "Stats//WebSearch//WebSearch1.spc";
 int main()
 {
 	int req_counter = 0;
+	double hit_rate = 0;
+	unsigned long long stack_dist = 0;
 	vector<Request> requests;
 	Lru cache = Lru(_1_GB_IN_BYTES_ / 2);
 
@@ -26,7 +28,7 @@ int main()
 	ConsoleLogger::StartLog();
 #endif
 
-	Flow::HalfPartSameRequestsFlow(requests, 200);
+	Flow::StackDistancedFlow(requests, 200, 201);
 
 
 	// Add requests to cache
@@ -39,9 +41,11 @@ int main()
 		req_counter++;
 	}
 
-	double hit_rate = cache.CalculateHitRate();
-	unsigned long long stack_dist = cache.CalculateStackDistance();
+	hit_rate = cache.CalculateHitRate();
 	ConsoleLogger::ShowHitRate(hit_rate);
+
+	stack_dist = cache.CalculateStackDistance();
+	ConsoleLogger::ShowStackDistance(stack_dist);
 
 #ifdef DEBUG
 	ConsoleLogger::EndLog();

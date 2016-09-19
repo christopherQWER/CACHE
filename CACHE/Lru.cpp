@@ -16,7 +16,7 @@ void Lru::LRU(Request newRequest)
 {
 	if (IsInCache(newRequest._lba))
 	{
-		_stack_dist += distance(_list_store.begin(), _map_store.find(newRequest._lba)->second);
+		_stack_dist += distance(_list_store.begin(), _map_store.find(newRequest._lba)->second) + 1;
 		ReorganizeCache(newRequest);
 		_hit++;
 		ConsoleLogger::ShowLogText("Hit to cache.\n");

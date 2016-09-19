@@ -38,15 +38,6 @@ void Request::GenerateRequest(Request& rq)
 	rq._timestamp = GetCurrentTime();
 }
 
-void Request::GenerateRequest(Request& rq, LBA lba)
-{
-	rq._asu = GetRandomAsu();
-	rq._lba = lba;
-	rq._opcode = GetReadOpCode();
-	rq._size = _CELL_SIZE_;
-	rq._timestamp = GetCurrentTime();
-}
-
 void Request::ParseRequest(string request_string, vector<Request>& req_list)
 {
 	bool result = false;
@@ -110,3 +101,29 @@ TIMESTAMP Request::GetCurrentTime()
 {
 	return time(NULL);
 }
+
+void Request::SetRandomAsu(ASU asu)
+{
+	_asu = asu;
+}
+
+void Request::SetRandomLba(LBA lba)
+{
+	_lba = lba;
+}
+
+void Request::SetReadOpCode(OP_CODE opcode)
+{
+	_opcode = 'r';
+}
+
+void Request::SetWriteOpCode(OP_CODE opcode)
+{
+	_opcode = 'w';
+}
+
+void Request::SetCurrentTime()
+{
+	_timestamp = time(NULL);
+}
+

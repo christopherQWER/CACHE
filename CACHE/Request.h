@@ -33,7 +33,6 @@ public:
 	Request(ASU asu, LBA lba, BYTE_SIZE size, OP_CODE opcode, TIMESTAMP timestamp);
 	~Request();
 	static void GenerateRequest(Request& rq);
-	static void GenerateRequest(Request& rq, LBA lba);
 	static void ParseRequest(std::string traceLog, std::vector<Request>& reqList);
 
 
@@ -42,4 +41,10 @@ public:
 	static OP_CODE GetReadOpCode();
 	static OP_CODE GetWriteOpCode();
 	static TIMESTAMP GetCurrentTime();
+
+	void SetRandomAsu(ASU asu);
+	void SetRandomLba(LBA lba);
+	void SetReadOpCode(OP_CODE opcode);
+	void SetWriteOpCode(OP_CODE opcode);
+	void SetCurrentTime();
 };

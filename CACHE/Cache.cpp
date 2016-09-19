@@ -45,12 +45,12 @@ double Cache::CalculateHitRate()
 	return _hit_rate;
 }
 
-unsigned long long Cache::CalculateStackDistance()
+long long Cache::CalculateStackDistance()
 {
-	if (_request_counter == 0)
+	if (_hit == 0)
 	{
 		return -1;
 	}
-	_stack_dist = _stack_dist / _request_counter;
+	_stack_dist = _stack_dist / _hit;
 	return _stack_dist;
 }

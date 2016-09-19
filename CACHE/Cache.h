@@ -28,5 +28,5 @@ public:
 	bool IsInCache(LBA cell_address);
 	bool IsCacheFull(BYTE_SIZE request_size) const;
 	double CalculateHitRate();
-	unsigned long long CalculateStackDistance();
+	long long CalculateStackDistance();
 };

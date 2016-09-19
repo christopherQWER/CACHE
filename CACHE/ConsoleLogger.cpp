@@ -40,6 +40,12 @@ void ConsoleLogger::ShowHitRate(double hit_rate)
 	cout << "Hitrate: " << hit_rate << endl;
 }
 
+void ConsoleLogger::ShowStackDistance(unsigned long long stack_dist)
+{
+	cout << endl;
+	cout << "Stack distance: " << stack_dist << endl;
+}
+
 void ConsoleLogger::EndLog()
 {
 	struct tm *ptm;
