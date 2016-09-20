@@ -31,63 +31,35 @@ void Flow::TraceFileFlow(vector<Request>& req_list, int count, string trace_file
 	}
 }
 
-void Flow::SameRequestsFlow(vector<Request>& reqList, int count)
-{
-	Request rq = Request();
-	Request::GenerateRequest(rq);
-	for (int i = 0; i < count; i++)
-	{
-		reqList.push_back(rq);
-	}
-}
-
-void Flow::DifferentRequestsFlow(vector<Request>& reqList, int count)
-{
-	for (int i = 0; i < count; i++)
-	{
-		Request rq = Request();
-		Request::GenerateRequest(rq);
-		reqList.push_back(rq);
-	}
-}
-
-void Flow::HalfPartSameRequestsFlow(vector<Request>& reqList, int count)
-{
-	for (int i = 0; i < count / 2; i++)
-	{
-		Request rq = Request();
-		Request::GenerateRequest(rq);
-		reqList.push_back(rq);
-	}
-	for (int i = 0; i < count / 2; i++)
-	{
-		reqList.push_back(reqList[i]);
-	}
-}
-
 void Flow::StackDistancedFlow(vector<Request>& reqList, int count, int stack_dist)
 {
-	if (stack_dist > count)
-	{
-		return;
-	}
-
 	//Add first request
 	Request rq = Request();
 	Request::GenerateRequest(rq);
 	reqList.push_back(rq);
-
-	for (int j = 1; j < stack_dist; j++)
+	if (stack_dist < count)
 	{
-		Request rq = Request();
-		Request::GenerateRequest(rq);
-		reqList.push_back(rq);
+		for (int j = 1; j < stack_dist; j++)
+		{
+			Request rq = Request();
+			Request::GenerateRequest(rq);
+			reqList.push_back(rq);
+		}
+
+		for (int j = reqList.size(), i = 0; j < count; j++, i++)
+		{
+			Request tmp = reqList[i];
+			tmp.SetCurrentTime();
+			reqList.push_back(tmp);
+		}
 	}
-
-	for (int j = reqList.size(), i = 0; j < count; j++, i++)
+	else
 	{
-		Request tmp = reqList[i];
-		tmp.SetCurrentTime();
-		reqList.push_back(tmp);
+		for (int j = 1; j < count; j++)
+		{
+			Request rq = Request();
+			Request::GenerateRequest(rq);
+			reqList.push_back(rq);
+		}
 	}
 }

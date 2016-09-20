@@ -28,7 +28,7 @@ int main()
 	ConsoleLogger::StartLog();
 #endif
 
-	Flow::StackDistancedFlow(requests, 200, 201);
+	Flow::StackDistancedFlow(requests, 200, 0);
 
 
 	// Add requests to cache

@@ -7,19 +7,19 @@ using namespace std;
 void SameRequests_Test(int req_count)
 {
 	vector<Request> requests;
-	Flow::SameRequestsFlow(requests, req_count);
+	Flow::StackDistancedFlow(requests, req_count, 0);
 }
 
 void HalfPartSameRequests_Test(int req_count)
 {
 	vector<Request> requests;
-	Flow::HalfPartSameRequestsFlow(requests, req_count);
+	Flow::StackDistancedFlow(requests, req_count, req_count / 2);
 }
 
 void DifferentRequests_Test(int req_count)
 {
 	vector<Request> requests;
-	Flow::DifferentRequestsFlow(requests, req_count);
+	Flow::StackDistancedFlow(requests, req_count, req_count + 1);
 }
 
 void TraceFileRequests_Test(int req_count, string path_to_file)
