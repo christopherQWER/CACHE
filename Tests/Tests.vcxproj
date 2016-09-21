@@ -147,11 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\CACHE\DistributionGenerator.cpp" />
     <ClCompile Include="..\CACHE\Flow.cpp" />
     <ClCompile Include="..\CACHE\Request.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CACHE\DistributionGenerator.h" />
     <ClInclude Include="..\CACHE\Flow.h" />
     <ClInclude Include="..\CACHE\Request.h" />
   </ItemGroup>

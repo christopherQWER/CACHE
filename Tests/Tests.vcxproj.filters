@@ -24,12 +24,18 @@
     <ClCompile Include="..\CACHE\Request.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\CACHE\DistributionGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CACHE\Flow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\CACHE\Request.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CACHE\DistributionGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

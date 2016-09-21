@@ -92,6 +92,7 @@
   <ItemGroup>
     <ClCompile Include="Cache.cpp" />
     <ClCompile Include="ConsoleLogger.cpp" />
+    <ClCompile Include="DistributionGenerator.cpp" />
     <ClCompile Include="Flow.cpp" />
     <ClCompile Include="Lru.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -100,6 +101,7 @@
   <ItemGroup>
     <ClInclude Include="Cache.h" />
     <ClInclude Include="ConsoleLogger.h" />
+    <ClInclude Include="DistributionGenerator.h" />
     <ClInclude Include="Flow.h" />
     <ClInclude Include="Lru.h" />
     <ClInclude Include="Request.h" />
