@@ -1,6 +1,1 @@
-Debug/
-CACHE/Debug/
-CACHE/Stats/
-*.sdf
-*.suo
-*.opensdf
+.idea/
