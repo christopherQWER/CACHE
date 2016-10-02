@@ -5,51 +5,74 @@
 #include "DistributionGenerator.h"
 using namespace std;
 
+default_random_engine generator;
+uniform_real_distribution<double> distribution(0.0, 1.0);
 
 DistributionGenerator::DistributionGenerator()
 {
 }
 
-
 DistributionGenerator::~DistributionGenerator()
 {
 }
 
-void DistributionGenerator::Pareto(std::vector<double>& values, int value_count, int k, double a)
+bool DistributionGenerator::IsInMap(int value)
 {
-    std::default_random_engine generator;
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    return !(_stack_dist.find(value) == _stack_dist.end());
+}
 
+void DistributionGenerator::Pareto(vector<int>& values, int value_count, int k, double a)
+{
     for (int i = 0; i < value_count; i++)
     {
         //get uniform number
         double number = distribution(generator);
 
         //get pareto value
-        double value = static_cast<double>(k) / static_cast<double>(pow(number, static_cast<double>(1.0 / static_cast<double>(a))));
-        values.push_back(value);
+        double value = static_cast<double>(k) / pow(number, 1.0 / a);
+        int integer_value = static_cast<int>(value);
+        values.push_back(integer_value);
     }
 }
 
-void DistributionGenerator::ShowDistributionDensity(std::vector<double>& values, int value_count, int interval_count)
+void DistributionGenerator::GetPDF(vector<int>& values, int value_count, string output_file)
 {
-    double low_bound = *min_element(values.begin(), values.end());
-    double up_bound = *max_element(values.begin(), values.end());
-    int step = ((up_bound - low_bound) / static_cast<double>(interval_count)) + 1;
-    vector<double> counter(interval_count);
+    for (int i = 0; i < value_count; i++)
+    {
+        if (IsInMap(values[i]))
+        {
+            _stack_dist[values[i]]++;
+        }
+        else
+        {
+            _stack_dist.insert(pair<int, double>(values[i], 1));
+        }
+    }
 
     for (int i = 0; i < value_count; i++)
     {
-        int val = values[i] / step;
-        counter[val]++;
+        _stack_dist[values[i]] /= static_cast<double>(value_count);
+    }
+    Utils::WriteFile(output_file, _stack_dist);
+}
+
+void DistributionGenerator::GetRandomByPDF(vector<int>& values, int value_count)
+{
+    MAP_ITR it = _stack_dist.begin();
+    _probabilities.insert(pair<double, int>(it->second, it->first));
+    ++it;
+    for (; it != _stack_dist.end(); ++it)
+    {
+        _probabilities.insert(pair<double, int>( (--(it))->second + it->second, it->first));
     }
 
-    ofstream density_file;
-    density_file.open("Pareto_density.txt");
-    for (int i = 0; i < interval_count; i++)
+    //get uniform number
+    MULTIMAP_ITR lower_itr;
+    double number = 0;
+    for (int i = 0; i < value_count; i++)
     {
-        counter[i] /= static_cast<double>(value_count);
-        density_file << counter[i] << endl;
+        number = distribution(generator);
+        lower_itr = _probabilities.lower_bound(number);
+        values.push_back(lower_itr->second);
     }
-    density_file.close();
 }
