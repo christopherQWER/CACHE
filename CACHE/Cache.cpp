@@ -16,6 +16,11 @@ Cache::Cache(BYTE_SIZE capasity)
     _stack_dist = 0;
 }
 
+Cache::Cache()
+{
+
+}
+
 Cache::~Cache()
 {
 
@@ -23,20 +28,12 @@ Cache::~Cache()
 
 bool Cache::IsInCache(LBA cell_address)
 {
-    if (_map_store.find(cell_address) == _map_store.end())
-    {
-        return false;
-    }
-    return true;
+    return !(_map_store.find(cell_address) == _map_store.end());
 }
 
 bool Cache::IsCacheFull(BYTE_SIZE request_size) const
 {
-    if (_curr_capasity + request_size <= _max_capasity)
-    {
-        return false;
-    }
-    return true;
+    return _curr_capasity + request_size > _max_capasity;
 }
 
 double Cache::CalculateHitRate()
@@ -45,7 +42,7 @@ double Cache::CalculateHitRate()
     {
         return -1;
     }
-    _hit_rate = (double)_hit / (double)_request_counter;
+    _hit_rate = _hit / _request_counter;
     return _hit_rate;
 }
 
@@ -55,6 +52,6 @@ long long Cache::CalculateStackDistance()
     {
         return -1;
     }
-    _stack_dist = _stack_dist / _hit;
+    _stack_dist = (unsigned long long int) (_stack_dist / _hit);
     return _stack_dist;
 }

@@ -67,7 +67,7 @@ void Request::ParseRequest(string request_string, vector<Request>& req_list)
         return;
     }
 
-    unsigned int numberOfRequests = req._size / _CELL_SIZE_;
+    unsigned int numberOfRequests = (unsigned int) (req._size / _CELL_SIZE_);
     for (int i = 0; i < numberOfRequests + 1; i++)
     {
         if (req._opcode != 'r')
@@ -82,13 +82,13 @@ void Request::ParseRequest(string request_string, vector<Request>& req_list)
 ASU Request::GetRandomAsu()
 {
     uniform_int_distribution<int> uni(1, 20); /* Guaranteed unbiased */
-    return uni(rng);
+    return (ASU) uni(rng);
 }
 
 LBA Request::GetRandomLba()
 {
     uniform_int_distribution<int> uni(1000, 10000000); /* Guaranteed unbiased */
-    return uni(rng);
+    return (LBA) uni(rng);
 }
 
 OP_CODE Request::GetReadOpCode()

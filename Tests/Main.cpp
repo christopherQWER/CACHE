@@ -6,7 +6,6 @@
 #include <vector>
 #include "../CACHE/Flow.h"
 #include "../CACHE/DistributionGenerator.h"
-
 using namespace std;
 
 void SameRequests_Test(int req_count)
@@ -38,19 +37,27 @@ void Distribution_Test()
     int count_experiments = 10000;
     int k = 10;
     double a = 2;
-    int intervals = 100;
-    vector<double> values;
-    DistributionGenerator::Pareto(values, count_experiments, k, a);
-    DistributionGenerator::ShowDistributionDensity(values, count_experiments, intervals);
+    vector<int> values;
+    vector<int> new_values;
+    DistributionGenerator gen = DistributionGenerator();
+
+    gen.Pareto(values, count_experiments, k, a);
+    gen.GetPDF(values, count_experiments, "/home/cat/Documents/CACHE/Tests/Results/PDF.txt");
+
+    gen.GetRandomByPDF(new_values, count_experiments);
+    gen.GetPDF(new_values, count_experiments, "/home/cat/Documents/CACHE/Tests/Results/PDF_test.txt");
 }
 
-int Main()
+int main ()
 {
+    int errorCode = 0;
+
+//    SameRequests_Test(200);
+//    HalfPartSameRequests_Test(200);
+//    DifferentRequests_Test(200);
+//    TraceFileRequests_Test(200, "Stats//SPC-1//Financial2.spc");
     Distribution_Test();
-    SameRequests_Test(200);
-    HalfPartSameRequests_Test(200);
-    DifferentRequests_Test(200);
-    TraceFileRequests_Test(200, "Stats//SPC-1//Financial2.spc");
+
 
     system("pause");
     return 0;

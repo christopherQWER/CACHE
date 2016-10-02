@@ -45,7 +45,7 @@ void Flow::StackDistancedFlow(vector<Request>& reqList, int count, int stack_dis
     {
         for (int j = 1; j < stack_dist; j++)
         {
-            Request rq = Request();
+            rq = Request();
             Request::GenerateRequest(rq);
             reqList.push_back(rq);
         }

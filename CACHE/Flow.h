@@ -1,6 +1,7 @@
 //
 // Created by cat on 9/25/16.
 //
+#pragma once
 #include "Request.h"
 #include <iostream>
 #include <vector>
