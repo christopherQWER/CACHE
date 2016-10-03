@@ -46,12 +46,6 @@ public:
     static OP_CODE GetReadOpCode();
     static OP_CODE GetWriteOpCode();
     static TIMESTAMP GetCurrentTime();
-
-    void SetRandomAsu(ASU asu);
-    void SetRandomLba(LBA lba);
-    void SetReadOpCode(OP_CODE opcode);
-    void SetWriteOpCode(OP_CODE opcode);
-    void SetCurrentTime();
 };
 
 

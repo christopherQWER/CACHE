@@ -3,6 +3,8 @@
 //
 
 #include "Flow.h"
+#include "Cache.h"
+
 using namespace std;
 
 
@@ -35,35 +37,26 @@ void Flow::TraceFileFlow(vector<Request>& req_list, int count, string trace_file
     }
 }
 
-void Flow::StackDistancedFlow(vector<Request>& reqList, int count, int stack_dist)
+void Flow::StackDistancedFlow(vector<Request>& reqList, int required_count, int stack_dist)
 {
     //Add first request
-    Request rq = Request();
-    Request::GenerateRequest(rq);
-    reqList.push_back(rq);
-    if (stack_dist < count)
+    list<Request> address_list;
+    for (LBA i = LOW_ADDRESS_BOUND; i < UP_ADDRESS_BOUND; i++)
     {
-        for (int j = 1; j < stack_dist; j++)
-        {
-            rq = Request();
-            Request::GenerateRequest(rq);
-            reqList.push_back(rq);
-        }
-
-        for (int j = reqList.size(), i = 0; j < count; j++, i++)
-        {
-            Request tmp = reqList[i];
-            tmp.SetCurrentTime();
-            reqList.push_back(tmp);
-        }
+        Request rq = Request();
+        rq._asu = Request::GetRandomAsu();
+        rq._lba = i;
+        rq._opcode = Request::GetReadOpCode();
+        rq._size = _CELL_SIZE_;
+        address_list.push_back(rq);
     }
-    else
+
+    LIST_ITR it_begin = address_list.begin();
+    LIST_ITR it_end = address_list.end();
+    LIST_ITR it_current = address_list.begin();
+    for (int i = 0; i < required_count; i++)
     {
-        for (int j = 1; j < count; j++)
-        {
-            Request rq = Request();
-            Request::GenerateRequest(rq);
-            reqList.push_back(rq);
-        }
+        //TODO: add to output massive
+        it_current = next(it_begin, stack_dist);
     }
 }

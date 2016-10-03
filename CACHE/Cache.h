@@ -6,9 +6,10 @@
 #include <map>
 #include <fstream>
 #include "Request.h"
+
 #ifndef CACHE_CACHE_H
 #define CACHE_CACHE_H
-typedef std::list<Request>::iterator ITERATOR;
+typedef std::list<Request>::iterator LIST_ITR;
 
 class Cache
 {
@@ -23,7 +24,7 @@ protected:
 public:
     BYTE_SIZE _curr_capasity;
     double _hit_rate;
-    std::map<LBA, ITERATOR> _map_store;
+    std::map<LBA, LIST_ITR> _map_store;
 
     Cache();
     Cache(BYTE_SIZE capasity);
