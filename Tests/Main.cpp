@@ -34,7 +34,7 @@ void TraceFileRequests_Test(int req_count, string path_to_file)
 
 void Distribution_Test()
 {
-    int count_experiments = 10000;
+    int count_experiments = 1000000;
     int k = 10;
     double a = 2;
     vector<int> values;

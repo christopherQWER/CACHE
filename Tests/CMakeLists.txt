@@ -8,11 +8,11 @@ set(SOURCE_FILES Main.cpp
                  ../CACHE/Flow.cpp
                  ../CACHE/DistributionGenerator.cpp
                  ../CACHE/Request.cpp
-                 ../CACHE/Utils.cpp)
+                 ../CACHE/Utils/Utils.cpp)
 
 set(HEADER_FILES ../CACHE/Flow.h
                   ../CACHE/DistributionGenerator.h
                   ../CACHE/Request.h
-                  ../CACHE/Utils.h)
+                  ../CACHE/Utils/Utils.h)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})
