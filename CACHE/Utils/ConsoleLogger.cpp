@@ -5,13 +5,10 @@
 #include "ConsoleLogger.h"
 using namespace std;
 
-time_t _start_time;
-time_t _end_time;
-
 ConsoleLogger::ConsoleLogger()
 {
-    _start_time = NULL;
-    _end_time = NULL;
+    _start_time = 0;
+    _end_time = 0;
 }
 
 ConsoleLogger::~ConsoleLogger()
@@ -28,9 +25,9 @@ void ConsoleLogger::StartLog()
     printf("\n");
 }
 
-void ConsoleLogger::ShowRequestInfo(int req_number, unsigned int asu, unsigned int lba)
+void ConsoleLogger::ShowRequestInfo(int req_number, ASU asu, LBA lba, TIMESTAMP time)
 {
-    printf("Request %d: asu - %u, lba - %u. ", req_number, asu, lba);
+    printf("Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
 }
 
 void ConsoleLogger::ShowLogText(string text)
@@ -38,13 +35,13 @@ void ConsoleLogger::ShowLogText(string text)
     printf("%s", text.c_str());
 }
 
-void ConsoleLogger::ShowHitRate(double hit_rate)
+void ConsoleLogger::ShowHitRate(HIT_RATE hit_rate)
 {
     cout << endl;
     cout << "Hitrate: " << hit_rate << endl;
 }
 
-void ConsoleLogger::ShowStackDistance(unsigned long long stack_dist)
+void ConsoleLogger::ShowStackDistance(STACK_DIST stack_dist)
 {
     cout << endl;
     cout << "Stack distance: " << stack_dist << endl;

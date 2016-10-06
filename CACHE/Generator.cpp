@@ -2,26 +2,26 @@
 // Created by cat on 9/25/16.
 //
 
-#include "DistributionGenerator.h"
+#include "Generator.h"
 using namespace std;
 
 default_random_engine generator;
 uniform_real_distribution<double> distribution(0.0, 1.0);
 
-DistributionGenerator::DistributionGenerator()
+Generator::Generator()
 {
 }
 
-DistributionGenerator::~DistributionGenerator()
+Generator::~Generator()
 {
 }
 
-bool DistributionGenerator::IsInMap(int value)
+bool Generator::IsInMap(int value)
 {
     return !(_stack_dist.find(value) == _stack_dist.end());
 }
 
-void DistributionGenerator::Pareto(vector<int>& values, int value_count, int k, double a)
+void Generator::Pareto(vector<int>& values, int value_count, int k, double a)
 {
     for (int i = 0; i < value_count; i++)
     {
@@ -35,7 +35,7 @@ void DistributionGenerator::Pareto(vector<int>& values, int value_count, int k, 
     }
 }
 
-void DistributionGenerator::GetPDF(vector<int>& values, int value_count, string output_file)
+void Generator::GetPDF(vector<int>& values, int value_count, string output_file)
 {
     for (int i = 0; i < value_count; i++)
     {
@@ -56,7 +56,7 @@ void DistributionGenerator::GetPDF(vector<int>& values, int value_count, string 
     Utils::WriteFile(output_file, _stack_dist);
 }
 
-void DistributionGenerator::GetRandomByPDF(vector<int>& values, int value_count)
+void Generator::GetRandomByPDF(vector<int>& values, int value_count)
 {
     MAP_ITR it = _stack_dist.begin();
     _probabilities.insert(pair<double, int>(it->second, it->first));

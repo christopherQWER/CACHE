@@ -15,15 +15,15 @@ typedef std::map<int, double>::iterator MAP_ITR;
 typedef std::multimap<double, int>::const_iterator MULTIMAP_ITR;
 
 
-class DistributionGenerator
+class Generator
 {
 public:
     std::map<int, double> _stack_dist;
     std::multimap<double, int> _probabilities;
 
 
-    DistributionGenerator();
-    ~DistributionGenerator();
+    Generator();
+    ~Generator();
 
     /*
         k - is a location parameter (specifies minimal possible value)

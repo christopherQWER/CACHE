@@ -6,10 +6,12 @@
 #include <vector>
 #include <random>
 #include <ctime>
+#include <chrono>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include "Utils/Types.h"
 
 #ifndef CACHE_REQUEST_H
 #define CACHE_REQUEST_H
@@ -17,12 +19,8 @@
 //Size of standard memory cell
 #define _CELL_SIZE_ 512
 
-//Types definition
-typedef unsigned int LBA;
-typedef unsigned int ASU;
-typedef unsigned long long BYTE_SIZE;
-typedef char OP_CODE;
-typedef double TIMESTAMP;
+#define LOW_ADDRESS_BOUND 5000
+#define UP_ADDRESS_BOUND 500000
 
 class Request
 {
@@ -48,5 +46,5 @@ public:
     static TIMESTAMP GetCurrentTime();
 };
 
-
+typedef std::list<Request>::iterator LIST_ITR;
 #endif //CACHE_REQUEST_H

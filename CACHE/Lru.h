@@ -3,11 +3,10 @@
 //
 #pragma once
 #include "Cache.h"
-#define DEBUG
-
+#include "Utils/Logger.h"
 #ifndef CACHE_LRU_H
 #define CACHE_LRU_H
-
+#define _1_GB_IN_BYTES_ 1073741824
 
 class Lru : public Cache
 {

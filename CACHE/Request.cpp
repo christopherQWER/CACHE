@@ -16,7 +16,7 @@ Request::Request()
     _lba = 0;
     _size = 0;
     _opcode = ' ';
-    _timestamp = 0;
+    _timestamp = time(0);
 }
 
 Request::Request(ASU asu, LBA lba, BYTE_SIZE size, OP_CODE opcode, TIMESTAMP timestamp)
@@ -87,7 +87,7 @@ ASU Request::GetRandomAsu()
 
 LBA Request::GetRandomLba()
 {
-    uniform_int_distribution<int> uni(1000, 10000000); /* Guaranteed unbiased */
+    uniform_int_distribution<int> uni(LOW_ADDRESS_BOUND, UP_ADDRESS_BOUND); /* Guaranteed unbiased */
     return (LBA) uni(rng);
 }
 
@@ -103,30 +103,5 @@ OP_CODE Request::GetWriteOpCode()
 
 TIMESTAMP Request::GetCurrentTime()
 {
-    return time(NULL);
+    return time(0);
 }
-
-//void Request::SetRandomAsu(ASU asu)
-//{
-//    _asu = asu;
-//}
-//
-//void Request::SetRandomLba(LBA lba)
-//{
-//    _lba = lba;
-//}
-//
-//void Request::SetReadOpCode(OP_CODE opcode)
-//{
-//    _opcode = 'r';
-//}
-//
-//void Request::SetWriteOpCode(OP_CODE opcode)
-//{
-//    _opcode = 'w';
-//}
-//
-//void Request::SetCurrentTime()
-//{
-//    _timestamp = time(NULL);
-//}

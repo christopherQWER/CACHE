@@ -3,10 +3,9 @@
 //
 
 #include "Lru.h"
-#include "Utils/ConsoleLogger.h"
 using namespace std;
-
-#define DEBUG
+//#define DEBUG
+#define CONSOLE CONSOLE_LOGGER
 
 Lru::Lru(BYTE_SIZE capasity) : Cache(capasity)
 {
@@ -17,16 +16,19 @@ Lru::~Lru()
 {
 }
 
-
 void Lru::LRU(Request newRequest)
 {
+#ifdef DEBUG
+    Logger *pLogger = Logger::CreateLogger(CONSOLE);
+#endif
+
     if (IsInCache(newRequest._lba))
     {
         _stack_dist += distance(_list_store.begin(), _map_store.find(newRequest._lba)->second) + 1;
         ReorganizeCache(newRequest);
         _hit++;
 #ifdef DEBUG
-        ConsoleLogger::ShowLogText("Hit to cache.\n");
+        pLogger->ShowLogText("Hit to cache.\n");
 #endif
     }
     else
@@ -36,13 +38,13 @@ void Lru::LRU(Request newRequest)
             DeleteOldRequest();
             _miss++;
 #ifdef DEBUG
-            ConsoleLogger::ShowLogText("\n\tCache is full...clear... ");
+            pLogger->ShowLogText("\n\tCache is full...clear... ");
 #endif
         }
         InsertNewRequest(newRequest);
         _curr_capasity += newRequest._size;
 #ifdef DEBUG
-        ConsoleLogger::ShowLogText("Request added to cache!\n");
+        pLogger->ShowLogText("Request added to cache!\n");
 #endif
     }
     _request_counter++;

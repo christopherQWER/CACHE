@@ -6,19 +6,22 @@ set(SOURCE_FILES Main.cpp
                  Request.cpp
                  Cache.cpp
                  Lru.cpp
+                 Flow.cpp
+                 Generator.cpp
                  Utils/ConsoleLogger.cpp
                  Utils/FileLogger.cpp
-                 Flow.cpp
-                 DistributionGenerator.cpp
+                 Utils/Logger.cpp
                  Utils/Utils.cpp)
 
 set(HEADER_FILES Request.h
                  Cache.h
                  Lru.h
+                 Flow.h
+                 Generator.h
+                 Utils/Types.h
                  Utils/ConsoleLogger.h
                  Utils/FileLogger.h
-                 Flow.h
-                 DistributionGenerator.h
+                 Utils/Logger.h
                  Utils/Utils.h)
 
 add_executable(CACHE ${SOURCE_FILES})

@@ -2,25 +2,24 @@
 // Created by cat on 9/25/16.
 //
 #pragma once
-#include <iostream>
-#include <ctime>
+#include "Logger.h"
 #ifndef CACHE_CONSOLELOGGER_H
 #define CACHE_CONSOLELOGGER_H
-#define UTC (3)
 
-class ConsoleLogger
+
+class ConsoleLogger : public Logger
 {
 public:
     ConsoleLogger();
     ~ConsoleLogger();
 
-    static void StartLog();
+    void StartLog();
     //TODO: Fix signature of function: function must get unlimited number of args
-    static void ShowRequestInfo(int req_number, unsigned int asu, unsigned int lba);
-    static void ShowLogText(std::string text);
-    static void ShowHitRate(double hit_rate);
-    static void ShowStackDistance(unsigned long long stack_dist);
-    static void EndLog();
+    void ShowRequestInfo(int req_number, ASU asu, LBA lba, TIMESTAMP time);
+    void ShowLogText(std::string text);
+    void ShowHitRate(HIT_RATE hit_rate);
+    void ShowStackDistance(STACK_DIST stack_dist);
+    void EndLog();
 };
 
 
