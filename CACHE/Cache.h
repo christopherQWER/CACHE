@@ -16,23 +16,23 @@ protected:
     double _hit;
     double _miss;
     double _request_counter;
-    BYTE_SIZE _max_capasity;
-    STACK_DIST _stack_dist;
+    Byte_size _max_capasity;
+    Stack_dist _stack_dist;
     std::list<Request> _list_store;
 
 public:
-    HIT_RATE _hit_rate;
-    BYTE_SIZE _curr_capasity;
-    std::map<LBA, LIST_ITR> _map_store;
+    Hit_rate _hit_rate;
+    Byte_size _curr_capasity;
+    std::map<Lba, list_itr> _map_store;
 
     Cache();
-    Cache(BYTE_SIZE capasity);
+    Cache(Byte_size capasity);
     virtual ~Cache(){};
 
-    bool IsInCache(LBA cell_address);
-    bool IsCacheFull(BYTE_SIZE request_size) const;
-    HIT_RATE CalculateHitRate();
-    STACK_DIST CalculateStackDistance();
+    bool IsInCache(Lba cell_address);
+    bool IsCacheFull(Byte_size request_size) const;
+    Hit_rate CalculateHitRate();
+    Stack_dist CalculateStackDistance();
 };
 
 

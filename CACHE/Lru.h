@@ -6,16 +6,14 @@
 #include "Utils/Logger.h"
 #ifndef CACHE_LRU_H
 #define CACHE_LRU_H
-#define _1_GB_IN_BYTES_ 1073741824
 
 class Lru : public Cache
 {
 public:
-    Lru(BYTE_SIZE capasity);
+    Lru(Byte_size capasity);
     ~Lru();
 
     void LRU(Request newRequest);
-
     void ReorganizeCache(Request newRequest);
     void InsertNewRequest(Request newRequest);
     void DeleteOldRequest();

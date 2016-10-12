@@ -19,7 +19,7 @@ Request::Request()
     _timestamp = time(0);
 }
 
-Request::Request(ASU asu, LBA lba, BYTE_SIZE size, OP_CODE opcode, TIMESTAMP timestamp)
+Request::Request(Asu asu, Lba lba, Byte_size size, Op_code opcode, Timestamp timestamp)
 {
     _asu = asu;
     _lba = lba;
@@ -42,7 +42,7 @@ void Request::GenerateRequest(Request& rq)
     rq._timestamp = GetCurrentTime();
 }
 
-void Request::ParseRequest(string request_string, vector<Request>& req_list)
+void Request::ParseRequest(string request_string, deque<Request>& req_list)
 {
     bool result = false;
 
@@ -79,29 +79,29 @@ void Request::ParseRequest(string request_string, vector<Request>& req_list)
     }
 }
 
-ASU Request::GetRandomAsu()
+Asu Request::GetRandomAsu()
 {
     uniform_int_distribution<int> uni(1, 20); /* Guaranteed unbiased */
-    return (ASU) uni(rng);
+    return (Asu) uni(rng);
 }
 
-LBA Request::GetRandomLba()
+Lba Request::GetRandomLba()
 {
     uniform_int_distribution<int> uni(LOW_ADDRESS_BOUND, UP_ADDRESS_BOUND); /* Guaranteed unbiased */
-    return (LBA) uni(rng);
+    return (Lba) uni(rng);
 }
 
-OP_CODE Request::GetReadOpCode()
+Op_code Request::GetReadOpCode()
 {
     return 'r';
 }
 
-OP_CODE Request::GetWriteOpCode()
+Op_code Request::GetWriteOpCode()
 {
     return 'w';
 }
 
-TIMESTAMP Request::GetCurrentTime()
+Timestamp Request::GetCurrentTime()
 {
     return time(0);
 }

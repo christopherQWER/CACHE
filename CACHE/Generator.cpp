@@ -21,21 +21,18 @@ bool Generator::IsInMap(int value)
     return !(_stack_dist.find(value) == _stack_dist.end());
 }
 
-void Generator::Pareto(vector<int>& values, int value_count, int k, double a)
+int Generator:: ParetoGenerator(int k, double a)
 {
-    for (int i = 0; i < value_count; i++)
-    {
-        //get uniform number
-        double number = distribution(generator);
+    //get uniform number
+    double number = distribution(generator);
 
-        //get pareto value
-        double value = static_cast<double>(k) / pow(number, 1.0 / a);
-        int integer_value = static_cast<int>(value);
-        values.push_back(integer_value);
-    }
+    //get pareto value
+    double value = static_cast<double>(k) / pow(number, 1.0 / a);
+    int integer_value = static_cast<int>(value);
+    return integer_value;
 }
 
-void Generator::GetPDF(vector<int>& values, int value_count, string output_file)
+void Generator::GetPDF(vector<int>& values, int value_count)
 {
     for (int i = 0; i < value_count; i++)
     {
@@ -49,16 +46,15 @@ void Generator::GetPDF(vector<int>& values, int value_count, string output_file)
         }
     }
 
-    for (int i = 0; i < value_count; i++)
+    for (Map_itr it = _stack_dist.begin(); it != _stack_dist.end(); ++it)
     {
-        _stack_dist[values[i]] /= static_cast<double>(value_count);
+        it->second /= static_cast<double>(value_count);
     }
-    Utils::WriteFile(output_file, _stack_dist);
 }
 
 void Generator::GetRandomByPDF(vector<int>& values, int value_count)
 {
-    MAP_ITR it = _stack_dist.begin();
+    Map_itr it = _stack_dist.begin();
     _probabilities.insert(pair<double, int>(it->second, it->first));
     ++it;
     for (; it != _stack_dist.end(); ++it)
@@ -67,7 +63,7 @@ void Generator::GetRandomByPDF(vector<int>& values, int value_count)
     }
 
     //get uniform number
-    MULTIMAP_ITR lower_itr;
+    Multimap_itr lower_itr;
     double number = 0;
     for (int i = 0; i < value_count; i++)
     {

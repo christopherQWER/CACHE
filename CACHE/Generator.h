@@ -11,8 +11,8 @@
 #ifndef CACHE_DISTRIBUTIONGENERATOR_H
 #define CACHE_DISTRIBUTIONGENERATOR_H
 
-typedef std::map<int, double>::iterator MAP_ITR;
-typedef std::multimap<double, int>::const_iterator MULTIMAP_ITR;
+typedef std::map<int, double>::iterator Map_itr;
+typedef std::multimap<double, int>::const_iterator Multimap_itr;
 
 
 class Generator
@@ -29,8 +29,8 @@ public:
         k - is a location parameter (specifies minimal possible value)
         a - is a shape parameter (defines the tail of the distribution)
     */
-    void Pareto(std::vector<int>& values, int value_count, int k, double a);
-    void GetPDF(std::vector<int>& values, int value_count, std::string output_file);
+    int ParetoGenerator(int k, double a);
+    void GetPDF(std::vector<int>& values, int value_count);
     void GetRandomByPDF(std::vector<int>& values, int value_count);
 private:
     bool IsInMap(int value);

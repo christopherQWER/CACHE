@@ -7,7 +7,7 @@ using namespace std;
 //#define DEBUG
 #define CONSOLE CONSOLE_LOGGER
 
-Lru::Lru(BYTE_SIZE capasity) : Cache(capasity)
+Lru::Lru(Byte_size capasity) : Cache(capasity)
 {
 
 }
@@ -61,14 +61,14 @@ void Lru::ReorganizeCache(Request newRequest)
 void Lru::InsertNewRequest(Request newRequest)
 {
     _list_store.push_front(newRequest);
-    LIST_ITR it = _list_store.begin();
-    _map_store.insert(pair<LBA, LIST_ITR>(newRequest._lba, it));
+    list_itr it = _list_store.begin();
+    _map_store.insert(pair<Lba, list_itr>(newRequest._lba, it));
 }
 
 void Lru::DeleteOldRequest()
 {
     //pointer to the last element which must be erased
-    LIST_ITR it_last = --(_list_store.end());
+    list_itr it_last = --(_list_store.end());
     _curr_capasity -= it_last->_size;
 
     _map_store.erase(it_last->_lba);

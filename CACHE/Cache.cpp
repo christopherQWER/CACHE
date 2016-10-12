@@ -5,7 +5,7 @@
 #include "Cache.h"
 using namespace std;
 
-Cache::Cache(BYTE_SIZE capasity)
+Cache::Cache(Byte_size capasity)
 {
     _max_capasity = capasity;
     _curr_capasity = 0;
@@ -21,17 +21,17 @@ Cache::Cache()
 
 }
 
-bool Cache::IsInCache(LBA cell_address)
+bool Cache::IsInCache(Lba cell_address)
 {
     return !(_map_store.find(cell_address) == _map_store.end());
 }
 
-bool Cache::IsCacheFull(BYTE_SIZE request_size) const
+bool Cache::IsCacheFull(Byte_size request_size) const
 {
     return _curr_capasity + request_size > _max_capasity;
 }
 
-HIT_RATE Cache::CalculateHitRate()
+Hit_rate Cache::CalculateHitRate()
 {
     if (_request_counter == 0)
     {
@@ -41,7 +41,7 @@ HIT_RATE Cache::CalculateHitRate()
     return _hit_rate;
 }
 
-STACK_DIST Cache::CalculateStackDistance()
+Stack_dist Cache::CalculateStackDistance()
 {
     if (_hit == 0)
     {
