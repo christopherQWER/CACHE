@@ -8,6 +8,8 @@ set(SOURCE_FILES Main.cpp
                  Lru.cpp
                  Flow.cpp
                  Generator.cpp
+                 StackDistFlow.cpp
+                 TraceFileFlow.cpp
                  Utils/ConsoleLogger.cpp
                  Utils/FileLogger.cpp
                  Utils/Logger.cpp
@@ -18,6 +20,8 @@ set(HEADER_FILES Request.h
                  Lru.h
                  Flow.h
                  Generator.h
+                 StackDistFlow.h
+                 TraceFileFlow.h
                  Utils/Types.h
                  Utils/ConsoleLogger.h
                  Utils/FileLogger.h

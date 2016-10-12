@@ -12,14 +12,8 @@
 class Flow
 {
 public:
-    Flow();
-    ~Flow();
-
-    void TraceFileFlow(std::list<Request>& output_flow, int count, std::string traceFile);
-    void StackDistancedFlow(std::list<Request>& output_flow, int count, int stack_dist);
-
-private:
-    std::list<Request> _address_space;
+    virtual ~Flow(){};
+    virtual Request* GetRequest() = 0;
 };
 
 
