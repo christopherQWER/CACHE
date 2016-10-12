@@ -22,10 +22,10 @@ public:
     virtual ~Logger(){};
     virtual void StartLog() = 0;
     //TODO: Fix signature of function: function must get unlimited number of args
-    virtual void ShowRequestInfo(int req_number, ASU asu, LBA lba, TIMESTAMP time) = 0;
+    virtual void ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp time) = 0;
     virtual void ShowLogText(std::string text) = 0;
-    virtual void ShowHitRate(HIT_RATE hit_rate) = 0;
-    virtual void ShowStackDistance(STACK_DIST stack_dist) = 0;
+    virtual void ShowHitRate(Hit_rate hit_rate) = 0;
+    virtual void ShowStackDistance(Stack_dist stack_dist) = 0;
     virtual void EndLog() = 0;
 
     static Logger* CreateLogger(LoggerType type);

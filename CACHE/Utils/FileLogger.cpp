@@ -35,7 +35,7 @@ void FileLogger::StartLog()
     fclose(file);
 }
 
-void FileLogger::ShowRequestInfo(int req_number, ASU asu, LBA lba, TIMESTAMP time)
+void FileLogger::ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp time)
 {
     file = fopen(LOG_PATH, "a");
     fprintf(file, "Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
@@ -49,14 +49,14 @@ void FileLogger::ShowLogText(std::string text)
     fclose(file);
 }
 
-void FileLogger::ShowHitRate(HIT_RATE hit_rate)
+void FileLogger::ShowHitRate(Hit_rate hit_rate)
 {
     file = fopen(LOG_PATH, "a");
     fprintf(file, "Hitrate: %f\n", hit_rate);
     fclose(file);
 }
 
-void FileLogger::ShowStackDistance(STACK_DIST stack_dist)
+void FileLogger::ShowStackDistance(Stack_dist stack_dist)
 {
     file = fopen(LOG_PATH, "a");
     fprintf(file, "Stack distance: %ull", stack_dist);
