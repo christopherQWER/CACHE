@@ -11,12 +11,12 @@
 #define CACHE_TYPES_H
 
 //Types definition
-typedef unsigned int LBA;
-typedef unsigned int ASU;
-typedef unsigned long long BYTE_SIZE;
-typedef char OP_CODE;
-typedef double TIMESTAMP;
-typedef long double STACK_DIST;
-typedef double HIT_RATE;
+typedef unsigned int Lba;
+typedef unsigned int Asu;
+typedef unsigned long long Byte_size;
+typedef char Op_code;
+typedef double Timestamp;
+typedef long double Stack_dist;
+typedef double Hit_rate;
 
 #endif //CACHE_TYPES_H
