@@ -16,6 +16,12 @@ Generator::~Generator()
 {
 }
 
+void Generator::Clear()
+{
+    _stack_dist.clear();
+    _probabilities.clear();
+}
+
 bool Generator::IsInMap(int value)
 {
     return !(_stack_dist.find(value) == _stack_dist.end());
@@ -32,34 +38,30 @@ int Generator:: ParetoGenerator(int k, double a)
     return integer_value;
 }
 
-void Generator::GetPDF(vector<int>& values, int value_count)
+void Generator::GetPDF(int exp_number)
 {
-    for (int i = 0; i < value_count; i++)
-    {
-        if (IsInMap(values[i]))
-        {
-            _stack_dist[values[i]]++;
-        }
-        else
-        {
-            _stack_dist.insert(pair<int, double>(values[i], 1));
-        }
-    }
-
     for (Map_itr it = _stack_dist.begin(); it != _stack_dist.end(); ++it)
     {
-        it->second /= static_cast<double>(value_count);
+        it->second /= static_cast<double>(exp_number);
     }
 }
 
 void Generator::GetRandomByPDF(vector<int>& values, int value_count)
 {
-    Map_itr it = _stack_dist.begin();
-    _probabilities.insert(pair<double, int>(it->second, it->first));
-    ++it;
-    for (; it != _stack_dist.end(); ++it)
+    for (Map_itr it = _stack_dist.begin(); it != _stack_dist.end(); ++it)
     {
-        _probabilities.insert(pair<double, int>( (--(it))->second + it->second, it->first));
+        if (it == _stack_dist.begin())
+        {
+            --it;
+            _probabilities.insert(pair<double, int>(it->second, it->first));
+            ++it++;
+        }
+        else
+        {
+            double prev = (--it)->second;
+            _probabilities.insert(pair<double, int>(prev  + it->second, it->first));
+        }
+
     }
 
     //get uniform number

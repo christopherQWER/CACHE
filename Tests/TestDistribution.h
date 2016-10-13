@@ -18,7 +18,8 @@ public:
     int MainTester();
 
 private:
-    void PdfTest();
+    void PDFTest();
+    void GeneratingRandomTest();
 };
 
 

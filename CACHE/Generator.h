@@ -24,16 +24,16 @@ public:
 
     Generator();
     ~Generator();
+    void Clear();
+    bool IsInMap(int value);
 
     /*
         k - is a location parameter (specifies minimal possible value)
         a - is a shape parameter (defines the tail of the distribution)
     */
     int ParetoGenerator(int k, double a);
-    void GetPDF(std::vector<int>& values, int value_count);
+    void GetPDF(int exp_number);
     void GetRandomByPDF(std::vector<int>& values, int value_count);
-private:
-    bool IsInMap(int value);
 };
 
 

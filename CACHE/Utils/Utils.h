@@ -14,6 +14,7 @@ class Utils
 {
 public:
     static void WriteFile(std::string output_path, std::map<int, double> collection);
+    static void WriteFile(std::string output_path, std::multimap<double, int> collection);
 };
 
 
