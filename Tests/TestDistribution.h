@@ -4,7 +4,8 @@
 
 #pragma once
 #include <vector>
-#include "../CACHE/Generator.h"
+#include <algorithm>
+#include "../CACHE/Pareto.h"
 #ifndef TESTS_TESTDISTRIBUTION_H
 #define TESTS_TESTDISTRIBUTION_H
 

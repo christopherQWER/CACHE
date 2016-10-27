@@ -13,8 +13,8 @@
 class Utils
 {
 public:
-    static void WriteFile(std::string output_path, std::map<int, double> collection);
-    static void WriteFile(std::string output_path, std::multimap<double, int> collection);
+
+    static void AppendToFile(const std::string &output_path, int i_var, double d_var);
 };
 
 

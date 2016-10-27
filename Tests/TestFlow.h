@@ -5,6 +5,7 @@
 #pragma once
 #include "../CACHE/Lru.h"
 #include "../CACHE/Flow.h"
+#include "../CACHE/Pareto.h"
 #include "../CACHE/StackDistFlow.h"
 #include "../CACHE/TraceFileFlow.h"
 #ifndef TESTS_TESTFLOW_H
@@ -34,11 +35,13 @@ private:
     Stack_dist t_stack_dist;
     Lru *t_cache;
     Flow *t_flow;
+    Logger *t_logger;
 
     void SameRequests();
     void DifferentRequests();
     void HalfPartSameRequests();
     void FileRequests();
+    void PDFFlow();
 };
 
 

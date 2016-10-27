@@ -6,8 +6,8 @@ set(SOURCE_FILES Main.cpp
                  Request.cpp
                  Cache.cpp
                  Lru.cpp
-                 Flow.cpp
-                 Generator.cpp
+                 PartitionedCache.cpp
+                 Pareto.cpp
                  StackDistFlow.cpp
                  TraceFileFlow.cpp
                  Utils/ConsoleLogger.cpp
@@ -18,8 +18,9 @@ set(SOURCE_FILES Main.cpp
 set(HEADER_FILES Request.h
                  Cache.h
                  Lru.h
+                 PartitionedCache.h
                  Flow.h
-                 Generator.h
+                 Pareto.h
                  StackDistFlow.h
                  TraceFileFlow.h
                  Utils/Types.h

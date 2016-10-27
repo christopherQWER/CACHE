@@ -42,7 +42,7 @@ void FileLogger::ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp tim
     fclose(file);
 }
 
-void FileLogger::ShowLogText(std::string text)
+void FileLogger::ShowLogText(const std::string &text)
 {
     file = fopen(LOG_PATH, "a");
     fprintf(file, "%s", text.c_str());

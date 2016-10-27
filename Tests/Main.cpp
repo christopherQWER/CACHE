@@ -10,11 +10,11 @@ using namespace std;
 
 int main ()
 {
-//    TestFlow flow_tester = TestFlow();
-//    flow_tester.MainTester();
+    TestFlow flow_tester = TestFlow();
+    flow_tester.MainTester();
 
-    TestDistribution distr_tester = TestDistribution();
-    distr_tester.MainTester();
+//    TestDistribution distr_tester = TestDistribution();
+//    distr_tester.MainTester();
     system("pause");
     return 0;
 }

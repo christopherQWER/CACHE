@@ -16,7 +16,7 @@ Lru::~Lru()
 {
 }
 
-void Lru::LRU(Request newRequest)
+void Lru::LRU(const Request &newRequest)
 {
 #ifdef DEBUG
     Logger *pLogger = Logger::CreateLogger(CONSOLE);
@@ -51,14 +51,14 @@ void Lru::LRU(Request newRequest)
 }
 
 
-void Lru::ReorganizeCache(Request newRequest)
+void Lru::ReorganizeCache(const Request &newRequest)
 {
     _list_store.erase(_map_store[newRequest._lba]);
     _list_store.push_front(newRequest);
     _map_store[newRequest._lba] = _list_store.begin();
 }
 
-void Lru::InsertNewRequest(Request newRequest)
+void Lru::InsertNewRequest(const Request &newRequest)
 {
     _list_store.push_front(newRequest);
     list_itr it = _list_store.begin();

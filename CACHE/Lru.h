@@ -13,9 +13,9 @@ public:
     Lru(Byte_size capasity);
     ~Lru();
 
-    void LRU(Request newRequest);
-    void ReorganizeCache(Request newRequest);
-    void InsertNewRequest(Request newRequest);
+    void LRU(const Request &newRequest);
+    void ReorganizeCache(const Request &newRequest);
+    void InsertNewRequest(const Request &newRequest);
     void DeleteOldRequest();
 };
 

@@ -3,7 +3,7 @@
 //
 #pragma once
 #include <list>
-#include <map>
+#include <unordered_map>
 #include <fstream>
 #include "Request.h"
 
@@ -23,7 +23,7 @@ protected:
 public:
     Hit_rate _hit_rate;
     Byte_size _curr_capasity;
-    std::map<Lba, list_itr> _map_store;
+    std::unordered_map<Lba, list_itr> _map_store;
 
     Cache();
     Cache(Byte_size capasity);

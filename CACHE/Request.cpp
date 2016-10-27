@@ -42,7 +42,7 @@ void Request::GenerateRequest(Request& rq)
     rq._timestamp = GetCurrentTime();
 }
 
-void Request::ParseRequest(string request_string, deque<Request>& req_list)
+void Request::ParseRequest(const string &request_string, deque<Request>& req_list)
 {
     bool result = false;
 

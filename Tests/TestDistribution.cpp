@@ -7,89 +7,85 @@ using namespace std;
 
 TestDistribution::TestDistribution()
 {
-
 }
 
 TestDistribution::~TestDistribution()
 {
-
 }
 
 void TestDistribution::GeneratingRandomTest()
 {
-    int rand_num = 0;
+    double rand_num = 0;
+    double int_part = 0;
+    double fract_part = 0;
+    double prob = 0;
     int count_experiments = 1000000;
     int k = 10;
     double a = 2;
-    vector<int> values;
-    vector<int> new_values;
-    Generator gen = Generator();
+    map<int, double> pdf_map;
+    vector<int> rand_vector_1;
+    vector<int> rand_vector_2;
+    Pareto gen = Pareto(k, a);
+
     string output_file = "/home/cat/Documents/CACHE/Tests/Results/PDF.txt";
     string output_file_2 = "/home/cat/Documents/CACHE/Tests/Results/PDF_test.txt";
 
+    // Inicialize map with rand values and pdfs (only unical values)
+    // Inicialize vector with random values
     for (int i = 0; i < count_experiments; i++)
     {
-        rand_num = gen.ParetoGenerator(k, a);
-        values.push_back(rand_num);
-        if (gen.IsInMap(rand_num))
-        {
-            gen._stack_dist[rand_num]++;
-        }
-        else
-        {
-            gen._stack_dist.insert(pair<int, double>(rand_num, 1));
-        }
+        rand_num = gen.Generate();
+        fract_part = modf(rand_num, &int_part);
+        prob = gen.GetPDF(rand_num);
+
+        if (pdf_map.find(static_cast<int>(int_part)) == pdf_map.end())
+            Utils::AppendToFile(output_file, static_cast<int>(int_part), gen.GetPDF(rand_num));
+
+        pdf_map.insert(pair<int, double>(int_part, prob));
+        rand_vector_1.push_back(static_cast<int>(int_part));
     }
-
-    gen.GetPDF(count_experiments);
-    Utils::WriteFile(output_file, gen._stack_dist);
-
-    gen.GetRandomByPDF(new_values, count_experiments);
-    gen.Clear();
 
     for (int i = 0; i < count_experiments; i++)
     {
-        if (gen.IsInMap(new_values[i]))
-        {
-            gen._stack_dist[new_values[i]]++;
-        }
-        else
-        {
-            gen._stack_dist.insert(pair<int, double>(new_values[i], 1));
-        }
+        rand_num = gen.GetRandomByPDF(pdf_map.at(rand_vector_1[i]));
+        fract_part = modf(rand_num, &int_part);
+        if (find(rand_vector_2.begin(), rand_vector_2.end(), static_cast<int>(int_part)) == rand_vector_2.end())
+            Utils::AppendToFile(output_file_2, static_cast<int>(int_part), gen.GetPDF(rand_num));
+        rand_vector_2.push_back(static_cast<int>(int_part));
     }
-    gen.GetPDF(count_experiments);
-    Utils::WriteFile(output_file_2, gen._stack_dist);
+
+    if (rand_vector_1 == rand_vector_2)
+    {
+        cout << "Generating random by PDF: OK" << endl;
+    }
+    else
+    {
+        cout << "Generating random by PDF: FAILED" << endl;
+    }
 }
 
 void TestDistribution::PDFTest()
 {
-    int rand_num = 0;
+    double rand_num = 0;
+    double int_part = 0;
+    double fract_part = 0;
+    double probabilities = 0;
     int count_experiments = 1000000;
     int k = 10;
     double a = 2;
-    vector<int> values;
-    Generator gen = Generator();
+    set<int> values;
+    Pareto gen = Pareto(k, a);
 
     for (int i = 0; i < count_experiments; i++)
     {
-        rand_num = gen.ParetoGenerator(k, a);
-        values.push_back(rand_num);
-        if (gen.IsInMap(rand_num))
-        {
-            gen._stack_dist[rand_num]++;
-        }
-        else
-        {
-            gen._stack_dist.insert(pair<int, double>(rand_num, 1));
-        }
+        rand_num = gen.Generate();
+        fract_part = modf(rand_num, &int_part);
+        values.insert(static_cast<int>(int_part));
     }
 
-    gen.GetPDF(count_experiments);
-    double probabilities = 0;
-    for (Map_itr it = gen._stack_dist.begin(); it != gen._stack_dist.end(); ++it)
+    for (set<int>::iterator it = values.begin(); it != values.end(); ++it)
     {
-        probabilities += it->second;
+        probabilities += gen.GetPDF(*it);
     }
 
     if (probabilities >= 1)
@@ -104,7 +100,7 @@ void TestDistribution::PDFTest()
 
 int TestDistribution::MainTester()
 {
-    PDFTest();
+    //PDFTest();
     GeneratingRandomTest();
     return 0;
 }

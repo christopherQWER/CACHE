@@ -30,7 +30,7 @@ void ConsoleLogger::ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp 
     printf("Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
 }
 
-void ConsoleLogger::ShowLogText(string text)
+void ConsoleLogger::ShowLogText(const string &text)
 {
     printf("%s", text.c_str());
 }

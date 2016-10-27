@@ -7,6 +7,7 @@
 #include <ctime>
 #include <chrono>
 #include <list>
+#include <map>
 #ifndef CACHE_TYPES_H
 #define CACHE_TYPES_H
 
@@ -18,5 +19,8 @@ typedef char Op_code;
 typedef double Timestamp;
 typedef long double Stack_dist;
 typedef double Hit_rate;
+typedef std::map<int, int>::iterator Map_itr;
+typedef std::multimap<double, double>::iterator Mmap_itr;
+typedef std::list<double>::iterator List_itr;
 
 #endif //CACHE_TYPES_H

@@ -7,11 +7,10 @@ include_directories(INCLUDE_DIR ../CACHE)
 set(SOURCE_FILES Main.cpp
                  TestFlow.cpp
                  TestDistribution.cpp
-                 ../CACHE/Flow.cpp
                  ../CACHE/TraceFileFlow.cpp
                  ../CACHE/StackDistFlow.cpp
                  ../CACHE/Lru.cpp
-                 ../CACHE/Generator.cpp
+                 ../CACHE/Pareto.cpp
                  ../CACHE/Request.cpp
                  ../CACHE/Cache.cpp
                  ../CACHE/Utils/Logger.cpp
@@ -25,12 +24,13 @@ set(HEADER_FILES TestFlow.h
                  ../CACHE/TraceFileFlow.h
                  ../CACHE/StackDistFlow.h
                  ../CACHE/Lru.h
-                 ../CACHE/Generator.h
+                 ../CACHE/Pareto.h
                  ../CACHE/Request.h
                  ../CACHE/Cache.h
                  ../CACHE/Utils/Logger.h
                  ../CACHE/Utils/ConsoleLogger.h
                  ../CACHE/Utils/FileLogger.h
-                 ../CACHE/Utils/Utils.h)
+                 ../CACHE/Utils/Utils.h
+                 ../CACHE/Utils/Types.h)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})

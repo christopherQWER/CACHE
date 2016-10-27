@@ -25,18 +25,36 @@
 class Request
 {
 public:
-    Asu _asu;					/* Application specific unit */
-    Lba _lba;					/* Logical block address */
-    Byte_size _size;			/* Size of data in bytes */
-    Op_code _opcode;			/* Read or write request */
-    Timestamp _timestamp;		/* Time of start */
+    /**
+     * [Application specific unit]
+     **/
+    Asu _asu;
+
+    /**
+     * [Logical block address]
+     **/
+    Lba _lba;
+
+    /**
+     * [Size of data in bytes]
+     **/
+    Byte_size _size;
+
+    /**
+     * [Read or write request]
+     **/
+    Op_code _opcode;
+
+    /** [Time of start]
+     **/
+    Timestamp _timestamp;
 
 
     Request();
     Request(Asu asu, Lba lba, Byte_size size, Op_code opcode, Timestamp timestamp);
     ~Request();
     static void GenerateRequest(Request& rq);
-    static void ParseRequest(std::string traceLog, std::deque<Request>& reqList);
+    static void ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
 
 
     static Asu GetRandomAsu();
