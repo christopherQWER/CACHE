@@ -3,11 +3,13 @@
 //
 
 #pragma once
-#include "../CACHE/Lru.h"
-#include "../CACHE/Flow.h"
-#include "../CACHE/Pareto.h"
-#include "../CACHE/StackDistFlow.h"
-#include "../CACHE/TraceFileFlow.h"
+#include "../CACHE/Caches/Lru.h"
+
+#include "../CACHE/Generators/Pareto.h"
+
+#include "../CACHE/Flows/Flow.h"
+#include "../CACHE/Flows/StackDistFlow.h"
+#include "../CACHE/Flows/TraceFileFlow.h"
 #ifndef TESTS_TESTFLOW_H
 #define TESTS_TESTFLOW_H
 #define _1_GB_IN_BYTES_ 1073741824

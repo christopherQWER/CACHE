@@ -210,9 +210,10 @@ void TestFlow::PDFFlow()
     double int_part = 0;
     double fract_part = 0;
     double prob = 0;
-    Request request = Request();
+    Request *request;
     Pareto gen = Pareto(10, 2);
     double experimental_stack_dist = 0;
+    StackDistFlow *fl = new StackDistFlow();
 
 #ifdef DEBUG
     Logger *pLogger = Logger::CreateLogger(CONSOLE);
@@ -229,12 +230,12 @@ void TestFlow::PDFFlow()
         new_rand_num = gen.GetRandomByPDF(prob);
         fract_part = modf(new_rand_num, &int_part);
 
-        Request::GenerateRequest(request);
-        request._lba = static_cast<Lba>(int_part);
+        fl->_stack_dist_ = static_cast<int>(int_part);
+        request = fl->GetRequest();
 
         experimental_stack_dist += static_cast<Lba>(int_part);
 
-        t_cache->LRU(request);
+        t_cache->LRU(*request);
         t_request_counter++;
     }
 
@@ -264,7 +265,8 @@ void TestFlow::MainTester()
     Byte_size cache_capasity = _1_GB_IN_BYTES_ / 2;
 
     // Initialize test environment
-    TestFlow tester = TestFlow(200, cache_capasity);
+    TestFlow tester;
+//    tester = TestFlow(200, cache_capasity);
 //    tester.DifferentRequests();
 //    tester.Clear();
 //
@@ -274,7 +276,8 @@ void TestFlow::MainTester()
 //
 //    tester = TestFlow(200, cache_capasity);
 //    tester.HalfPartSameRequests();
-//
+//    tester.Clear();
+
 //    tester = TestFlow(200, cache_capasity);
 //    tester.FileRequests();
 //    tester.Clear();

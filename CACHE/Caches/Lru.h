@@ -3,7 +3,7 @@
 //
 #pragma once
 #include "Cache.h"
-#include "Utils/Logger.h"
+#include "../Loggers/Logger.h"
 #ifndef CACHE_LRU_H
 #define CACHE_LRU_H
 

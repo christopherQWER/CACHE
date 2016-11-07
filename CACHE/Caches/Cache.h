@@ -5,7 +5,7 @@
 #include <list>
 #include <unordered_map>
 #include <fstream>
-#include "Request.h"
+#include "../Generators/Request.h"
 
 #ifndef CACHE_CACHE_H
 #define CACHE_CACHE_H
@@ -29,6 +29,12 @@ public:
     Cache(Byte_size capasity);
     virtual ~Cache(){};
 
+    /**
+     * [Checks, if request has already been in cache.]
+     *
+     * @param cell_address
+     * @return [true if request is already existed in cache and false otherwise]
+     */
     bool IsInCache(Lba cell_address);
     bool IsCacheFull(Byte_size request_size) const;
     Hit_rate CalculateHitRate();

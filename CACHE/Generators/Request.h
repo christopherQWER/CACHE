@@ -11,7 +11,7 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-#include "Utils/Types.h"
+#include "../Utils/Types.h"
 
 #ifndef CACHE_REQUEST_H
 #define CACHE_REQUEST_H
@@ -51,8 +51,24 @@ public:
 
 
     Request();
+
+    /**
+     * [Constructor]
+     *
+     * @param asu           [application specific unit]
+     * @param lba           [logical block address]
+     * @param size          [size of requested bytes]
+     * @param opcode        [operation code]
+     * @param timestamp     [incoming time]
+     */
     Request(Asu asu, Lba lba, Byte_size size, Op_code opcode, Timestamp timestamp);
     ~Request();
+
+    /**
+     * [Function generates request]
+     *
+     * @param rq    []
+     */
     static void GenerateRequest(Request& rq);
     static void ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
 

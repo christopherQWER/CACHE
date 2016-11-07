@@ -7,29 +7,39 @@ include_directories(INCLUDE_DIR ../CACHE)
 set(SOURCE_FILES Main.cpp
                  TestFlow.cpp
                  TestDistribution.cpp
-                 ../CACHE/TraceFileFlow.cpp
-                 ../CACHE/StackDistFlow.cpp
-                 ../CACHE/Lru.cpp
-                 ../CACHE/Pareto.cpp
-                 ../CACHE/Request.cpp
-                 ../CACHE/Cache.cpp
-                 ../CACHE/Utils/Logger.cpp
-                 ../CACHE/Utils/ConsoleLogger.cpp
-                 ../CACHE/Utils/FileLogger.cpp
+
+                 ../CACHE/Flows/TraceFileFlow.cpp
+                 ../CACHE/Flows/StackDistFlow.cpp
+
+                 ../CACHE/Generators/Pareto.cpp
+                 ../CACHE/Generators/Request.cpp
+
+                 ../CACHE/Caches/Cache.cpp
+                 ../CACHE/Caches/Lru.cpp
+
+                 ../CACHE/Loggers/Logger.cpp
+                 ../CACHE/Loggers/ConsoleLogger.cpp
+                 ../CACHE/Loggers/FileLogger.cpp
+
                  ../CACHE/Utils/Utils.cpp)
 
 set(HEADER_FILES TestFlow.h
                  TestDistribution.h
-                 ../CACHE/Flow.h
-                 ../CACHE/TraceFileFlow.h
-                 ../CACHE/StackDistFlow.h
-                 ../CACHE/Lru.h
-                 ../CACHE/Pareto.h
-                 ../CACHE/Request.h
-                 ../CACHE/Cache.h
-                 ../CACHE/Utils/Logger.h
-                 ../CACHE/Utils/ConsoleLogger.h
-                 ../CACHE/Utils/FileLogger.h
+
+                 ../CACHE/Flows/Flow.h
+                 ../CACHE/Flows/TraceFileFlow.h
+                 ../CACHE/Flows/StackDistFlow.h
+
+                 ../CACHE/Caches/Lru.h
+                 ../CACHE/Caches/Cache.h
+
+                 ../CACHE/Generators/Pareto.h
+                 ../CACHE/Generators/Request.h
+
+                 ../CACHE/Loggers/Logger.h
+                 ../CACHE/Loggers/ConsoleLogger.h
+                 ../CACHE/Loggers/FileLogger.h
+
                  ../CACHE/Utils/Utils.h
                  ../CACHE/Utils/Types.h)
 

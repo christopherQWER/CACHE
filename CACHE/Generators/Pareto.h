@@ -7,8 +7,8 @@
 #include <fstream>
 #include <set>
 #include <map>
-#include "Utils/Utils.h"
-#include "Utils/Types.h"
+#include "../Utils/Utils.h"
+#include "../Utils/Types.h"
 #ifndef CACHE_DISTRIBUTIONGENERATOR_H
 #define CACHE_DISTRIBUTIONGENERATOR_H
 typedef std::multimap<double, int>::iterator Multimap_itr;
@@ -17,6 +17,13 @@ typedef std::multimap<double, int>::iterator Multimap_itr;
 class Pareto
 {
 public:
+    /**
+     * [Constructor]
+     *
+     * @param location_param    [location parameter of distribution]
+     * @param shape_param       [shape parameter of distribution]
+     * @return
+     */
     Pareto(int location_param, double shape_param);
     ~Pareto();
     void Clear();
@@ -25,7 +32,7 @@ public:
      * [Generates random value distributed by Pareto]
      *
      * @return                  [random value]
-     **/
+     */
     double Generate();
 
     /**
@@ -34,7 +41,7 @@ public:
      * @param random_value      [random value Pareto distributed]
      *
      * @return                  [pdf value]
-     **/
+     */
     double GetPDF(double random_value);
 
     /**
@@ -43,25 +50,25 @@ public:
      * @param random_value      [random value Pareto distributed]
      *
      * @return                  [cdf value]
-     **/
+     */
     double GetCDF(double random_value);
 
     /**
      * [Generates random value by distribution pdf]
      *
      * @return  [random value]
-     **/
+     */
     double GetRandomByPDF(double probably);
 
 private:
     /**
      * [parameter for indentation of distribution]
-     **/
+     */
     int _location_param;
 
     /**
      * [parameter for shape of distribution]
-     **/
+     */
     double _shape_param;
     std::map<double, Mmap_itr> rand_storage;
     std::multimap<double, double> probabilities;

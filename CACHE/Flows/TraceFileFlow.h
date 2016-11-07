@@ -8,7 +8,7 @@
 #include <string>
 #include <deque>
 #include "Flow.h"
-#include "Request.h"
+#include "../Generators/Request.h"
 #ifndef CACHE_TRACEFILEFLOW_H
 #define CACHE_TRACEFILEFLOW_H
 

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
-#include "Types.h"
+#include "../Utils/Types.h"
 #define UTC (3)
 #ifndef CACHE_LOGGER_H
 #define CACHE_LOGGER_H
