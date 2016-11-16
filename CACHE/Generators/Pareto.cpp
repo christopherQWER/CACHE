@@ -21,9 +21,9 @@ Pareto::~Pareto()
 void Pareto::Clear()
 {
     rand_storage.clear();
-    probabilities.clear();
     _location_param = 0;
     _shape_param = 0;
+    _common_counter = 0;
 }
 
 double Pareto:: Generate()
@@ -48,13 +48,13 @@ void Pareto::UpdateGeneratorState(double rand_num)
 {
     if (!IsInStorage(rand_num))
     {
-        double pdf = GetPDF(rand_num);
+        double pdf = ;
         Mmap_itr it = probabilities.insert(pair<double, double>(pdf, rand_num));
         rand_storage.insert(pair<double, Mmap_itr>(rand_num, it));
     }
 }
 
-double Pareto::GetPDF(double random_value)
+double Pareto::GetPDFTheor(double random_value)
 {
     if (random_value < _location_param)
         return 0.0;
@@ -62,7 +62,7 @@ double Pareto::GetPDF(double random_value)
     return probably;
 }
 
-double Pareto::GetCDF(double random_value)
+double Pareto::GetCDFTheor(double random_value)
 {
     if (random_value < _location_param)
         return 0;

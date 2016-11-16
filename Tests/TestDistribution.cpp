@@ -36,10 +36,10 @@ void TestDistribution::GeneratingRandomTest()
     {
         rand_num = gen.Generate();
         fract_part = modf(rand_num, &int_part);
-        prob = gen.GetPDF(rand_num);
+        prob = gen.GetPDFTheor(rand_num);
 
         if (pdf_map.find(static_cast<int>(int_part)) == pdf_map.end())
-            Utils::AppendToFile(output_file, static_cast<int>(int_part), gen.GetPDF(rand_num));
+            Utils::AppendToFile(output_file, static_cast<int>(int_part), gen.GetPDFTheor(rand_num));
 
         pdf_map.insert(pair<int, double>(int_part, prob));
         rand_vector_1.push_back(static_cast<int>(int_part));
@@ -50,7 +50,7 @@ void TestDistribution::GeneratingRandomTest()
         rand_num = gen.GetRandomByPDF(pdf_map.at(rand_vector_1[i]));
         fract_part = modf(rand_num, &int_part);
         if (find(rand_vector_2.begin(), rand_vector_2.end(), static_cast<int>(int_part)) == rand_vector_2.end())
-            Utils::AppendToFile(output_file_2, static_cast<int>(int_part), gen.GetPDF(rand_num));
+            Utils::AppendToFile(output_file_2, static_cast<int>(int_part), gen.GetPDFTheor(rand_num));
         rand_vector_2.push_back(static_cast<int>(int_part));
     }
 
@@ -85,7 +85,7 @@ void TestDistribution::PDFTest()
 
     for (set<int>::iterator it = values.begin(); it != values.end(); ++it)
     {
-        probabilities += gen.GetPDF(*it);
+        probabilities += gen.GetPDFTheor(*it);
     }
 
     if (probabilities >= 1)

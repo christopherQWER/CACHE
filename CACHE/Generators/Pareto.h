@@ -13,7 +13,6 @@
 #define CACHE_DISTRIBUTIONGENERATOR_H
 typedef std::multimap<double, int>::iterator Multimap_itr;
 
-
 class Pareto
 {
 public:
@@ -42,7 +41,7 @@ public:
      *
      * @return                  [pdf value]
      */
-    double GetPDF(double random_value);
+    double GetPDFTheor(double random_value);
 
     /**
      * [Calculates cumulative distribution function]
@@ -51,7 +50,7 @@ public:
      *
      * @return                  [cdf value]
      */
-    double GetCDF(double random_value);
+    double GetCDFTheor(double random_value);
 
     /**
      * [Generates random value by distribution pdf]
@@ -70,8 +69,18 @@ private:
      * [parameter for shape of distribution]
      */
     double _shape_param;
-    std::map<double, Mmap_itr> rand_storage;
-    std::multimap<double, double> probabilities;
+
+    int _common_counter;
+
+    /**
+     * [storage with random value as key and number of occurences as value]
+     */
+    std::map<int, int> rand_storage;
+
+    /**
+     * [storage with random value and it's pdf value, sorted by pdf]
+     */
+    std::vector<std::pair<int, double>>;
 
     bool IsInStorage(double rand_value);
     void UpdateGeneratorState(double rand_num);

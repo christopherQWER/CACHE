@@ -225,7 +225,7 @@ void TestFlow::PDFFlow()
     for (int i = 0; i < t_request_number; i++)
     {
         rand_num = gen.Generate();
-        prob = gen.GetPDF(rand_num);
+        prob = gen.GetPDFTheor(rand_num);
 
         new_rand_num = gen.GetRandomByPDF(prob);
         fract_part = modf(new_rand_num, &int_part);
