@@ -5,20 +5,20 @@
 #include "Cache.h"
 using namespace std;
 
-Cache::Cache(Byte_size capasity)
+Cache::Cache(ByteSize capacity)
 {
-    _max_capasity = capasity;
-    _curr_capasity = 0;
+    _max_capacity = capacity;
+    _curr_capacity = 0;
+    _curr_size = 0;
     _request_counter = 0;
     _hit = 0;
     _miss = 0;
     _hit_rate = 0;
-    _stack_dist = 0;
+    _avg_stack_dist = 0;
 }
 
 Cache::Cache()
 {
-
 }
 
 bool Cache::IsInCache(Lba cell_address)
@@ -26,12 +26,12 @@ bool Cache::IsInCache(Lba cell_address)
     return !(_map_store.find(cell_address) == _map_store.end());
 }
 
-bool Cache::IsCacheFull(Byte_size request_size) const
+bool Cache::IsCacheFull(ByteSize request_size) const
 {
-    return _curr_capasity + request_size > _max_capasity;
+    return _curr_capacity + request_size > _max_capacity;
 }
 
-Hit_rate Cache::CalculateHitRate()
+HitRate Cache::CalculateHitRate()
 {
     if (_request_counter == 0)
     {
@@ -41,12 +41,17 @@ Hit_rate Cache::CalculateHitRate()
     return _hit_rate;
 }
 
-Stack_dist Cache::CalculateStackDistance()
+StackDist Cache::CalculateStackDistance()
 {
     if (_hit == 0)
     {
         return -1;
     }
-    _stack_dist = _stack_dist / _hit;
-    return _stack_dist;
+    _avg_stack_dist = _avg_stack_dist / _hit;
+    return _avg_stack_dist;
+}
+
+void Cache::ChangeCacheCapasity(ByteSize new_capasity)
+{
+    _max_capacity = new_capasity;
 }
