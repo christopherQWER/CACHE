@@ -17,8 +17,8 @@ public:
     //TODO: Fix signature of function: function must get unlimited number of args
     void ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp time);
     void ShowLogText(const std::string &text);
-    void ShowHitRate(Hit_rate hit_rate);
-    void ShowStackDistance(Stack_dist stack_dist);
+    void ShowHitRate(HitRate hit_rate);
+    void ShowStackDistance(StackDist stack_dist);
     void EndLog();
 };
 

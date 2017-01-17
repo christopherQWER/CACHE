@@ -49,17 +49,17 @@ void FileLogger::ShowLogText(const std::string &text)
     fclose(file);
 }
 
-void FileLogger::ShowHitRate(Hit_rate hit_rate)
+void FileLogger::ShowHitRate(HitRate hit_rate)
 {
     file = fopen(LOG_PATH, "a");
     fprintf(file, "Hitrate: %f\n", hit_rate);
     fclose(file);
 }
 
-void FileLogger::ShowStackDistance(Stack_dist stack_dist)
+void FileLogger::ShowStackDistance(StackDist stack_dist)
 {
     file = fopen(LOG_PATH, "a");
-    fprintf(file, "Stack distance: %ull", stack_dist);
+    fprintf(file, "Stack distance: %Lfll", stack_dist);
     fclose(file);
 }
 

@@ -35,13 +35,13 @@ void ConsoleLogger::ShowLogText(const string &text)
     printf("%s", text.c_str());
 }
 
-void ConsoleLogger::ShowHitRate(Hit_rate hit_rate)
+void ConsoleLogger::ShowHitRate(HitRate hit_rate)
 {
     cout << endl;
     cout << "Hitrate: " << hit_rate << endl;
 }
 
-void ConsoleLogger::ShowStackDistance(Stack_dist stack_dist)
+void ConsoleLogger::ShowStackDistance(StackDist stack_dist)
 {
     cout << endl;
     cout << "Stack distance: " << stack_dist << endl;
