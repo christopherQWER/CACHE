@@ -14,13 +14,10 @@
 //Types definition
 typedef unsigned int Lba;
 typedef unsigned int Asu;
-typedef unsigned long long Byte_size;
-typedef char Op_code;
+typedef unsigned long long ByteSize;
+typedef char OpCode;
 typedef double Timestamp;
-typedef long double Stack_dist;
-typedef double Hit_rate;
-typedef std::map<int, int>::iterator Map_itr;
-typedef std::multimap<double, double>::iterator Mmap_itr;
-typedef std::list<double>::iterator List_itr;
+typedef long double StackDist;
+typedef double HitRate;
 
 #endif //CACHE_TYPES_H
