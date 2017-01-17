@@ -8,6 +8,7 @@ using namespace std;
 TraceFileFlow::TraceFileFlow(const string& file_name)
 {
     file.open(file_name.c_str());
+    _is_eof = file.is_open();
 }
 
 TraceFileFlow::TraceFileFlow()
@@ -25,12 +26,23 @@ Request* TraceFileFlow::GetRequest()
     string buffer = "";
     Request *request = new Request();
 
-    if (request_queue.empty())
+    while (_request_queue.empty())
     {
         if (getline(file, buffer))
         {
-            Request::ParseRequest(buffer, request_queue);
+            Request::ParseRequest(buffer, _request_queue);
+        }
+        else
+        {
+            _is_eof = true;
+            return nullptr;
         }
     }
-    *request = request_queue.front();
+//    if (!_request_queue.empty())
+//    {
+        *request = _request_queue.front();
+        _request_queue.pop_front();
+        return request;
+//    }
+    //return nullptr;
 }
