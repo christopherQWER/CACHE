@@ -1,7 +1,6 @@
 //
-// Created by cat on 10/6/16.
+// Created by cat on 12/4/16.
 //
-
 #pragma once
 #include "../CACHE/Caches/Lru.h"
 #include "../CACHE/Generators/Pareto.h"
@@ -9,36 +8,35 @@
 #include "../CACHE/Flows/StackDistFlow.h"
 #include "../CACHE/Flows/TraceFileFlow.h"
 #include "Paths.h"
-#ifndef TESTS_TESTFLOW_H
-#define TESTS_TESTFLOW_H
+#include "TraceAnalyzer.h"
 #define _1_GB_IN_BYTES_ 1073741824
+#ifndef PROJECT_FILEFLOWTEST_H
+#define PROJECT_FILEFLOWTEST_H
 
-class TestFlow
-{
+
+class FileFlowTest {
 public:
-    TestFlow();
-    TestFlow(int request_number, ByteSize cache_size);
-    ~TestFlow();
+    FileFlowTest();
+    FileFlowTest(int request_number, ByteSize cache_size);
+    ~FileFlowTest();
     void Clear();
 
+    void TestStat(const std::string &file_name);
     void MainTester();
 
 private:
     /**
      * [input parameter set number of experiments]
      */
-    int t_experiments_count;
+    int t_experiments_number;
     HitRate t_hit_rate;
     StackDist t_stack_dist;
     Lru *t_cache;
-    Flow *t_flow;
+    TraceFileFlow *t_flow;
     Logger *t_logger;
 
-    void SameRequests();
-    void DifferentRequests();
-    void HalfPartSameRequests();
-    void PDFFlow();
+    void FileRequests(const std::string &file_name);
 };
 
 
-#endif //TESTS_TESTFLOW_H
+#endif //PROJECT_FILEFLOWTEST_H

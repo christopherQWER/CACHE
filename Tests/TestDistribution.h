@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include "../CACHE/Generators/Pareto.h"
+#include "../CACHE/Utils/Utils.h"
 #ifndef TESTS_TESTDISTRIBUTION_H
 #define TESTS_TESTDISTRIBUTION_H
 
@@ -19,8 +20,8 @@ public:
     int MainTester();
 
 private:
-    void PDFTest();
-    void GeneratingRandomTest();
+    void GetPDFTest();
+    void GetRandByPDFTest();
 };
 
 
