@@ -5,8 +5,8 @@
 #pragma once
 #include <vector>
 #include <algorithm>
-#include "../CACHE/Generators/Pareto.h"
-#include "../CACHE/Utils/Utils.h"
+#include "../Cache/Generators/Pareto.h"
+#include "../Cache/Utils/Utils.h"
 #ifndef TESTS_TESTDISTRIBUTION_H
 #define TESTS_TESTDISTRIBUTION_H
 

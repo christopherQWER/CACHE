@@ -2,11 +2,11 @@
 // Created by cat on 12/4/16.
 //
 #pragma once
-#include "../CACHE/Caches/Lru.h"
-#include "../CACHE/Generators/Pareto.h"
-#include "../CACHE/Flows/Flow.h"
-#include "../CACHE/Flows/StackDistFlow.h"
-#include "../CACHE/Flows/TraceFileFlow.h"
+#include "../Cache/Caches/Lru.h"
+#include "../Cache/Generators/Pareto.h"
+#include "../Cache/Flows/Flow.h"
+#include "../Cache/Flows/StackDistFlow.h"
+#include "../Cache/Flows/TraceFileFlow.h"
 #include "Paths.h"
 #include "TraceAnalyzer.h"
 #define _1_GB_IN_BYTES_ 1073741824

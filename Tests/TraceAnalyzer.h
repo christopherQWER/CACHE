@@ -9,8 +9,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include "../CACHE/Utils/Types.h"
-#include "../CACHE/Generators/Request.h"
+#include "../Cache/Utils/Types.h"
+#include "../Cache/Generators/Request.h"
 #include "Paths.h"
 
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(Tests)
 
 set(CMAKE_CXX_STANDARD 11)
-include_directories(INCLUDE_DIR ../CACHE)
+include_directories(INCLUDE_DIR ../Cache)
 
 set(SOURCE_FILES Main.cpp
                  TestFlow.cpp
@@ -10,21 +10,21 @@ set(SOURCE_FILES Main.cpp
                  TestDistribution.cpp
                  TraceAnalyzer.cpp
 
-                 ../CACHE/Flows/TraceFileFlow.cpp
-                 ../CACHE/Flows/StackDistFlow.cpp
+                 ../Cache/Flows/TraceFileFlow.cpp
+                 ../Cache/Flows/StackDistFlow.cpp
 
-                 ../CACHE/Generators/Pareto.cpp
-                 ../CACHE/Generators/Request.cpp
+                 ../Cache/Generators/Pareto.cpp
+                 ../Cache/Generators/Request.cpp
 
-                 ../CACHE/Caches/Cache.cpp
-                 ../CACHE/Caches/Lru.cpp
+                 ../Cache/Caches/Cache.cpp
+                 ../Cache/Caches/Lru.cpp
 
-                 ../CACHE/Loggers/Logger.cpp
-                 ../CACHE/Loggers/ConsoleLogger.cpp
-                 ../CACHE/Loggers/FileLogger.cpp
+                 ../Cache/Loggers/Logger.cpp
+                 ../Cache/Loggers/ConsoleLogger.cpp
+                 ../Cache/Loggers/FileLogger.cpp
 
-                 ../CACHE/Utils/Utils.cpp
-                 ../CACHE/Utils/Plot.cpp)
+                 ../Cache/Utils/Utils.cpp
+                 ../Cache/Utils/Plot.cpp)
 
 set(HEADER_FILES TestFlow.h
                  FileFlowTest.h
@@ -32,22 +32,22 @@ set(HEADER_FILES TestFlow.h
                  TestDistribution.h
                  TraceAnalyzer.h
 
-                 ../CACHE/Flows/Flow.h
-                 ../CACHE/Flows/TraceFileFlow.h
-                 ../CACHE/Flows/StackDistFlow.h
+                 ../Cache/Flows/Flow.h
+                 ../Cache/Flows/TraceFileFlow.h
+                 ../Cache/Flows/StackDistFlow.h
 
-                 ../CACHE/Caches/Lru.h
-                 ../CACHE/Caches/Cache.h
+                 ../Cache/Caches/Lru.h
+                 ../Cache/Caches/Cache.h
 
-                 ../CACHE/Generators/Pareto.h
-                 ../CACHE/Generators/Request.h
+                 ../Cache/Generators/Pareto.h
+                 ../Cache/Generators/Request.h
 
-                 ../CACHE/Loggers/Logger.h
-                 ../CACHE/Loggers/ConsoleLogger.h
-                 ../CACHE/Loggers/FileLogger.h
+                 ../Cache/Loggers/Logger.h
+                 ../Cache/Loggers/ConsoleLogger.h
+                 ../Cache/Loggers/FileLogger.h
 
-                 ../CACHE/Utils/Utils.h
-                 ../CACHE/Utils/Types.h
-                 ../CACHE/Utils/Plot.h)
+                 ../Cache/Utils/Utils.h
+                 ../Cache/Utils/Types.h
+                 ../Cache/Utils/Plot.h)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})
