@@ -8,12 +8,12 @@
 #include <set>
 #include <map>
 #include "../Utils/Utils.h"
-#include "../Utils/Types.h"
+//#include "../Utils/Types.h"
+#include "../Generators/Distribution.h"
 #ifndef CACHE_DISTRIBUTIONGENERATOR_H
 #define CACHE_DISTRIBUTIONGENERATOR_H
-typedef std::multimap<double, int>::iterator Multimap_itr;
 
-class Pareto
+class Pareto : public Distribution
 {
 public:
     /**
@@ -25,7 +25,6 @@ public:
      */
     Pareto(int location_param, double shape_param);
     ~Pareto();
-    void Clear();
 
     /**
      * [Generates random value distributed by Pareto]
@@ -35,22 +34,20 @@ public:
     double Generate();
 
     /**
-     * [Calculates probability of density function]
+     * [Calculates probability of density function theoretically]
      *
      * @param random_value      [random value Pareto distributed]
-     *
      * @return                  [pdf value]
      */
-    double GetPDFTheor(double random_value);
+    double GetPDF(double random_value);
 
     /**
      * [Calculates cumulative distribution function]
      *
      * @param random_value      [random value Pareto distributed]
-     *
      * @return                  [cdf value]
      */
-    double GetCDFTheor(double random_value);
+    double GetCDF(double random_value);
 
     /**
      * [Generates random value by distribution pdf]
@@ -70,20 +67,15 @@ private:
      */
     double _shape_param;
 
+    /**
+     * [commone counter of generated values]
+     */
     int _common_counter;
 
     /**
      * [storage with random value as key and number of occurences as value]
      */
-    std::map<int, int> rand_storage;
-
-    /**
-     * [storage with random value and it's pdf value, sorted by pdf]
-     */
-    std::vector<std::pair<int, double>>;
-
-    bool IsInStorage(double rand_value);
-    void UpdateGeneratorState(double rand_num);
+    std::map<int, int> _counter_map;
 };
 
 

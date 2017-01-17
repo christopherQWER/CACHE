@@ -18,15 +18,7 @@ Pareto::~Pareto()
 {
 }
 
-void Pareto::Clear()
-{
-    rand_storage.clear();
-    _location_param = 0;
-    _shape_param = 0;
-    _common_counter = 0;
-}
-
-double Pareto:: Generate()
+double Pareto::Generate()
 {
     double uniform_number = 0;
     double pareto_value = 0;
@@ -40,21 +32,10 @@ double Pareto:: Generate()
         //get pareto value
         pareto_value = static_cast<double>(_location_param) / pow(uniform_number, 1.0 / _shape_param);
     }
-    UpdateGeneratorState(pareto_value);
     return pareto_value;
 }
 
-void Pareto::UpdateGeneratorState(double rand_num)
-{
-    if (!IsInStorage(rand_num))
-    {
-        double pdf = ;
-        Mmap_itr it = probabilities.insert(pair<double, double>(pdf, rand_num));
-        rand_storage.insert(pair<double, Mmap_itr>(rand_num, it));
-    }
-}
-
-double Pareto::GetPDFTheor(double random_value)
+double Pareto::GetPDF(double random_value)
 {
     if (random_value < _location_param)
         return 0.0;
@@ -62,7 +43,7 @@ double Pareto::GetPDFTheor(double random_value)
     return probably;
 }
 
-double Pareto::GetCDFTheor(double random_value)
+double Pareto::GetCDF(double random_value)
 {
     if (random_value < _location_param)
         return 0;
@@ -72,12 +53,17 @@ double Pareto::GetCDFTheor(double random_value)
 
 double Pareto::GetRandomByPDF(double probably)
 {
-    double number = distribution(generator);
-    Mmap_itr lower_itr = probabilities.lower_bound(probably);
-    return lower_itr->second;
+//    double number = distribution(generator);
+//    Mmap_itr lower_itr = probabilities.lower_bound(probably);
+//    return lower_itr->second;
 }
 
-bool Pareto::IsInStorage(double rand_value)
+void ParseLine(const string& line, int& rand_value, double& pdf)
 {
-    return !(rand_storage.find(rand_value) == rand_storage.end());
+    string part;
+    istringstream origs(line.c_str());
+    bool result = getline(origs, part, ',') &&
+             (istringstream(part) >> rand_value) &&
+             getline(origs, part, ',') &&
+             (istringstream(part) >> pdf);
 }

@@ -18,7 +18,6 @@
 
 //Size of standard memory cell
 #define _CELL_SIZE_ 512
-
 #define LOW_ADDRESS_BOUND 5000
 #define UP_ADDRESS_BOUND 500000
 
@@ -38,18 +37,20 @@ public:
     /**
      * [Size of data in bytes]
      **/
-    Byte_size _size;
+    ByteSize _size;
 
     /**
      * [Read or write request]
      **/
-    Op_code _opcode;
+    OpCode _opcode;
 
     /** [Time of start]
      **/
     Timestamp _timestamp;
 
-
+    /**
+     * [Default constructor]
+     */
     Request();
 
     /**
@@ -61,24 +62,21 @@ public:
      * @param opcode        [operation code]
      * @param timestamp     [incoming time]
      */
-    Request(Asu asu, Lba lba, Byte_size size, Op_code opcode, Timestamp timestamp);
+    Request(Asu asu, Lba lba, ByteSize size, OpCode opcode, Timestamp timestamp);
     ~Request();
 
     /**
      * [Function generates request]
-     *
      * @param rq    []
      */
     static void GenerateRequest(Request& rq);
-    static void ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
+    static void ParseRequest(std::string traceLog, std::deque<Request>& reqList);
 
 
     static Asu GetRandomAsu();
     static Lba GetRandomLba();
-    static Op_code GetReadOpCode();
-    static Op_code GetWriteOpCode();
+    static OpCode GetReadOpCode();
+    static OpCode GetWriteOpCode();
     static Timestamp GetCurrentTime();
 };
-
-typedef std::list<Request>::iterator list_itr;
 #endif //CACHE_REQUEST_H

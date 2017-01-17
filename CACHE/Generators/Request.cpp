@@ -19,7 +19,7 @@ Request::Request()
     _timestamp = time(0);
 }
 
-Request::Request(Asu asu, Lba lba, Byte_size size, Op_code opcode, Timestamp timestamp)
+Request::Request(Asu asu, Lba lba, ByteSize size, OpCode opcode, Timestamp timestamp)
 {
     _asu = asu;
     _lba = lba;
@@ -30,7 +30,6 @@ Request::Request(Asu asu, Lba lba, Byte_size size, Op_code opcode, Timestamp tim
 
 Request::~Request()
 {
-
 }
 
 void Request::GenerateRequest(Request& rq)
@@ -42,7 +41,7 @@ void Request::GenerateRequest(Request& rq)
     rq._timestamp = GetCurrentTime();
 }
 
-void Request::ParseRequest(const string &request_string, deque<Request>& req_list)
+void Request::ParseRequest(string request_string, deque<Request>& req_list)
 {
     bool result = false;
 
@@ -70,7 +69,7 @@ void Request::ParseRequest(const string &request_string, deque<Request>& req_lis
     unsigned int numberOfRequests = (unsigned int) (req._size / _CELL_SIZE_);
     for (int i = 0; i < numberOfRequests + 1; i++)
     {
-        if (req._opcode != 'r')
+        if (tolower(req._opcode) != 'r')
         {
             return;
         }
@@ -91,12 +90,12 @@ Lba Request::GetRandomLba()
     return (Lba) uni(rng);
 }
 
-Op_code Request::GetReadOpCode()
+OpCode Request::GetReadOpCode()
 {
     return 'r';
 }
 
-Op_code Request::GetWriteOpCode()
+OpCode Request::GetWriteOpCode()
 {
     return 'w';
 }
