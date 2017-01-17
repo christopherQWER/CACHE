@@ -10,6 +10,7 @@ set(SOURCE_FILES Main.cpp
 
                  Generators/Request.cpp
                  Generators/Pareto.cpp
+                 Generators/Distribution.cpp
 
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
@@ -19,6 +20,7 @@ set(SOURCE_FILES Main.cpp
                  Loggers/Logger.cpp
 
                  Utils/Utils.cpp
+                 Utils/Plot.cpp
                  )
 
 set(HEADER_FILES
@@ -28,6 +30,7 @@ set(HEADER_FILES
 
                  Generators/Request.h
                  Generators/Pareto.h
+                 Generators/Distribution.h
 
                  Flows/Flow.h
                  Flows/StackDistFlow.h
@@ -35,6 +38,7 @@ set(HEADER_FILES
 
                  Utils/Types.h
                  Utils/Utils.h
+                 Utils/Plot.h
 
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h

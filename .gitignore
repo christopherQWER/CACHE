@@ -1,3 +1,4 @@
 .idea/
 Tests/Results/
 Tests/Stats/
+cmake-build-debug/
