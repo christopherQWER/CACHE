@@ -24,6 +24,8 @@ void Lru::LRU(const Request &newRequest)
 
     if (IsInCache(newRequest._lba))
     {
+        //TODO optimize!:
+        //Twice using find through map (IsInCache and distance)
         stack_dist = distance(_list_store.begin(), _map_store.find(newRequest._lba)->second) + 1;
         ReorganizeCache(newRequest);
         _hit++;

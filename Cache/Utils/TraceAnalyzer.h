@@ -9,9 +9,9 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include "../Cache/Utils/Types.h"
-#include "../Cache/Generators/Request.h"
-#include "Paths.h"
+#include "Types.h"
+#include "../Generators/Request.h"
+#include "../../Tests/Paths.h"
 
 
 class TraceAnalyzer {

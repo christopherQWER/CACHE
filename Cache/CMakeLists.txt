@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.6)
 project(Cache)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s -O3")
 set(SOURCE_FILES Main.cpp
 
                  Caches/Cache.cpp
                  Caches/Lru.cpp
-                 Caches/PartitionedCache.cpp
 
                  Generators/Request.cpp
                  Generators/Pareto.cpp
@@ -15,18 +15,21 @@ set(SOURCE_FILES Main.cpp
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
 
+                 Modeling/SharedCache.cpp
+                 Modeling/PartitionedCache.cpp
+
                  Loggers/ConsoleLogger.cpp
                  Loggers/FileLogger.cpp
                  Loggers/Logger.cpp
 
                  Utils/Utils.cpp
                  Utils/Plot.cpp
+                 Utils/TraceAnalyzer.cpp
                  )
 
 set(HEADER_FILES
                  Caches/Cache.h
                  Caches/Lru.h
-                 Caches/PartitionedCache.h
 
                  Generators/Request.h
                  Generators/Pareto.h
@@ -36,9 +39,13 @@ set(HEADER_FILES
                  Flows/StackDistFlow.h
                  Flows/TraceFileFlow.h
 
+                 Modeling/SharedCache.h
+                 Modeling/PartitionedCache.р
+
                  Utils/Types.h
                  Utils/Utils.h
                  Utils/Plot.h
+                 Utils/TraceAnalyzer.h
 
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h

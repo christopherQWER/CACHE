@@ -2,18 +2,18 @@
 // Created by cat on 12/4/16.
 //
 
-#include "FileFlowTest.h"
+#include "SharedCache.h"
 #define CONSOLE CONSOLE_LOGGER
 //#define DEBUG
 //#define FILE FILE_LOGGER
 using namespace std;
 
 
-FileFlowTest::FileFlowTest()
+SharedCache::SharedCache()
 {
 }
 
-FileFlowTest::FileFlowTest(int request_number, ByteSize cache_size)
+SharedCache::SharedCache(int request_number, ByteSize cache_size)
 {
     t_hit_rate = 0;
     t_experiments_number = request_number;
@@ -21,27 +21,27 @@ FileFlowTest::FileFlowTest(int request_number, ByteSize cache_size)
     t_logger = Logger::CreateLogger(CONSOLE);
 }
 
-void FileFlowTest::Clear()
+void SharedCache::Clear()
 {
     t_experiments_number = 0;
     t_hit_rate = 0;
     //delete t_cache;
 }
 
-FileFlowTest::~FileFlowTest()
+SharedCache::~SharedCache()
 {
 }
 
-void FileFlowTest::FileRequests(const string &file_name)
+void SharedCache::FileRequests(const string &file_name)
 {
     int counter = 0;
     int gist_counter = 0;
-    int module = 10000;
+    int module = 50000;
     Request *request;
     t_flow = new TraceFileFlow(file_name);
     string results_dir = Utils::GetFileNameWithoutExt(file_name);
-    string pdf_path = _GISTS_DIR_ + string("//") + results_dir + "//" + _PDF_DIR_;
-    string cdf_path = _GISTS_DIR_ + string("//") + results_dir + "//" + _CDF_DIR_;
+    string pdf_path = _GISTS_DIR_ + string("//") + results_dir + "//" + to_string(request->_asu) + "//" + _PDF_DIR_;
+    string cdf_path = _GISTS_DIR_ + string("//") + results_dir + "//" + to_string(request->_asu) + "//" + _CDF_DIR_;
     Utils::CreateDirectory(pdf_path);
     Utils::CreateDirectory(cdf_path);
 
@@ -59,6 +59,7 @@ void FileFlowTest::FileRequests(const string &file_name)
         pLogger->ShowRequestInfo(t_request_counter, request->_asu, request->_lba, request->_timestamp);
 #endif
 
+
         t_cache->LRU(*request);
         if ( (counter != 0) && (counter % module == 0) )
         {
@@ -71,9 +72,10 @@ void FileFlowTest::FileRequests(const string &file_name)
         counter++;
     }
 
-    gist_counter = 220;
+    gist_counter = 100;
     string pdf_plt = _GISTS_DIR_ + string("//") + results_dir + string("//pdf.plt");
     string png_pdf_path = _GISTS_DIR_ + string("//") + results_dir + string("//") + results_dir + string("_PDFs.png");
+
     Utils::AppendToFile(pdf_plt, "set terminal  png size 512,512 font 'Verdana, 10'");
     Utils::AppendToFile(pdf_plt, "set nokey");
     Utils::AppendToFile(pdf_plt, "set title \"WebSearch_1 PDF\"");
@@ -141,7 +143,7 @@ void FileFlowTest::FileRequests(const string &file_name)
 #endif
 }
 
-void FileFlowTest::TestStat(const string &file_name)
+void SharedCache::TestStat(const string &file_name)
 {
     TraceAnalyzer* a = new TraceAnalyzer(file_name);
     a->GetStat();
@@ -149,42 +151,42 @@ void FileFlowTest::TestStat(const string &file_name)
 }
 
 
-void FileFlowTest::MainTester()
+void SharedCache::MainTester()
 {
     int errorCode = 0;
     ByteSize cache_capasity = _1_GB_IN_BYTES_ / 4;
     int experiment_number = 1000000;
-    FileFlowTest tester;
+    SharedCache tester;
 
-    tester = FileFlowTest(experiment_number, cache_capasity);
+    tester = SharedCache(experiment_number, cache_capasity);
     tester.t_logger->ShowLogText("=================Start: WebSearch1.spc=================");
     //tester.TestStat(_WEB_SEARCH_1_);
     tester.FileRequests(_WEB_SEARCH_1_);
     tester.t_logger->ShowLogText("==================End: WebSearch1.spc==================");
     tester.Clear();
 
-    tester = FileFlowTest(experiment_number, cache_capasity);
+    tester = SharedCache(experiment_number, cache_capasity);
     tester.t_logger->ShowLogText("=================Start: WebSearch2.spc=================");
     //tester.TestStat(_WEB_SEARCH_2_);
     tester.FileRequests(_WEB_SEARCH_2_);
     tester.t_logger->ShowLogText("==================End: WebSearch2.spc==================");
     tester.Clear();
 
-    tester = FileFlowTest(experiment_number, cache_capasity);
+    tester = SharedCache(experiment_number, cache_capasity);
     tester.t_logger->ShowLogText("=================Start: WebSearch3.spc=================");
     //tester.TestStat(_WEB_SEARCH_3_);
     tester.FileRequests(_WEB_SEARCH_3_);
     tester.t_logger->ShowLogText("==================End: WebSearch3.spc==================");
     tester.Clear();
 
-    tester = FileFlowTest(experiment_number, cache_capasity);
+    tester = SharedCache(experiment_number, cache_capasity);
     tester.t_logger->ShowLogText("=================Start: Financial1.spc=================");
     //tester.TestStat(_FINANCIAL_1_);
     tester.FileRequests(_FINANCIAL_1_);
     tester.t_logger->ShowLogText("==================End: Financial1.spc==================");
     tester.Clear();
 
-    tester = FileFlowTest(experiment_number, cache_capasity);
+    tester = SharedCache(experiment_number, cache_capasity);
     tester.t_logger->ShowLogText("=================Start: Financial2.spc=================");
     //tester.TestStat(_FINANCIAL_2_);
     tester.FileRequests(_FINANCIAL_2_);

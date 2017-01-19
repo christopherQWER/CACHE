@@ -2,13 +2,12 @@ cmake_minimum_required(VERSION 3.6)
 project(Tests)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s -O3")
 include_directories(INCLUDE_DIR ../Cache)
 
 set(SOURCE_FILES Main.cpp
                  TestFlow.cpp
-                 FileFlowTest.cpp
                  TestDistribution.cpp
-                 TraceAnalyzer.cpp
 
                  ../Cache/Flows/TraceFileFlow.cpp
                  ../Cache/Flows/StackDistFlow.cpp
@@ -27,10 +26,8 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Utils/Plot.cpp)
 
 set(HEADER_FILES TestFlow.h
-                 FileFlowTest.h
                  Paths.h
                  TestDistribution.h
-                 TraceAnalyzer.h
 
                  ../Cache/Flows/Flow.h
                  ../Cache/Flows/TraceFileFlow.h

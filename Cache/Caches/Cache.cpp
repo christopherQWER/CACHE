@@ -23,6 +23,7 @@ Cache::Cache()
 
 bool Cache::IsInCache(Lba cell_address)
 {
+    //TODO optimize!
     return !(_map_store.find(cell_address) == _map_store.end());
 }
 

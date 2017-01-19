@@ -79,7 +79,7 @@ void TraceAnalyzer::GetStat()
             return;
         }
 
-        if (tolower(req._opcode) != 'r')
+        if (tolower(req._opcode) == 'r')
         {
             _reads++;
         }
