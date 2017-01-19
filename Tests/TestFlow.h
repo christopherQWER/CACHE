@@ -21,7 +21,7 @@ public:
     ~TestFlow();
     void Clear();
 
-    void MainTester();
+    static void MainTester();
 
 private:
     /**

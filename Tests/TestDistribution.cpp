@@ -105,6 +105,6 @@ void TestDistribution::GetPDFTest()
 int TestDistribution::MainTester()
 {
     GetPDFTest();
-    GetRandByPDFTest();
+    //GetRandByPDFTest();
     return 0;
 }

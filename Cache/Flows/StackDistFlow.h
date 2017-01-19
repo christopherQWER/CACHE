@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include "../Generators/Request.h"
+#include "../Utils/Types.h"
 #include "Flow.h"
 #ifndef CACHE_STACKDISTFLOW_H
 #define CACHE_STACKDISTFLOW_H
@@ -16,7 +17,7 @@ class StackDistFlow : public Flow
 {
 public:
     /**
-     *
+     * [Needed stack distance]
      */
     int _stack_dist_;
 
@@ -29,11 +30,12 @@ public:
      */
     Request* GetRequest();
 private:
+    ByteSize curr_buffer_size;
     std::list<Lba> _address_buffer;
     bool IsInBuffer(Lba address);
     void MoveForward(int pos);
     void InsertToFront(Lba address);
-    int GetBufferSize();
+    ByteSize GetBufferSize();
     Lba GetFirst();
 };
 

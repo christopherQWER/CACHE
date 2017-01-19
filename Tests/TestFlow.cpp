@@ -235,7 +235,7 @@ void TestFlow::MainTester()
 //    tester.HalfPartSameRequests();
 //    tester.Clear();
 
-//    tester = TestFlow(10000, cache_capasity);
-//    tester.PDFFlow();
-//    tester.Clear();
+    tester = TestFlow(10000, cache_capasity);
+    tester.PDFFlow();
+    tester.Clear();
 }

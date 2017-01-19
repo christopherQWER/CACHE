@@ -7,6 +7,7 @@ using namespace std;
 
 StackDistFlow::StackDistFlow()
 {
+    curr_buffer_size = 0;
 }
 
 StackDistFlow::~StackDistFlow()
@@ -19,9 +20,9 @@ Request *StackDistFlow::GetRequest()
     Request *request = new Request();
     Request::GenerateRequest(*request);
     Lba needed_lba = 0;
-    int size = GetBufferSize();
+    //int size = GetBufferSize();
 
-    if ( (_stack_dist_ < size) && (size != 0))
+    if ( (_stack_dist_ < curr_buffer_size) && (curr_buffer_size != 0))
     {
         MoveForward(_stack_dist_);
         request->_lba = GetFirst();
@@ -56,9 +57,10 @@ void StackDistFlow::MoveForward(int pos)
     _address_buffer.push_front(founded);
 }
 
-int StackDistFlow::GetBufferSize()
+ByteSize StackDistFlow::GetBufferSize()
 {
-    return (int) _address_buffer.size();
+    //return (int) _address_buffer.size();
+    return curr_buffer_size;
 }
 
 Lba StackDistFlow::GetFirst()
@@ -70,4 +72,5 @@ Lba StackDistFlow::GetFirst()
 void StackDistFlow::InsertToFront(Lba address)
 {
     _address_buffer.push_front(address);
+    curr_buffer_size++;
 }

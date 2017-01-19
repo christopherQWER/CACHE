@@ -15,11 +15,13 @@ int main ()
 //    TestFlow flow_tester = TestFlow();
 //    flow_tester.MainTester();
 
-    FileFlowTest ff_tester = FileFlowTest();
-    ff_tester.MainTester();
+//    FileFlowTest ff_tester = FileFlowTest();
+//    ff_tester.MainTester();
 
 //    TestDistribution distr_tester = TestDistribution();
 //    distr_tester.MainTester();
+
+    TestFlow::MainTester();
     system("pause");
     return 0;
 }
