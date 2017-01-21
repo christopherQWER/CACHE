@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(Cache)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 set(SOURCE_FILES Main.cpp
 
                  Caches/Cache.cpp
@@ -52,4 +52,4 @@ set(HEADER_FILES
                  Loggers/Logger.h
                  )
 
-add_executable(CACHE ${SOURCE_FILES})
+add_executable(Cache ${SOURCE_FILES})
