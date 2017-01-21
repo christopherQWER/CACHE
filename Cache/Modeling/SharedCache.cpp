@@ -126,8 +126,8 @@ void SharedCache::FileRequests(const string &file_name)
         pdf.clear();
         cdf.clear();
     }
-    system(string("gnuplot \"" + pdf_plt + "\"").c_str());
-    system(string("gnuplot \"" + cdf_plt + "\"").c_str());
+    Utils::ExecuteCmd(string("gnuplot \"" + pdf_plt + "\""));
+    Utils::ExecuteCmd(string("gnuplot \"" + cdf_plt + "\""));
 
     t_hit_rate = t_cache->CalculateHitRate();
 
