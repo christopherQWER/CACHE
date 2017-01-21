@@ -22,11 +22,10 @@ void Lru::LRU(const Request &newRequest)
 #endif
     StackDist stack_dist = 0;
 
-    if (IsInCache(newRequest._lba))
+    std::unordered_map<Lba, StorType::iterator>::iterator it = _map_store.begin();
+    if (IsInCache(newRequest._lba, it))
     {
-        //TODO optimize!:
-        //Twice using find through map (IsInCache and distance)
-        stack_dist = distance(_list_store.begin(), _map_store.find(newRequest._lba)->second) + 1;
+        stack_dist = distance(_list_store.begin(), it->second) + 1;
         ReorganizeCache(newRequest);
         _hit++;
 #ifdef DEBUG
@@ -92,7 +91,8 @@ void Lru::PDFGistogramm(const std::string &file_path)
     {
         if (it->first == count)
         {
-            Utils::AppendToFile(file_path, it->first,
+            Utils::AppendToFile(file_path,
+                                it->first,
                                 static_cast<double>(it->second) / static_cast<double>(_request_counter));
         }
         else
@@ -108,7 +108,8 @@ void Lru::CDFGistogramm(const std::string &file_path)
     double val = 0;
     for (DistStor::iterator it = stack_dist_frequency.begin(); it != stack_dist_frequency.end(); ++it)
     {
-        Utils::AppendToFile(file_path, it->first,
+        Utils::AppendToFile(file_path,
+                            it->first,
                             val + (static_cast<double>(it->second) / static_cast<double>(_request_counter)));
 
         val += (static_cast<double>(it->second) / static_cast<double>(_request_counter));

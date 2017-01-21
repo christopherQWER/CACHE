@@ -76,7 +76,7 @@ public:
      * @param cell_address
      * @return [true if request is already existed in cache and false otherwise]
      */
-    bool IsInCache(Lba cell_address);
+    bool IsInCache(Lba cell_address, std::unordered_map<Lba, StorType::iterator>::iterator &it);
     bool IsCacheFull(ByteSize request_size) const;
     void ChangeCacheCapasity(ByteSize new_capasity);
     HitRate CalculateHitRate();

@@ -21,10 +21,10 @@ Cache::Cache()
 {
 }
 
-bool Cache::IsInCache(Lba cell_address)
+bool Cache::IsInCache(Lba cell_address, std::unordered_map<Lba, StorType::iterator>::iterator &it)
 {
-    //TODO optimize!
-    return !(_map_store.find(cell_address) == _map_store.end());
+    it = _map_store.find(cell_address);
+    return !(it == _map_store.end());
 }
 
 bool Cache::IsCacheFull(ByteSize request_size) const
