@@ -20,6 +20,6 @@ int main ()
 //    distr_tester.MainTester();
 
     TestFlow::MainTester();
-    system("pause");
+    cin.get();
     return 0;
 }

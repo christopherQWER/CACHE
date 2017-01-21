@@ -3,6 +3,6 @@ using namespace std;
 
 int main()
 {
-    system("pause");
+    cin.get();
     return 0;
 }
