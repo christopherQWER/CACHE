@@ -105,6 +105,11 @@ bool Utils::CreateDirectory(const std::string &dir_path)
     return bSuccess;
 }
 
+void Utils::ExecuteCmd(const std::string &input)
+{
+    int errorCode = system(input.c_str());
+}
+
 //void Utils::OpenFile(const std::string file_path)
 //{
 //    file.open(file_path.c_str());

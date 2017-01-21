@@ -20,6 +20,7 @@ public:
     //static void OpenFile(const std::string file_path);
     static void AppendToFile(const std::string &output_path, int i_var, double d_var);
     static void AppendToFile(const std::string &output_path, const std::string &text);
+    static void ExecuteCmd(const std::string &input);
     static int DoubleToInt(double d_input);
 
     template<typename First, typename... Rest>
