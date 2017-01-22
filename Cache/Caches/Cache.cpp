@@ -42,7 +42,7 @@ HitRate Cache::CalculateHitRate()
     return _hit_rate;
 }
 
-StackDist Cache::CalculateStackDistance()
+StackDist Cache::CalculateAvgStackDistance()
 {
     if (_hit == 0)
     {

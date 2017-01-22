@@ -15,7 +15,7 @@ Lru::~Lru()
 {
 }
 
-void Lru::LRU(const Request &newRequest)
+void Lru::LRU(Request &newRequest)
 {
 #ifdef DEBUG
     Logger *pLogger = Logger::CreateLogger(CONSOLE);
@@ -54,7 +54,7 @@ void Lru::LRU(const Request &newRequest)
 #endif
     }
     _request_counter++;
-    SaveStackDist(stack_dist);
+    newRequest._stack_distance = stack_dist;
 }
 
 
@@ -82,53 +82,4 @@ void Lru::DeleteOldRequest()
     _map_store.erase(it_last->_lba);
     _list_store.pop_back();
     _curr_size--;
-}
-
-void Lru::PDFGistogramm(const std::string &file_path)
-{
-    int count = 0;
-    for (DistStor::iterator it = stack_dist_frequency.begin(); it != stack_dist_frequency.end(); ++it)
-    {
-        if (it->first == count)
-        {
-            Utils::AppendToFile(file_path,
-                                it->first,
-                                static_cast<double>(it->second) / static_cast<double>(_request_counter));
-        }
-        else
-        {
-            Utils::AppendToFile(file_path, count, 0);
-        }
-        count++;
-    }
-}
-
-void Lru::CDFGistogramm(const std::string &file_path)
-{
-    double val = 0;
-    for (DistStor::iterator it = stack_dist_frequency.begin(); it != stack_dist_frequency.end(); ++it)
-    {
-        Utils::AppendToFile(file_path,
-                            it->first,
-                            val + (static_cast<double>(it->second) / static_cast<double>(_request_counter)));
-
-        val += (static_cast<double>(it->second) / static_cast<double>(_request_counter));
-    }
-}
-
-void Lru::SaveStackDist(StackDist stack_dist)
-{
-    if (IsInStorage(stack_dist))
-    {
-        stack_dist_frequency[stack_dist]++;
-    }
-    else
-    {
-        stack_dist_frequency.insert(pair<StackDist, int>(stack_dist, 1));
-    }
-}
-
-bool Lru::IsInStorage(StackDist value)
-{
-    return !(stack_dist_frequency.find(value) == stack_dist_frequency.end());
 }

@@ -80,7 +80,7 @@ public:
     bool IsCacheFull(ByteSize request_size) const;
     void ChangeCacheCapasity(ByteSize new_capasity);
     HitRate CalculateHitRate();
-    StackDist CalculateStackDistance();
+    StackDist CalculateAvgStackDistance();
 };
 
 
