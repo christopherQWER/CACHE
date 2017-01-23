@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Utils.h"
 #ifndef PROJECT_PLOT_H
 #define PROJECT_PLOT_H
 
@@ -23,6 +24,7 @@ public:
     std::pair<std::string, std::string> m_yRange;
     std::string m_tics;
     bool m_IsNoKey;
+    std::vector<std::string> m_command_lines;
 
     std::vector<std::string> m_config;
 
@@ -45,6 +47,10 @@ public:
     void SetOutputPict();
     void SetYLabel();
     void SetYRange();
+    void SetXLabel();
+    void SetXRange();
+    void SetGrid();
+    void AppendPlotLine(const std::string &line);
 
     void DoPlot();
 };

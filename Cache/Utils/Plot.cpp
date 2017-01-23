@@ -36,7 +36,7 @@ Plot::Plot(std::string pxHeight,
 
 void Plot::SetTerminal()
 {
-    string str = "set terminal  png size";
+    string str = "set terminal  png size ";
     str += m_pxHeight + "," + m_pxWidth;
     str += " font 'Verdana, 10'";
     m_config.push_back(str);
@@ -71,7 +71,7 @@ void Plot::SetOutputPict()
 void Plot::SetYLabel()
 {
     string str = "set ylabel \"";
-    str + m_yLabel;
+    str += m_yLabel;
     str += "\"";
     m_config.push_back(str);
 }
@@ -83,6 +83,32 @@ void Plot::SetYRange()
     m_config.push_back(str);
 }
 
+void Plot::SetXLabel()
+{
+    string str = "set xlabel \"";
+    str += m_xLabel;
+    str += "\"";
+    m_config.push_back(str);
+}
+
+void Plot::SetXRange()
+{
+    string str = "set xrange [";
+    str += m_xRange.first + ":" + m_xRange.second + "]";
+    m_config.push_back(str);
+}
+
+void Plot::SetGrid()
+{
+    string str = "set grid xtics ytics";
+    m_config.push_back(str);
+}
+
+void Plot::AppendPlotLine(const std::string &line)
+{
+    m_config.push_back(line);
+}
+
 void Plot::DoPlot()
 {
     SetTerminal();
@@ -91,4 +117,13 @@ void Plot::DoPlot()
     SetOutputPict();
     SetYLabel();
     SetYRange();
+    SetXLabel();
+    SetXRange();
+    SetGrid();
+    for (int i = 0; i < m_command_lines.size(); i++)
+    {
+        AppendPlotLine(m_command_lines[i]);
+    }
+    Utils::WriteLines(m_outPltPath, m_config);
+    Utils::ExecuteCmd(string("gnuplot \"" + m_outPltPath + "\""));
 }
