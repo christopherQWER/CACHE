@@ -11,7 +11,7 @@
 #include <sstream>
 #include "Types.h"
 #include "../Generators/Request.h"
-#include "../../Tests/Paths.h"
+#include "Paths.h"
 
 
 class TraceAnalyzer {

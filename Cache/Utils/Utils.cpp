@@ -5,25 +5,24 @@
 #include "Utils.h"
 using namespace std;
 
-void Utils::AppendToFile(const std::string &output_path, int i_var, double d_var)
-{
-    ofstream density_file;
-    density_file.open(output_path.c_str(), fstream::out | fstream::app);
-
-    density_file << i_var;
-    density_file << "\t";
-    density_file << d_var;
-    density_file << "\n";
-
-    density_file.close();
-}
-
 void Utils::AppendToFile(const std::string &output_path, const std::string &text)
 {
     ofstream density_file;
     density_file.open(output_path.c_str(), fstream::out | fstream::app);
     density_file << text;
     density_file << "\n";
+    density_file.close();
+}
+
+void Utils::WriteLines(const std::string &output_path, std::vector<std::string> &lines)
+{
+    ofstream density_file;
+    density_file.open(output_path.c_str(), fstream::out | fstream::app);
+    for (int i = 0; i < lines.size(); i++)
+    {
+        density_file << lines[i];
+        density_file << "\n";
+    }
     density_file.close();
 }
 

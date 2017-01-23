@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <vector>
 #include <fstream>
 #include <sys/stat.h>
 class Utils
@@ -18,8 +19,21 @@ class Utils
 public:
 
     //static void OpenFile(const std::string file_path);
-    static void AppendToFile(const std::string &output_path, int i_var, double d_var);
+    template<typename T1, typename T2>
+    static void AppendToFile(const std::string &output_path, T1 i_var, T2 d_var)
+    {
+        std::ofstream density_file;
+        density_file.open(output_path.c_str(), std::fstream::out | std::fstream::app);
+
+        density_file << i_var;
+        density_file << "\t";
+        density_file << d_var;
+        density_file << "\n";
+
+        density_file.close();
+    }
     static void AppendToFile(const std::string &output_path, const std::string &text);
+    static void WriteLines(const std::string &output_path, std::vector<std::string> &lines);
     static void ExecuteCmd(const std::string &input);
     static int DoubleToInt(double d_input);
 

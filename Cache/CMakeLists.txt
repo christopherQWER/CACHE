@@ -16,6 +16,7 @@ set(SOURCE_FILES Main.cpp
                  Flows/TraceFileFlow.cpp
 
                  Modeling/SharedCache.cpp
+                 Modeling/Client.cpp
                  Modeling/PartitionedCache.cpp
 
                  Loggers/ConsoleLogger.cpp
@@ -40,6 +41,7 @@ set(HEADER_FILES
                  Flows/TraceFileFlow.h
 
                  Modeling/SharedCache.h
+                 Modeling/Client.h
                  Modeling/PartitionedCache.р
 
                  Utils/Types.h
