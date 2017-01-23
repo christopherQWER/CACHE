@@ -49,6 +49,11 @@ public:
     Timestamp _timestamp;
 
     /**
+     * [Characteristic of request connected with cache]
+     */
+    StackDist _stack_distance;
+
+    /**
      * [Default constructor]
      */
     Request();
