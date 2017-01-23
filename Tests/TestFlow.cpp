@@ -57,7 +57,7 @@ void TestFlow::SameRequests()
     pLogger->ShowHitRate(t_hit_rate);
 #endif
 
-    t_stack_dist = t_cache->CalculateStackDistance();
+    t_stack_dist = t_cache->CalculateAvgStackDistance();
 #ifdef DEBUG
     pLogger->ShowStackDistance(t_stack_dist);
     pLogger->EndLog();
@@ -99,7 +99,7 @@ void TestFlow::HalfPartSameRequests()
     pLogger->ShowHitRate(t_hit_rate);
 #endif
 
-    t_stack_dist = t_cache->CalculateStackDistance();
+    t_stack_dist = t_cache->CalculateAvgStackDistance();
 #ifdef DEBUG
     pLogger->ShowStackDistance(t_stack_dist);
     pLogger->EndLog();
@@ -144,7 +144,7 @@ void TestFlow::DifferentRequests()
     pLogger->ShowHitRate(t_hit_rate);
 #endif
 
-    t_stack_dist = t_cache->CalculateStackDistance();
+    t_stack_dist = t_cache->CalculateAvgStackDistance();
 
 #ifdef DEBUG
     pLogger->ShowStackDistance(t_stack_dist);
@@ -208,7 +208,7 @@ void TestFlow::PDFFlow()
     pLogger->ShowHitRate(t_hit_rate);
 #endif
 
-    t_stack_dist = t_cache->CalculateStackDistance();
+    t_stack_dist = t_cache->CalculateAvgStackDistance();
 
 #ifdef DEBUG
     pLogger->ShowStackDistance(t_stack_dist);
