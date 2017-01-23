@@ -46,3 +46,10 @@ Request* TraceFileFlow::GetRequest()
 //    }
     //return nullptr;
 }
+
+void TraceFileFlow::AnalyzeFlow()
+{
+    TraceAnalyzer* a = new TraceAnalyzer(File);
+    a->GetStat();
+    a->AppendToFile(File);
+}
