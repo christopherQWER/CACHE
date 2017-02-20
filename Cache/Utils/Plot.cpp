@@ -48,8 +48,8 @@ void Plot::SetLegend()
     if (m_IsNoKey)
     {
         str += "set nokey";
+        m_config.push_back(str);
     }
-    m_config.push_back(str);
 }
 
 void Plot::SetTitle()

@@ -44,8 +44,8 @@ Request *StackDistFlow::GetRequest()
 bool StackDistFlow::IsInBuffer(Lba address)
 {
     return (find( std::begin(_address_buffer),
-                std::end(_address_buffer),
-                address) != std::end(_address_buffer));
+                  std::end(_address_buffer),
+                  address) != std::end(_address_buffer));
 }
 
 void StackDistFlow::MoveForward(int pos)

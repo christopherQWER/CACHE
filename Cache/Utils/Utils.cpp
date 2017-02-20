@@ -115,7 +115,7 @@ void Utils::ExecuteCmd(const std::string &input)
 //    if (! (file.is_open()) )
 //    {
 //#ifdef DEBUG
-//        Logger *logger = Logger::CreateLogger(CONSOLE);
+//        Logger *logger = Logger::CreateLogger(TYPE);
 //        logger->ShowLogText("Trace file opening were faled.\n");
 //#endif
 //    }

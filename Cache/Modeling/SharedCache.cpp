@@ -1,11 +1,6 @@
-//
-// Created by cat on 12/4/16.
-//
-
 #include "SharedCache.h"
-#define CONSOLE CONSOLE_LOGGER
+#define TYPE LCONSOLE
 //#define DEBUG
-//#define FILE FILE_LOGGER
 using namespace std;
 
 
@@ -18,7 +13,7 @@ SharedCache::SharedCache(int request_number, ByteSize cache_size)
     t_hit_rate = 0;
     t_experiments_number = request_number;
     t_cache = new Lru(cache_size);
-    t_logger = Logger::CreateLogger(CONSOLE);
+    t_logger = Logger::CreateLogger(TYPE);
 }
 
 void SharedCache::Clear()
@@ -27,18 +22,6 @@ void SharedCache::Clear()
     t_stack_dist = 0;
     t_hit_rate = 0;
     t_client_map.clear();
-//    if (t_cache != NULL)
-//    {
-//        delete t_cache;
-//    }
-//    if (t_flow != NULL)
-//    {
-//        delete t_flow;
-//    }
-//    if (t_logger != NULL)
-//    {
-//        delete t_logger;
-//    }
 }
 
 SharedCache::~SharedCache()
@@ -58,14 +41,11 @@ void SharedCache::FileRequests(const string &file_name)
     int client_counter = 0;
     int module = 100000;
     Request *request;
+    Logger *pLogger = Logger::CreateLogger(TYPE);
     t_flow = new TraceFileFlow(file_name);
     string results_dir = _GISTS_DIR_ + string("//") + Utils::GetFileNameWithoutExt(file_name);
 
-#ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(CONSOLE);
     pLogger->StartLog();
-#endif
-
     request = t_flow->GetRequest();
     Client client = Client();
     client.Init(request, results_dir);
@@ -74,9 +54,7 @@ void SharedCache::FileRequests(const string &file_name)
     // while we not reach the value of number experiment or file not ended
     while ( request != nullptr )
     {
-#ifdef DEBUG
-        pLogger->ShowRequestInfo(t_request_counter, request->_asu, request->_lba, request->_timestamp);
-#endif
+        pLogger->ShowRequestInfo(INFO, counter, request->_asu, request->_lba, request->_timestamp);
 
         // Add request to LRU cache
         t_cache->LRU(*request);
@@ -107,7 +85,7 @@ void SharedCache::FileRequests(const string &file_name)
                                  pdf_png, pdf_plt,
                                  "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
                                  "Pdf", pair<string, string>(to_string(0), to_string(1)),
-                                 "10000", true
+                                 "10000", false
                                 );
 
 
@@ -121,7 +99,7 @@ void SharedCache::FileRequests(const string &file_name)
                                  cdf_png, cdf_plt,
                                  "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
                                  "Cdf", pair<string, string>(to_string(0), to_string(1)),
-                                 "10000", true
+                                 "10000", false
                                 );
 
             string pdf_command = "plot ";
@@ -145,8 +123,8 @@ void SharedCache::FileRequests(const string &file_name)
                 string pdf_txt = path_to_cur_pdf_gists + "//" + to_string(it->first) + ".txt";
                 string cdf_txt = path_to_cur_cdf_gists + "//" + to_string(it->first) + ".txt";
 
-                pdf_command += "'" + pdf_txt + "'" + " using 1:2 with lines";
-                cdf_command += "'" + cdf_txt + "'" + " using 1:2 with lines";
+                pdf_command += "'" + pdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
+                cdf_command += "'" + cdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
 
                 it->second.PDFGistogramm(pdf_txt);
                 it->second.CDFGistogramm(cdf_txt);
@@ -164,7 +142,46 @@ void SharedCache::FileRequests(const string &file_name)
                 client_counter++;
             }
             client_counter = 0;
-            pdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max / 3));
+            switch(gist_counter)
+            {
+                case 0:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(5000));
+                    break;
+                case 1:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(6000));
+                    break;
+                case 2:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(40000));
+                    break;
+                case 3:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(70000));
+                    break;
+                case 4:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
+                    break;
+                case 5:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+                    break;
+                case 6:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+                    break;
+                case 7:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
+                    break;
+                case 8:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+                    break;
+                case 9:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
+                    break;
+                case 10:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+                    break;
+                default:
+                    pdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max / 3));
+                    break;
+            }
+
             pdf_plot.DoPlot();
 
             cdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max));
@@ -176,17 +193,11 @@ void SharedCache::FileRequests(const string &file_name)
     }
 
     t_hit_rate = t_cache->CalculateHitRate();
-
-#ifdef DEBUG
-    pLogger->ShowHitRate(t_hit_rate);
-#endif
+    pLogger->ShowHitRate(INFO, t_hit_rate);
 
     t_stack_dist = t_cache->CalculateAvgStackDistance();
-
-#ifdef DEBUG
-    pLogger->ShowStackDistance(t_stack_dist);
+    pLogger->ShowStackDistance(INFO, t_stack_dist);
     pLogger->EndLog();
-#endif
 }
 
 
@@ -198,38 +209,38 @@ void SharedCache::MainTester()
     SharedCache tester;
 
     tester = SharedCache(experiment_number, cache_capasity);
-    tester.t_logger->ShowLogText("=================Start: WebSearch1.spc=================");
+    tester.t_logger->ShowLogText(INFO, "=================Start: WebSearch1.spc=================");
     //tester.TestStat(_WEB_SEARCH_1_);
     tester.FileRequests(_WEB_SEARCH_1_);
-    tester.t_logger->ShowLogText("==================End: WebSearch1.spc==================");
+    tester.t_logger->ShowLogText(INFO, "==================End: WebSearch1.spc==================");
     tester.Clear();
 
 //    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText("=================Start: WebSearch2.spc=================");
+//    tester.t_logger->ShowLogText(INFO, "=================Start: WebSearch2.spc=================");
 //    //tester.TestStat(_WEB_SEARCH_2_);
 //    tester.FileRequests(_WEB_SEARCH_2_);
-//    tester.t_logger->ShowLogText("==================End: WebSearch2.spc==================");
+//    tester.t_logger->ShowLogText(INFO, "==================End: WebSearch2.spc==================");
 //    tester.Clear();
 //
 //    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText("=================Start: WebSearch3.spc=================");
+//    tester.t_logger->ShowLogText(INFO, "=================Start: WebSearch3.spc=================");
 //    //tester.TestStat(_WEB_SEARCH_3_);
 //    tester.FileRequests(_WEB_SEARCH_3_);
-//    tester.t_logger->ShowLogText("==================End: WebSearch3.spc==================");
+//    tester.t_logger->ShowLogText(INFO, "==================End: WebSearch3.spc==================");
 //    tester.Clear();
 //
 //    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText("=================Start: Financial1.spc=================");
+//    tester.t_logger->ShowLogText(INFO, "=================Start: Financial1.spc=================");
 //    //tester.TestStat(_FINANCIAL_1_);
 //    tester.FileRequests(_FINANCIAL_1_);
-//    tester.t_logger->ShowLogText("==================End: Financial1.spc==================");
+//    tester.t_logger->ShowLogText(INFO, "==================End: Financial1.spc==================");
 //    tester.Clear();
 //
 //    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText("=================Start: Financial2.spc=================");
+//    tester.t_logger->ShowLogText(INFO, "=================Start: Financial2.spc=================");
 //    //tester.TestStat(_FINANCIAL_2_);
 //    tester.FileRequests(_FINANCIAL_2_);
-//    tester.t_logger->ShowLogText("==================End: Financial2.spc==================");
+//    tester.t_logger->ShowLogText(INFO, "==================End: Financial2.spc==================");
 //    tester.Clear();
 }
 

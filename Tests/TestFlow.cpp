@@ -1,11 +1,10 @@
-//
-// Created by cat on 10/6/16.
+by cat on 10/6/16.
 //
 
 #include "TestFlow.h"
-#define CONSOLE CONSOLE_LOGGER
+#define TYPE CONSOLE_LOGGER
 //#define DEBUG
-//#define FILE FILE_LOGGER
+//#define FILE LFILE
 using namespace std;
 
 
@@ -18,7 +17,7 @@ TestFlow::TestFlow(int request_number, ByteSize cache_size)
     t_hit_rate = 0;
     t_experiments_count = request_number;
     t_cache = new Lru(cache_size);
-    t_logger = Logger::CreateLogger(CONSOLE);
+    t_logger = Logger::CreateLogger(TYPE);
 }
 
 void TestFlow::Clear()
@@ -39,7 +38,7 @@ void TestFlow::SameRequests()
     fl->_stack_dist_ = 0;
 
 #ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(CONSOLE);
+    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
     pLogger->StartLog();
 #endif
 
@@ -81,7 +80,7 @@ void TestFlow::HalfPartSameRequests()
     fl._stack_dist_ = t_experiments_count / 2 - 1;
 
 #ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(CONSOLE);
+    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
     pLogger->StartLog();
 #endif
 
@@ -123,7 +122,7 @@ void TestFlow::DifferentRequests()
     fl._stack_dist_ = t_experiments_count;
 
 #ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(CONSOLE);
+    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
     pLogger->StartLog();
 #endif
 
@@ -174,7 +173,7 @@ void TestFlow::PDFFlow()
     StackDistFlow *fl = new StackDistFlow();
 
 #ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(CONSOLE);
+    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
     pLogger->StartLog();
 #endif
 
@@ -182,10 +181,11 @@ void TestFlow::PDFFlow()
     // Inicialize vector with random values
     for (int i = 0; i < t_experiments_count; i++)
     {
+        //Get stack distance from pdf
         rand_num = gen.Generate();
         prob = gen.GetPDF(rand_num);
-
         new_rand_num = gen.GetRandomByPDF(prob);
+
         fract_part = modf(new_rand_num, &int_part);
 
         fl->_stack_dist_ = static_cast<int>(int_part);
@@ -195,25 +195,6 @@ void TestFlow::PDFFlow()
 
         t_cache->LRU(*request);
     }
-
-    experimental_stack_dist /= t_experiments_count;
-
-#ifdef DEBUG
-    pLogger->ShowStackDistance(experimental_stack_dist);
-#endif
-
-    t_hit_rate = t_cache->CalculateHitRate();
-
-#ifdef DEBUG
-    pLogger->ShowHitRate(t_hit_rate);
-#endif
-
-    t_stack_dist = t_cache->CalculateAvgStackDistance();
-
-#ifdef DEBUG
-    pLogger->ShowStackDistance(t_stack_dist);
-    pLogger->EndLog();
-#endif
 }
 
 void TestFlow::MainTester()

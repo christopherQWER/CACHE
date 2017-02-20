@@ -27,7 +27,9 @@ double Pareto::Generate()
     {
         //get uniform number
         while (uniform_number == 0)
+        {
             uniform_number = distribution(generator);
+        }
 
         //get pareto value
         pareto_value = static_cast<double>(_location_param) / pow(uniform_number, 1.0 / _shape_param);
@@ -38,7 +40,9 @@ double Pareto::Generate()
 double Pareto::GetPDF(double random_value)
 {
     if (random_value < _location_param)
+    {
         return 0.0;
+    }
     double probably = _shape_param * pow(_location_param, _shape_param) / pow(random_value, _shape_param + 1);
     return probably;
 }
@@ -53,7 +57,7 @@ double Pareto::GetCDF(double random_value)
 
 double Pareto::GetRandomByPDF(double probably)
 {
-//    double number = distribution(generator);
+    double number = distribution(generator);
 //    Mmap_itr lower_itr = probabilities.lower_bound(probably);
 //    return lower_itr->second;
 }
