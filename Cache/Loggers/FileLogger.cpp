@@ -18,10 +18,8 @@ FileLogger::FileLogger()
     }
 }
 
-
 FileLogger::~FileLogger()
 {
-
 }
 
 void FileLogger::StartLog()
@@ -35,32 +33,41 @@ void FileLogger::StartLog()
     fclose(file);
 }
 
-void FileLogger::ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp time)
+void FileLogger::ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time)
+{
+    if (log_Lvl == DEBUG)
+    {
+        file = fopen(LOG_PATH, "a");
+        fprintf(file, "Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
+        fclose(file);
+    }
+}
+
+void FileLogger::ShowLogText(Level log_Lvl, const std::string &text)
 {
     file = fopen(LOG_PATH, "a");
-    fprintf(file, "Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
+    fprintf(file, "%s: %s", toString(log_Lvl), text.c_str());
     fclose(file);
 }
 
-void FileLogger::ShowLogText(const std::string &text)
+void FileLogger::ShowHitRate(Level log_Lvl, HitRate hit_rate)
 {
-    file = fopen(LOG_PATH, "a");
-    fprintf(file, "%s", text.c_str());
-    fclose(file);
+    if (log_Lvl == DEBUG)
+    {
+        file = fopen(LOG_PATH, "a");
+        fprintf(file, "Hitrate: %f\n", hit_rate);
+        fclose(file);
+    }
 }
 
-void FileLogger::ShowHitRate(HitRate hit_rate)
+void FileLogger::ShowStackDistance(Level log_Lvl, StackDist stack_dist)
 {
-    file = fopen(LOG_PATH, "a");
-    fprintf(file, "Hitrate: %f\n", hit_rate);
-    fclose(file);
-}
-
-void FileLogger::ShowStackDistance(StackDist stack_dist)
-{
-    file = fopen(LOG_PATH, "a");
-    fprintf(file, "Stack distance: %Lfll", stack_dist);
-    fclose(file);
+    if (log_Lvl == DEBUG)
+    {
+        file = fopen(LOG_PATH, "a");
+        fprintf(file, "Stack distance: %Lfll", stack_dist);
+        fclose(file);
+    }
 }
 
 void FileLogger::EndLog()

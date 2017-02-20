@@ -6,16 +6,16 @@
 #include "ConsoleLogger.h"
 #include "FileLogger.h"
 
-Logger* Logger::CreateLogger(LoggerType type)
+Logger* Logger::CreateLogger(Type type)
 {
     Logger *p = nullptr;
     switch (type)
     {
-        case CONSOLE_LOGGER:
+        case LCONSOLE:
             p = new ConsoleLogger();
             break;
 
-        case FILE_LOGGER:
+        case LFILE:
             p = new FileLogger();
             break;
 

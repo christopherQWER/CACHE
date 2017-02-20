@@ -25,26 +25,32 @@ void ConsoleLogger::StartLog()
     printf("\n");
 }
 
-void ConsoleLogger::ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp time)
+void ConsoleLogger::ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time)
 {
     printf("Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
 }
 
-void ConsoleLogger::ShowLogText(const string &text)
+void ConsoleLogger::ShowLogText(Level log_Lvl, const string &text)
 {
-    printf("%s", text.c_str());
+    printf("%s: %s", toString(log_Lvl), text.c_str());
 }
 
-void ConsoleLogger::ShowHitRate(HitRate hit_rate)
+void ConsoleLogger::ShowHitRate(Level log_Lvl, HitRate hit_rate)
 {
-    cout << endl;
-    cout << "Hitrate: " << hit_rate << endl;
+    if (log_Lvl == DEBUG)
+    {
+        cout << endl;
+        cout << "Hitrate: " << hit_rate << endl;
+    }
 }
 
-void ConsoleLogger::ShowStackDistance(StackDist stack_dist)
+void ConsoleLogger::ShowStackDistance(Level log_Lvl, StackDist stack_dist)
 {
-    cout << endl;
-    cout << "Stack distance: " << stack_dist << endl;
+    if (log_Lvl == DEBUG)
+    {
+        cout << endl;
+        cout << "Stack distance: " << stack_dist << endl;
+    }
 }
 
 void ConsoleLogger::EndLog()

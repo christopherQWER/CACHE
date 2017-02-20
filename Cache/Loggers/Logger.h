@@ -11,7 +11,9 @@
 #ifndef CACHE_LOGGER_H
 #define CACHE_LOGGER_H
 
-enum LoggerType {CONSOLE_LOGGER = 0, FILE_LOGGER};
+enum Type {LCONSOLE, LFILE};
+enum Level {INFO, DEBUG, ERROR};
+
 
 class Logger
 {
@@ -21,13 +23,22 @@ public:
 
     virtual ~Logger(){};
     virtual void StartLog() = 0;
-    //TODO: Fix signature of function: function must get unlimited number of args
-    virtual void ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp time) = 0;
-    virtual void ShowLogText(const std::string &text) = 0;
-    virtual void ShowHitRate(HitRate hit_rate) = 0;
-    virtual void ShowStackDistance(StackDist stack_dist) = 0;
+    virtual void ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time) = 0;
+    virtual void ShowLogText(Level log_Lvl, const std::string &text) = 0;
+    virtual void ShowHitRate(Level log_Lvl, HitRate hit_rate) = 0;
+    virtual void ShowStackDistance(Level log_Lvl, StackDist stack_dist) = 0;
     virtual void EndLog() = 0;
 
-    static Logger* CreateLogger(LoggerType type);
+    static Logger* CreateLogger(Type type);
+    inline const char* toString(Level lvl)
+    {
+        switch (lvl)
+        {
+            case INFO:      return "[INFO]";
+            case DEBUG:     return "[DEBUG]";
+            case ERROR:     return "[ERROR]";
+            default:        return "[Unknown log type]";
+        }
+    }
 };
 #endif //CACHE_LOGGER_H

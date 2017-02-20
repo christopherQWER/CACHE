@@ -17,11 +17,10 @@ public:
     ~FileLogger();
 
     void StartLog();
-    //TODO: Fix signature of function: function must get unlimited number of args
-    void ShowRequestInfo(int req_number, Asu asu, Lba lba, Timestamp time);
-    void ShowLogText(const std::string &text);
-    void ShowHitRate(HitRate hit_rate);
-    void ShowStackDistance(StackDist stack_dist);
+    void ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time);
+    void ShowLogText(Level log_Lvl, const std::string &text);
+    void ShowHitRate(Level log_Lvl, HitRate hit_rate);
+    void ShowStackDistance(Level log_Lvl, StackDist stack_dist);
     void EndLog();
 };
 

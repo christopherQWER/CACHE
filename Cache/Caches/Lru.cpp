@@ -4,8 +4,8 @@
 
 #include "Lru.h"
 using namespace std;
-//#define DEBUG
-#define CONSOLE CONSOLE_LOGGER
+#define LEVEL INFO
+#define TYPE LCONSOLE
 
 Lru::Lru(ByteSize capacity) : Cache(capacity)
 {
@@ -17,9 +17,7 @@ Lru::~Lru()
 
 void Lru::LRU(Request &newRequest)
 {
-#ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(CONSOLE);
-#endif
+    Logger *pLogger = Logger::CreateLogger(TYPE);
     StackDist stack_dist = 0;
 
     std::unordered_map<Lba, StorType::iterator>::iterator it = _map_store.begin();
@@ -28,9 +26,7 @@ void Lru::LRU(Request &newRequest)
         stack_dist = distance(_list_store.begin(), it->second) + 1;
         ReorganizeCache(newRequest);
         _hit++;
-#ifdef DEBUG
-        pLogger->ShowLogText("Hit to cache.\n");
-#endif
+        pLogger->ShowLogText(DEBUG, "Hit to cache.\n");
     }
     else
     {
