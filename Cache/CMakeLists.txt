@@ -25,6 +25,7 @@ set(SOURCE_FILES Main.cpp
 
                  Utils/Utils.cpp
                  Utils/Plot.cpp
+                 Utils/Config.cpp
                  Utils/TraceAnalyzer.cpp
                  )
 
@@ -47,6 +48,7 @@ set(HEADER_FILES
                  Utils/Types.h
                  Utils/Utils.h
                  Utils/Plot.h
+                 Utils/Config.h
                  Utils/TraceAnalyzer.h
 
                  Loggers/ConsoleLogger.h
