@@ -8,6 +8,7 @@
 #include "../Generators/Request.h"
 #ifndef CACHE_FLOW_H
 #define CACHE_FLOW_H
+enum FlowType {FFILE, FGENERATOR};
 
 class Flow
 {
