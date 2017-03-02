@@ -3,6 +3,7 @@
 //
 
 #include "TestDistribution.h"
+#include "Utils/Paths.h"
 using namespace std;
 
 TestDistribution::TestDistribution()
@@ -72,7 +73,7 @@ void TestDistribution::GetPDFTest()
     map<int, double> values;
     map<int, double>::iterator it;
     Pareto gen = Pareto(k, a);
-    string output_file = "/home/cat/Documents/CACHE/Tests/Results/PDF.txt";
+    string output_file = _GEN_DISTR_DIR + string("//PDF.txt");
 
     for (int i = 0; i < count_experiments; i++)
     {

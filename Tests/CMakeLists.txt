@@ -7,6 +7,7 @@ include_directories(INCLUDE_DIR ../Cache)
 
 set(SOURCE_FILES Main.cpp
                  TestFlow.cpp
+                 TestConfig.cpp
                  TestDistribution.cpp
 
                  ../Cache/Flows/TraceFileFlow.cpp
@@ -23,10 +24,13 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Loggers/FileLogger.cpp
 
                  ../Cache/Utils/Utils.cpp
-                 ../Cache/Utils/Plot.cpp)
+                 ../Cache/Utils/Plot.cpp
+
+                 ../Cache/Xml/Config.cpp)
 
 set(HEADER_FILES TestFlow.h
                  Paths.h
+                 TestConfig.h
                  TestDistribution.h
 
                  ../Cache/Flows/Flow.h
@@ -45,6 +49,8 @@ set(HEADER_FILES TestFlow.h
 
                  ../Cache/Utils/Utils.h
                  ../Cache/Utils/Types.h
-                 ../Cache/Utils/Plot.h)
+                 ../Cache/Utils/Plot.h
+
+                 ../Cache/Xml/Config.h)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})
