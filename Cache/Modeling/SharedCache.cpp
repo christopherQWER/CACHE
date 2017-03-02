@@ -34,6 +34,121 @@ void SharedCache::InsertToClientsMap(Client client)
     t_client_map.insert(pair<Asu, Client>(client._application_id, client));
 }
 
+void SharedCache::CreatePlot(const string& results_dir, int gist_counter, int client_counter)
+{
+    string path_to_cur_pdf_gists = results_dir + string("//") + _PDF_DIR_ + string("//") + to_string(gist_counter);
+    Utils::CreateDirectory(path_to_cur_pdf_gists);
+    string pdf_plt = path_to_cur_pdf_gists + string("//pdf.plt");
+    string pdf_png = path_to_cur_pdf_gists + string("//pdf.png");
+
+    Plot pdf_plot = Plot("512", "512",
+            "WebSearch_1 PDF",
+            pdf_png, pdf_plt,
+            "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
+            "Pdf", pair<string, string>(to_string(0), to_string(1)),
+            "10000", false
+    );
+
+
+    string path_to_cur_cdf_gists = results_dir + string("//") + _CDF_DIR_ + string("//") + to_string(gist_counter);
+    Utils::CreateDirectory(path_to_cur_cdf_gists);
+    string cdf_plt = path_to_cur_cdf_gists + string("//cdf.plt");
+    string cdf_png = path_to_cur_cdf_gists + string("//cdf.png");
+
+    Plot cdf_plot = Plot("512", "512",
+            "WebSearch_1 CDF",
+            cdf_png, cdf_plt,
+            "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
+            "Cdf", pair<string, string>(to_string(0), to_string(1)),
+            "10000", false
+    );
+
+    string pdf_command = "plot ";
+    string cdf_command = "plot ";
+
+    StackDist min = t_client_map.begin()->second.stack_dist_map.begin()->first;
+    StackDist max = (--(t_client_map.begin()->second.stack_dist_map.end()))->first;
+    // Go through apps
+    int map_size = t_client_map.size();
+    for (ClientMap it = t_client_map.begin(); it != t_client_map.end(); ++it)
+    {
+        if (min > it->second.stack_dist_map.begin()->first)
+        {
+            min = it->second.stack_dist_map.begin()->first;
+        }
+        if (max < (--(it->second.stack_dist_map.end()))->first)
+        {
+            max = (--(it->second.stack_dist_map.end()))->first;
+        }
+
+        string pdf_txt = path_to_cur_pdf_gists + "//" + to_string(it->first) + ".txt";
+        string cdf_txt = path_to_cur_cdf_gists + "//" + to_string(it->first) + ".txt";
+
+        pdf_command += "'" + pdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
+        cdf_command += "'" + cdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
+
+        it->second.PDFGistogramm(pdf_txt);
+        it->second.CDFGistogramm(cdf_txt);
+
+        if (client_counter < map_size - 1)
+        {
+            pdf_command += ",\\";
+            cdf_command += ",\\";
+        }
+        pdf_plot.m_command_lines.push_back(pdf_command);
+        cdf_plot.m_command_lines.push_back(cdf_command);
+
+        pdf_command.clear();
+        cdf_command.clear();
+        client_counter++;
+    }
+    client_counter = 0;
+    switch(gist_counter)
+    {
+    case 0:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(5000));
+        break;
+    case 1:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(6000));
+        break;
+    case 2:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(40000));
+        break;
+    case 3:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(70000));
+        break;
+    case 4:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
+        break;
+    case 5:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+        break;
+    case 6:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+        break;
+    case 7:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
+        break;
+    case 8:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+        break;
+    case 9:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
+        break;
+    case 10:
+        pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
+        break;
+    default:
+        pdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max / 3));
+        break;
+    }
+
+    pdf_plot.DoPlot();
+
+    cdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max));
+    cdf_plot.DoPlot();
+}
+
 void SharedCache::FileRequests(const string &file_name)
 {
     int counter = 0;
@@ -75,117 +190,7 @@ void SharedCache::FileRequests(const string &file_name)
         // It's time for gistogram
         if ( (counter != 0) && (counter % module == 0) )
         {
-            string path_to_cur_pdf_gists = results_dir + string("//") + _PDF_DIR_ + string("//") + to_string(gist_counter);
-            Utils::CreateDirectory(path_to_cur_pdf_gists);
-            string pdf_plt = path_to_cur_pdf_gists + string("//pdf.plt");
-            string pdf_png = path_to_cur_pdf_gists + string("//pdf.png");
-
-            Plot pdf_plot = Plot("512", "512",
-                                 "WebSearch_1 PDF",
-                                 pdf_png, pdf_plt,
-                                 "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
-                                 "Pdf", pair<string, string>(to_string(0), to_string(1)),
-                                 "10000", false
-                                );
-
-
-            string path_to_cur_cdf_gists = results_dir + string("//") + _CDF_DIR_ + string("//") + to_string(gist_counter);
-            Utils::CreateDirectory(path_to_cur_cdf_gists);
-            string cdf_plt = path_to_cur_cdf_gists + string("//cdf.plt");
-            string cdf_png = path_to_cur_cdf_gists + string("//cdf.png");
-
-            Plot cdf_plot = Plot("512", "512",
-                                 "WebSearch_1 CDF",
-                                 cdf_png, cdf_plt,
-                                 "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
-                                 "Cdf", pair<string, string>(to_string(0), to_string(1)),
-                                 "10000", false
-                                );
-
-            string pdf_command = "plot ";
-            string cdf_command = "plot ";
-
-            StackDist min = t_client_map.begin()->second.stack_dist_map.begin()->first;
-            StackDist max = (--(t_client_map.begin()->second.stack_dist_map.end()))->first;
-            // Go through apps
-            int map_size = t_client_map.size();
-            for (ClientMap it = t_client_map.begin(); it != t_client_map.end(); ++it)
-            {
-                if (min > it->second.stack_dist_map.begin()->first)
-                {
-                    min = it->second.stack_dist_map.begin()->first;
-                }
-                if (max < (--(it->second.stack_dist_map.end()))->first)
-                {
-                    max = (--(it->second.stack_dist_map.end()))->first;
-                }
-
-                string pdf_txt = path_to_cur_pdf_gists + "//" + to_string(it->first) + ".txt";
-                string cdf_txt = path_to_cur_cdf_gists + "//" + to_string(it->first) + ".txt";
-
-                pdf_command += "'" + pdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
-                cdf_command += "'" + cdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
-
-                it->second.PDFGistogramm(pdf_txt);
-                it->second.CDFGistogramm(cdf_txt);
-
-                if (client_counter < map_size - 1)
-                {
-                    pdf_command += ",\\";
-                    cdf_command += ",\\";
-                }
-                pdf_plot.m_command_lines.push_back(pdf_command);
-                cdf_plot.m_command_lines.push_back(cdf_command);
-
-                pdf_command.clear();
-                cdf_command.clear();
-                client_counter++;
-            }
-            client_counter = 0;
-            switch(gist_counter)
-            {
-                case 0:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(5000));
-                    break;
-                case 1:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(6000));
-                    break;
-                case 2:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(40000));
-                    break;
-                case 3:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(70000));
-                    break;
-                case 4:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
-                    break;
-                case 5:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-                    break;
-                case 6:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-                    break;
-                case 7:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
-                    break;
-                case 8:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-                    break;
-                case 9:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
-                    break;
-                case 10:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-                    break;
-                default:
-                    pdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max / 3));
-                    break;
-            }
-
-            pdf_plot.DoPlot();
-
-            cdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max));
-            cdf_plot.DoPlot();
+            CreatePlot(results_dir, gist_counter, client_counter);
             gist_counter++;
         }
         request = t_flow->GetRequest();

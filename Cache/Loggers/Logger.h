@@ -30,7 +30,7 @@ public:
     virtual void EndLog() = 0;
 
     static Logger* CreateLogger(Type type);
-    inline const char* toString(Level lvl)
+    static inline const char* toString(Level lvl)
     {
         switch (lvl)
         {
@@ -38,6 +38,15 @@ public:
             case DEBUG:     return "[DEBUG]";
             case ERROR:     return "[ERROR]";
             default:        return "[Unknown log type]";
+        }
+    }
+    static inline const char* toString(Type type)
+    {
+        switch (type)
+        {
+            case LCONSOLE:  return "LCONSOLE";
+            case LFILE:     return "LFILE";
+            default:        return "Unknown type";
         }
     }
 };

@@ -38,6 +38,7 @@ private:
 
     void InsertToClientsMap(Client client);
     void FileRequests(const std::string &file_name);
+    void CreatePlot(const std::string& results_dir, int gist_counter, int client_counter);
 };
 
 
