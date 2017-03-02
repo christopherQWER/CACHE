@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-    <SharedCache Size="1">
-        <Logs>LCONSOLE</Logs>
-        <Flow Count="1000000">FFILE</Flow>
+    <SharedCache Size="1" RequestNum="1000000">
+        <Logs Value="LCONSOLE"/>
+        <Flow Value="FFILE"/>
     </SharedCache>
-    <PartitionedCache Count="5">
-        <Cache Size="" Asu="0">
-            <Logs>LCONSOLE</Logs>
-            <Flow Count="1000000">FFILE</Flow>
+    <PartitionedCache AppCount="5" CommonSize="1">
+        <Cache Size="0.2" Asu="0" HitRate="" RequestNum="1000000">
+            <Logs Value="LCONSOLE"/>
+            <Flow Value="FFILE"/>
         </Cache>
     </PartitionedCache>
 </Model>

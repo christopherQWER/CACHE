@@ -25,9 +25,10 @@ set(SOURCE_FILES Main.cpp
 
                  Utils/Utils.cpp
                  Utils/Plot.cpp
-                 Utils/Config.cpp
                  Utils/TraceAnalyzer.cpp
-                 Utils/pugixml.cpp
+
+                 Xml/pugixml.cpp
+                 Xml/Config.cpp
                  )
 
 set(HEADER_FILES
@@ -49,10 +50,12 @@ set(HEADER_FILES
                  Utils/Types.h
                  Utils/Utils.h
                  Utils/Plot.h
-                 Utils/Config.h
                  Utils/TraceAnalyzer.h
-                 Utils/pugiconfig.hpp
-                 Utils/pugixml.hpp
+
+                 Xml/pugiconfig.hpp
+                 Xml/pugixml.hpp
+                 Xml/Serializible.h
+                 Xml/Config.h
 
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h
