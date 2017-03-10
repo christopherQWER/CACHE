@@ -34,15 +34,16 @@ struct Config{
 
 static const std::string Model = "Model";
 static const std::string XmlSharedCache = "SharedCache";
-static const std::string PartitionedCache = "PartitionedCache";
+static const std::string PartialCache = "PartialCache";
 static const std::string XmlCache = "Cache";
-static const std::string Logs = "Logs";
+static const std::string XmlLogs = "Logs";
 static const std::string XmlFlow = "Flow";
 static const std::string Size = "Size";
 static const std::string RequestNum = "RequestNum";
 static const std::string AppCount = "AppCount";
 static const std::string CommonSize = "CommonSize";
 static const std::string XmlAsu = "Asu";
+static const std::string XmlHitRate = "HitRate";
 
 class XmlConfig {
 public:
@@ -52,11 +53,11 @@ public:
      * @param cnf [Input config]
      * @param obj [Object container]
      */
-    void Serialize(const Config &cnf, pugi::xml_parse_result &obj);
-    void Deserialize(const pugi::xml_parse_result &obj, Config &cnf);
+    void Serialize(const Config &cnf, pugi::xml_document &doc);
+    void Deserialize(const pugi::xml_document &doc, Config &cnf);
 
-    void Serialize(const std::string &file_name, pugi::xml_parse_result &obj);
-    void Deserialize(const pugi::xml_parse_result &obj, const std::string &file_name);
+    void Serialize(const std::string &file_name, pugi::xml_document &doc);
+    void Deserialize(const pugi::xml_document &doc, const std::string &file_name);
 };
 
 #endif //PROJECT_CONFIG_H

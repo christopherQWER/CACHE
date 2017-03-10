@@ -4,10 +4,10 @@
         <Logs>LCONSOLE</Logs>
         <Flow>FFILE</Flow>
     </SharedCache>
-    <PartitionedCache AppCount="5" CommonSize="1">
+    <PartialCache AppCount="5" CommonSize="1">
         <Cache Size="0.2" Asu="0" HitRate="" RequestNum="1000000">
             <Logs>LCONSOLE</Logs>
             <Flow>FFILE</Flow>
         </Cache>
-    </PartitionedCache>
+    </PartialCache>
 </Model>
