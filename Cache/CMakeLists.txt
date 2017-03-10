@@ -28,7 +28,7 @@ set(SOURCE_FILES Main.cpp
                  Utils/TraceAnalyzer.cpp
 
                  Xml/pugixml.cpp
-                 Xml/Config.cpp
+                 Xml/XmlConfig.cpp
                  )
 
 set(HEADER_FILES
@@ -54,8 +54,7 @@ set(HEADER_FILES
 
                  Xml/pugiconfig.hpp
                  Xml/pugixml.hpp
-                 Xml/Serializible.h
-                 Xml/Config.h
+                 Xml/XmlConfig.h
 
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h
