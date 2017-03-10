@@ -20,6 +20,7 @@ FileLogger::FileLogger()
 
 FileLogger::~FileLogger()
 {
+    delete this;
 }
 
 void FileLogger::StartLog()

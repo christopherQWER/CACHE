@@ -13,6 +13,7 @@ ConsoleLogger::ConsoleLogger()
 
 ConsoleLogger::~ConsoleLogger()
 {
+    delete this;
 }
 
 
@@ -27,7 +28,10 @@ void ConsoleLogger::StartLog()
 
 void ConsoleLogger::ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time)
 {
-    printf("Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
+    if (log_Lvl == DEBUG)
+    {
+        printf("Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
+    }
 }
 
 void ConsoleLogger::ShowLogText(Level log_Lvl, const string &text)
