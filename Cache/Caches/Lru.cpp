@@ -3,9 +3,11 @@
 //
 
 #include "Lru.h"
-using namespace std;
+#include "../Loggers/Logger.h"
+
 #define LEVEL INFO
 #define TYPE LCONSOLE
+using namespace std;
 
 Lru::Lru(ByteSize capacity) : Cache(capacity)
 {
