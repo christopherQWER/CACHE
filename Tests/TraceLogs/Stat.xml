@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<TraceFile TracePath="">
-	<App Unit="0" Reads="355906" Writes="0" AvgBytes="15290" />
-	<App Unit="1" Reads="349744" Writes="1" AvgBytes="15609" />
-	<App Unit="2" Reads="348927" Writes="211" AvgBytes="15630" />
-	<App Unit="3" Reads="214" Writes="0" AvgBytes="16384" />
-	<App Unit="4" Reads="219" Writes="0" AvgBytes="15219" />
-	<App Unit="5" Reads="226" Writes="0" AvgBytes="15947" />
-</TraceFile>

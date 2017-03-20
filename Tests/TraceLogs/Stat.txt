@@ -1,5 +1,0 @@
-//home//cat//Documents//CACHE//Tests//Stats//WebSearch//WebSearch1.spc	Reads: 212	Writes: 1055236	All: 1055448	Average bytes IO: 15509
-//home//cat//Documents//CACHE//Tests//Stats//WebSearch//WebSearch2.spc	Reads: 990	Writes: 4578819	All: 4579809	Average bytes IO: 15432
-//home//cat//Documents//CACHE//Tests//Stats//WebSearch//WebSearch3.spc	Reads: 1260	Writes: 4260449	All: 4261709	Average bytes IO: 15777
-//home//cat//Documents//CACHE//Tests//Stats//Financial//Financial1.spc	Reads: 4099354	Writes: 1235633	All: 5334987	Average bytes IO: 3465
-//home//cat//Documents//CACHE//Tests//Stats//Financial//Financial2.spc	Reads: 653083	Writes: 3046112	All: 3699195	Average bytes IO: 2448
