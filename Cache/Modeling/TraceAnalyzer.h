@@ -8,7 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include "../Xml/pugixml.hpp"
-#include "Types.h"
+#include "../Utils/Types.h"
 
 struct AppInfo
 {

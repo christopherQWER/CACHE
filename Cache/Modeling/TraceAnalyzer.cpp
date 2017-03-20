@@ -4,7 +4,7 @@
 
 #include "TraceAnalyzer.h"
 #include "../Generators/Request.h"
-#include "Paths.h"
+#include "../Utils/Paths.h"
 using namespace std;
 
 TraceAnalyzer::TraceAnalyzer(const std::string& file_path, const std::string& output_file)
@@ -175,7 +175,7 @@ void TraceAnalyzer::AppendToXml(const std::string& output_path, const std::map<A
 {
     pugi::xml_document doc;
     pugi::xml_node root = doc.append_child("TraceFile");
-    root.append_attribute("TracePath").as_string(_input_file.c_str());
+    root.append_attribute("TracePath").set_value(_input_file.c_str());
 
     for(map<Asu, AppInfo>::const_iterator it = app_map.begin(); it != app_map.end(); it++)
     {
