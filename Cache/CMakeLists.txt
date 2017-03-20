@@ -16,6 +16,7 @@ set(SOURCE_FILES Main/Main.cpp
                  Modeling/SharedCache.cpp
                  Modeling/Client.cpp
                  Modeling/PartialCache.cpp
+                 Modeling/TraceAnalyzer.cpp
 
                  Loggers/ConsoleLogger.cpp
                  Loggers/FileLogger.cpp
@@ -23,7 +24,6 @@ set(SOURCE_FILES Main/Main.cpp
 
                  Utils/Utils.cpp
                  Utils/Plot.cpp
-                 Utils/TraceAnalyzer.cpp
 
                  Xml/pugixml.cpp
                  Xml/XmlConfig.cpp
@@ -43,12 +43,13 @@ set(HEADER_FILES
 
                  Modeling/SharedCache.h
                  Modeling/Client.h
-                 Modeling/PartialCache.р
+                 Modeling/PartialCache.h
+                 Modeling/TraceAnalyzer.h
 
                  Utils/Types.h
                  Utils/Utils.h
                  Utils/Plot.h
-                 Utils/TraceAnalyzer.h
+                 Utils/Paths.h
 
                  Xml/pugiconfig.hpp
                  Xml/pugixml.hpp
