@@ -2,6 +2,9 @@
 // Created by cat on 9/25/16.
 //
 
+#include <sstream>
+#include <algorithm>
+#include <ctime>
 #include "Request.h"
 using namespace std;
 

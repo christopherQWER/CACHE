@@ -1,19 +1,17 @@
 //
 // Created by cat on 10/2/16.
 //
-#pragma once
-#ifndef CACHE_UTILS_H
-#define CACHE_UTILS_H
 
+#pragma once
 #include <iostream>
-#include <cmath>
-#include <ctime>
 #include <string>
 #include <sstream>
 #include <map>
 #include <vector>
 #include <fstream>
 #include <sys/stat.h>
+
+
 class Utils
 {
 public:
@@ -48,9 +46,5 @@ public:
     static std::string GetCurrentUnixTime();
     static std::string GetFileName(const std::string &path);
     static std::string GetFileNameWithoutExt(const std::string &path);
-
     static bool CreateDirectory(const std::string &dir_path);
 };
-
-
-#endif //CACHE_UTILS_H

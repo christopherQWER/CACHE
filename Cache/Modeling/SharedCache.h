@@ -1,33 +1,30 @@
 //
 // Created by cat on 12/4/16.
 //
-#pragma once
 
+#pragma once
 #include <algorithm>
+#include <string>
 #include "Client.h"
 #include "../Caches/Lru.h"
 #include "../Generators/Pareto.h"
 #include "../Flows/Flow.h"
 #include "../Flows/StackDistFlow.h"
 #include "../Flows/TraceFileFlow.h"
-#include "../Utils/Plot.h"
+#include "../Loggers/Logger.h"
+
 #define _1_GB_IN_BYTES_ 1073741824
-#ifndef PROJECT_FILEFLOWTEST_H
-#define PROJECT_FILEFLOWTEST_H
 typedef std::map<Asu, Client>::iterator ClientMap;
 
 class SharedCache {
 public:
-    SharedCache();
     SharedCache(int exp_number, ByteSize cache_size);
     ~SharedCache();
     void Clear();
     static void MainTester();
 
 private:
-    /**
-     * [input parameter set number of experiments]
-     */
+    /// [input parameter set number of experiments]
     int t_experiments_number;
     HitRate t_hit_rate;
     StackDist t_stack_dist;
@@ -40,6 +37,3 @@ private:
     void FileRequests(const std::string &file_name);
     void CreatePlot(const std::string& results_dir, int gist_counter, int client_counter);
 };
-
-
-#endif //PROJECT_FILEFLOWTEST_H

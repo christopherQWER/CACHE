@@ -1,12 +1,10 @@
+#include "../Utils/Plot.h"
+#include "../Utils/Paths.h"
 #include "SharedCache.h"
 #define TYPE LCONSOLE
 //#define DEBUG
 using namespace std;
 
-
-SharedCache::SharedCache()
-{
-}
 
 SharedCache::SharedCache(int request_number, ByteSize cache_size)
 {
@@ -166,7 +164,7 @@ void SharedCache::FileRequests(const string &file_name)
     client.Init(request, results_dir);
     InsertToClientsMap(client);
 
-    // while we not reach the value of number experiment or file not ended
+    // while we not reach the value of number experiment or trace_file not ended
     while ( request != nullptr )
     {
         pLogger->ShowRequestInfo(INFO, counter, request->_asu, request->_lba, request->_timestamp);
@@ -211,42 +209,13 @@ void SharedCache::MainTester()
     int errorCode = 0;
     ByteSize cache_capasity = _1_GB_IN_BYTES_ / 4;
     int experiment_number = 1500000;
-    SharedCache tester;
 
-    tester = SharedCache(experiment_number, cache_capasity);
+    SharedCache tester = SharedCache(experiment_number, cache_capasity);
     tester.t_logger->ShowLogText(INFO, "=================Start: WebSearch1.spc=================");
     //tester.TestStat(_WEB_SEARCH_1_);
     tester.FileRequests(_WEB_SEARCH_1_);
     tester.t_logger->ShowLogText(INFO, "==================End: WebSearch1.spc==================");
     tester.Clear();
-
-//    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText(INFO, "=================Start: WebSearch2.spc=================");
-//    //tester.TestStat(_WEB_SEARCH_2_);
-//    tester.FileRequests(_WEB_SEARCH_2_);
-//    tester.t_logger->ShowLogText(INFO, "==================End: WebSearch2.spc==================");
-//    tester.Clear();
-//
-//    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText(INFO, "=================Start: WebSearch3.spc=================");
-//    //tester.TestStat(_WEB_SEARCH_3_);
-//    tester.FileRequests(_WEB_SEARCH_3_);
-//    tester.t_logger->ShowLogText(INFO, "==================End: WebSearch3.spc==================");
-//    tester.Clear();
-//
-//    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText(INFO, "=================Start: Financial1.spc=================");
-//    //tester.TestStat(_FINANCIAL_1_);
-//    tester.FileRequests(_FINANCIAL_1_);
-//    tester.t_logger->ShowLogText(INFO, "==================End: Financial1.spc==================");
-//    tester.Clear();
-//
-//    tester = SharedCache(experiment_number, cache_capasity);
-//    tester.t_logger->ShowLogText(INFO, "=================Start: Financial2.spc=================");
-//    //tester.TestStat(_FINANCIAL_2_);
-//    tester.FileRequests(_FINANCIAL_2_);
-//    tester.t_logger->ShowLogText(INFO, "==================End: Financial2.spc==================");
-//    tester.Clear();
 }
 
 

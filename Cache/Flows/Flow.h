@@ -2,12 +2,7 @@
 // Created by cat on 9/25/16.
 //
 
-#ifndef CACHE_FLOW_H
-#define CACHE_FLOW_H
-
-#include <iostream>
-#include <vector>
-#include <list>
+#pragma once
 #include "../Generators/Request.h"
 enum FlowType {FFILE, FGENERATOR};
 
@@ -27,6 +22,3 @@ public:
         }
     }
 };
-
-
-#endif //CACHE_FLOW_H

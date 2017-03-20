@@ -2,6 +2,8 @@
 // Created by cat on 10/2/16.
 //
 
+#include <cmath>
+#include <ctime>
 #include "Utils.h"
 using namespace std;
 
@@ -83,24 +85,35 @@ bool Utils::CreateDirectory(const std::string &dir_path)
         switch( errno )
         {
             case ENOENT:
+            {
                 //parent didn't exist, try to create it
                 if( CreateDirectory( dir_path.substr(0, dir_path.find_last_of('/')) ) )
+                {
                     //Now, try to create again.
-                    bSuccess = 0 == ::mkdir( dir_path.c_str(), 0775 );
+                    bSuccess = 0 == ::mkdir( dir_path.c_str(), 0775 );}
                 else
+                {
                     bSuccess = false;
+                }
                 break;
+            }
             case EEXIST:
+            {
                 //Done!
                 bSuccess = true;
                 break;
+            }
             default:
+            {
                 bSuccess = false;
                 break;
+            }
         }
     }
     else
+    {
         bSuccess = true;
+    }
     return bSuccess;
 }
 
@@ -111,12 +124,12 @@ void Utils::ExecuteCmd(const std::string &input)
 
 //void Utils::OpenFile(const std::string file_path)
 //{
-//    file.open(file_path.c_str());
-//    if (! (file.is_open()) )
+//    trace_file.open(file_path.c_str());
+//    if (! (trace_file.is_open()) )
 //    {
 //#ifdef DEBUG
 //        Logger *logger = Logger::CreateLogger(TYPE);
-//        logger->ShowLogText("Trace file opening were faled.\n");
+//        logger->ShowLogText("Trace trace_file opening were faled.\n");
 //#endif
 //    }
 //}

@@ -3,12 +3,11 @@
 //
 
 #pragma once
-#include <iostream>
-#include <fstream>
-#include "Logger.h"
-#ifndef CACHE_FILELOGGER_H
-#define CACHE_FILELOGGER_H
 #define LOG_PATH "logs/log.txt"
+
+#include <iostream>
+#include <string>
+#include "Logger.h"
 
 class FileLogger : public Logger
 {
@@ -23,6 +22,3 @@ public:
     void ShowStackDistance(Level log_Lvl, StackDist stack_dist);
     void EndLog();
 };
-
-
-#endif //CACHE_FILELOGGER_H

@@ -4,6 +4,7 @@
 
 #include "Client.h"
 #include "../Utils/Paths.h"
+#include "../Utils/Utils.h"
 using namespace std;
 
 Client::Client()

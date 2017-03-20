@@ -1,11 +1,11 @@
 //
 // Created by cat on 9/25/16.
 //
-#pragma once
-#include "Logger.h"
-#ifndef CACHE_CONSOLELOGGER_H
-#define CACHE_CONSOLELOGGER_H
 
+#pragma once
+#include <iostream>
+#include <string>
+#include "Logger.h"
 
 class ConsoleLogger : public Logger
 {
@@ -20,6 +20,3 @@ public:
     void ShowStackDistance(Level log_Lvl, StackDist stack_dist);
     void EndLog();
 };
-
-
-#endif //CACHE_CONSOLELOGGER_H

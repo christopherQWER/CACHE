@@ -2,34 +2,40 @@
 // Created by cat on 2/19/17.
 //
 
-#ifndef PROJECT_CONFIG_H
-#define PROJECT_CONFIG_H
+#pragma once
+#include <iostream>
+#include <string>
 #include "pugixml.hpp"
+
 #include "../Loggers/Logger.h"
 #include "../Flows/Flow.h"
 #include "../Utils/Types.h"
 
 struct XmlSharedCache {
     double size;
-    int requestNum;
+    int request_num;
+    Type logger_type;
+    FlowType flow_type;
 };
 
-struct XmlCache{
+struct XmlCache {
     double size;
-    int requestNum;
+    int request_num;
     Asu asu;
-    double HitRate;
+    double hit_rate;
+    Type logger_type;
+    FlowType flow_type;
 };
 
-struct XmlPartialCache{
-    int appCount;
-    ByteSize CommonSize;
-    std::list<XmlCache> cacheList;
+struct XmlPartialCache {
+    int app_count;
+    ByteSize common_size;
+    std::list<XmlCache> cache_list;
 };
 
-struct Config{
-    XmlSharedCache sharedCache;
-    XmlPartialCache partialCache;
+struct Config {
+    XmlSharedCache shared_cache;
+    XmlPartialCache partial_cache;
 };
 
 static const std::string Model = "Model";
@@ -48,16 +54,23 @@ static const std::string XmlHitRate = "HitRate";
 class XmlConfig {
 public:
 
-    /**
-     * [Serialization and deserialization from/to object]
-     * @param cnf [Input config]
-     * @param obj [Object container]
-     */
-    void Serialize(const Config &cnf, pugi::xml_document &doc);
-    void Deserialize(const pugi::xml_document &doc, Config &cnf);
+     /// [Serialization and deserialization from/to object]
+     /// \param cnf [Input config]
+     /// \param doc [Object container]
+    static void Serialize(const Config &cnf, pugi::xml_document &doc);
 
-    void Serialize(const std::string &file_name, pugi::xml_document &doc);
-    void Deserialize(const pugi::xml_document &doc, const std::string &file_name);
+    ///
+    /// \param doc []
+    /// \param cnf []
+    static void Deserialize(const pugi::xml_document &doc, Config &cnf);
+
+    ///
+    /// \param file_name []
+    /// \param doc []
+    static void LoadFromFile(const std::string &file_name, pugi::xml_document &doc);
+
+    ///
+    /// \param doc []
+    /// \param file_name []
+    static void SaveToFile(const pugi::xml_document &doc, const std::string &file_name);
 };
-
-#endif //PROJECT_CONFIG_H

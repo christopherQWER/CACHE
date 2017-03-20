@@ -7,18 +7,13 @@ using namespace std;
 
 TraceFileFlow::TraceFileFlow(const string& file_name)
 {
-    file.open(file_name.c_str());
-    _is_eof = file.is_open();
-}
-
-TraceFileFlow::TraceFileFlow()
-{
-
+    trace_file.open(file_name.c_str());
+    _is_eof = trace_file.is_open();
 }
 
 TraceFileFlow::~TraceFileFlow()
 {
-    file.close();
+    trace_file.close();
 }
 
 Request* TraceFileFlow::GetRequest()
@@ -28,7 +23,7 @@ Request* TraceFileFlow::GetRequest()
 
     while (_request_queue.empty())
     {
-        if (getline(file, buffer))
+        if (getline(trace_file, buffer))
         {
             Request::ParseRequest(buffer, _request_queue);
         }
@@ -38,18 +33,8 @@ Request* TraceFileFlow::GetRequest()
             return nullptr;
         }
     }
-//    if (!_request_queue.empty())
-//    {
-        *request = _request_queue.front();
-        _request_queue.pop_front();
-        return request;
-//    }
-    //return nullptr;
-}
 
-void TraceFileFlow::AnalyzeFlow()
-{
-    TraceAnalyzer* a = new TraceAnalyzer(File);
-    a->GetStat();
-    a->AppendToFile(File);
+    *request = _request_queue.front();
+    _request_queue.pop_front();
+    return request;
 }

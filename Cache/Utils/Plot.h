@@ -7,9 +7,6 @@
 #include <string>
 #include <vector>
 #include "Utils.h"
-#ifndef PROJECT_PLOT_H
-#define PROJECT_PLOT_H
-
 
 class Plot {
 public:
@@ -54,6 +51,3 @@ public:
 
     void DoPlot();
 };
-
-
-#endif //PROJECT_PLOT_H
