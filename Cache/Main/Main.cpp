@@ -1,4 +1,4 @@
-#include "../Utils/TraceAnalyzer.h"
+#include "../Modeling/TraceAnalyzer.h"
 #include "../Utils/Paths.h"
 using namespace std;
 
@@ -21,8 +21,10 @@ int main()
 {
     while (true)
     {
-        // Shows all program's modes
+        // shows all program's modes
         ShowMenu();
+
+        // get user choice of mode
         int choice = cin.get() - 48;
         Mode client_mode = static_cast<Mode>(choice);
 
