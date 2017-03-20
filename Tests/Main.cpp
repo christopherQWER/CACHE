@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "TestFlow.h"
+#include "TestConfig.h"
 
 using namespace std;
 
@@ -19,7 +19,11 @@ int main ()
 //    TestDistribution distr_tester = TestDistribution();
 //    distr_tester.MainTester();
 
-    TestFlow::MainTester();
+//    TestFlow::MainTester();
+
+    TestConfig cnf = TestConfig();
+    cnf.MainTester();
+
     cin.get();
     return 0;
 }

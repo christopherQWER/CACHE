@@ -7,12 +7,16 @@
 
 #include <iostream>
 #include <string>
+#include "../Cache/Xml/pugixml.hpp"
+#include "../Cache/Xml/XmlConfig.h"
+#include "../Cache/Utils/Paths.h"
 
 class TestConfig {
 public:
-    TestConfig(std::string configPath);
+    TestConfig();
     ~TestConfig();
 
+     void MainTester();
 };
 
 #endif //PROJECT_TESTCONFIG_H
