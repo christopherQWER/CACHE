@@ -1,10 +1,8 @@
-by cat on 10/6/16.
-//
-
 #include "TestFlow.h"
 #define TYPE CONSOLE_LOGGER
 //#define DEBUG
 //#define FILE LFILE
+//#define LCONSOLE
 using namespace std;
 
 
@@ -17,7 +15,7 @@ TestFlow::TestFlow(int request_number, ByteSize cache_size)
     t_hit_rate = 0;
     t_experiments_count = request_number;
     t_cache = new Lru(cache_size);
-    t_logger = Logger::CreateLogger(TYPE);
+    t_logger = Logger::CreateLogger(LCONSOLE);
 }
 
 void TestFlow::Clear()

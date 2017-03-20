@@ -8,7 +8,8 @@
 #include "../Cache/Flows/Flow.h"
 #include "../Cache/Flows/StackDistFlow.h"
 #include "../Cache/Flows/TraceFileFlow.h"
-#include "Utils/Paths.h"
+#include "../Cache/Utils/Paths.h"
+#include "../Cache/Loggers/Logger.h"
 #ifndef TESTS_TESTFLOW_H
 #define TESTS_TESTFLOW_H
 #define _1_GB_IN_BYTES_ 1073741824

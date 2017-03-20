@@ -25,11 +25,11 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Utils/Utils.cpp
                  ../Cache/Utils/Plot.cpp
+                 ../Cache/Utils/TraceAnalyzer.cpp
 
-                 ../Cache/Xml/Config.cpp)
+                 ../Cache/Xml/XmlConfig.cpp)
 
 set(HEADER_FILES TestFlow.h
-                 Paths.h
                  TestConfig.h
                  TestDistribution.h
 
@@ -49,8 +49,11 @@ set(HEADER_FILES TestFlow.h
 
                  ../Cache/Utils/Utils.h
                  ../Cache/Utils/Types.h
+                 ../Cache/Utils/Paths.h
                  ../Cache/Utils/Plot.h
+                 ../Cache/Utils/TraceAnalyzer.h
 
-                 ../Cache/Xml/Config.h)
+                 ../Cache/Xml/XmlConfig.h
+                 ../Cache/Xml/pugixml.hpp)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})
