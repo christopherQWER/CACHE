@@ -4671,23 +4671,23 @@ PUGI__NS_BEGIN
 		return res;
 	}
 
-	// we need to get length of entire file to load it in memory; the only (relatively) sane way to do it is via seek/tell trick
+	// we need to get length of entire trace_file to load it in memory; the only (relatively) sane way to do it is via seek/tell trick
 	PUGI__FN xml_parse_status get_file_size(FILE* file, size_t& out_result)
 	{
 	#if defined(PUGI__MSVC_CRT_VERSION) && PUGI__MSVC_CRT_VERSION >= 1400 && !defined(_WIN32_WCE)
 		// there are 64-bit versions of fseek/ftell, let's use them
 		typedef __int64 length_type;
 
-		_fseeki64(file, 0, SEEK_END);
-		length_type length = _ftelli64(file);
-		_fseeki64(file, 0, SEEK_SET);
+		_fseeki64(trace_file, 0, SEEK_END);
+		length_type length = _ftelli64(trace_file);
+		_fseeki64(trace_file, 0, SEEK_SET);
 	#elif defined(__MINGW32__) && !defined(__NO_MINGW_LFS) && (!defined(__STRICT_ANSI__) || defined(__MINGW64_VERSION_MAJOR))
 		// there are 64-bit versions of fseek/ftell, let's use them
 		typedef off64_t length_type;
 
-		fseeko64(file, 0, SEEK_END);
-		length_type length = ftello64(file);
-		fseeko64(file, 0, SEEK_SET);
+		fseeko64(trace_file, 0, SEEK_END);
+		length_type length = ftello64(trace_file);
+		fseeko64(trace_file, 0, SEEK_SET);
 	#else
 		// if this is a 32-bit OS, long is enough; if this is a unix system, long is 64-bit, which is enough; otherwise we can't do anything anyway.
 		typedef long length_type;
@@ -4740,18 +4740,18 @@ PUGI__NS_BEGIN
 	{
 		if (!file) return make_parse_result(status_file_not_found);
 
-		// get file size (can result in I/O errors)
+		// get trace_file size (can result in I/O errors)
 		size_t size = 0;
 		xml_parse_status size_status = get_file_size(file, size);
 		if (size_status != status_ok) return make_parse_result(size_status);
 
 		size_t max_suffix_size = sizeof(char_t);
 
-		// allocate buffer for the whole file
+		// allocate buffer for the whole trace_file
 		char* contents = static_cast<char*>(xml_memory::allocate(size + max_suffix_size));
 		if (!contents) return make_parse_result(status_out_of_memory);
 
-		// read file in memory
+		// read trace_file in memory
 		size_t read_size = fread(contents, 1, size, file);
 
 		if (read_size != size)
@@ -4808,7 +4808,7 @@ PUGI__NS_BEGIN
 	{
 		auto_deleter<xml_stream_chunk<T> > chunks(0, xml_stream_chunk<T>::destroy);
 
-		// read file to a chunk list
+		// read trace_file to a chunk list
 		size_t total = 0;
 		xml_stream_chunk<T>* last = 0;
 
@@ -6767,7 +6767,7 @@ namespace pugi
 		case status_ok: return "No error";
 
 		case status_file_not_found: return "File was not found";
-		case status_io_error: return "Error reading from file/stream";
+		case status_io_error: return "Error reading from trace_file/stream";
 		case status_out_of_memory: return "Could not allocate memory";
 		case status_internal_error: return "Internal error occurred";
 
