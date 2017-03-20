@@ -25,7 +25,8 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Utils/Utils.cpp
                  ../Cache/Utils/Plot.cpp
-                 ../Cache/Utils/TraceAnalyzer.cpp
+
+                 ../Cache/Modeling/TraceAnalyzer.cpp
 
                  ../Cache/Xml/XmlConfig.cpp)
 
@@ -51,7 +52,8 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Utils/Types.h
                  ../Cache/Utils/Paths.h
                  ../Cache/Utils/Plot.h
-                 ../Cache/Utils/TraceAnalyzer.h
+
+                 ../Cache/Modeling/TraceAnalyzer.h
 
                  ../Cache/Xml/XmlConfig.h
                  ../Cache/Xml/pugixml.hpp)
