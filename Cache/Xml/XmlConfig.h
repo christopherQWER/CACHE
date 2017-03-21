@@ -10,11 +10,22 @@
 #include "../Loggers/Logger.h"
 #include "../Flows/Flow.h"
 #include "../Utils/Types.h"
+#include "../Modeling/TraceAnalyzer.h"
+
+struct XmlTrace{
+    std::string name;
+    std::string path;
+};
+
+struct XmlTraceAnalyze {
+    AnalyzerType type;
+    std::list<XmlTrace> trace_list;
+};
 
 struct XmlSharedCache {
     double size;
     int request_num;
-    Type logger_type;
+    LoggerType logger_type;
     FlowType flow_type;
 };
 
@@ -23,7 +34,7 @@ struct XmlCache {
     int request_num;
     Asu asu;
     double hit_rate;
-    Type logger_type;
+    LoggerType logger_type;
     FlowType flow_type;
 };
 
@@ -34,16 +45,24 @@ struct XmlPartialCache {
 };
 
 struct Config {
+    XmlTraceAnalyze trace_analyzer;
     XmlSharedCache shared_cache;
     XmlPartialCache partial_cache;
 };
 
-static const std::string Model = "Model";
+static const std::string Modes = "Modes";
+
+static const std::string XmlTraceAnalyzer = "TraceAnalyzer";
 static const std::string XmlSharedCache = "SharedCache";
-static const std::string PartialCache = "PartialCache";
+static const std::string XmlPartialCache = "PartialCache";
+
+static const std::string XmlTrace = "Trace";
 static const std::string XmlCache = "Cache";
 static const std::string XmlLogs = "Logs";
 static const std::string XmlFlow = "Flow";
+
+static const std::string Name = "Name";
+static const std::string StatType = "StatType";
 static const std::string Size = "Size";
 static const std::string RequestNum = "RequestNum";
 static const std::string AppCount = "AppCount";
