@@ -21,8 +21,8 @@ int main ()
 
 //    TestFlow::MainTester();
 
-    TestConfig cnf = TestConfig();
-    cnf.MainTester();
+    TestConfig *cnf = new TestConfig();
+    cnf->MainTester();
 
     cin.get();
     return 0;

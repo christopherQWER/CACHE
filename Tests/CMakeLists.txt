@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.6)
 project(Tests)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 include_directories(INCLUDE_DIR ../Cache)
 
 set(SOURCE_FILES Main.cpp
@@ -28,7 +27,8 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Modeling/TraceAnalyzer.cpp
 
-                 ../Cache/Xml/XmlConfig.cpp)
+                 ../Cache/Xml/XmlConfig.cpp
+                 ../Cache/Xml/pugixml.cpp)
 
 set(HEADER_FILES TestFlow.h
                  TestConfig.h
