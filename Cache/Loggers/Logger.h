@@ -8,7 +8,7 @@
 #include "../Utils/Types.h"
 #define UTC (3)
 
-enum Type {LCONSOLE, LFILE};
+enum LoggerType {LCONSOLE, LFILE};
 enum Level {INFO, DEBUG, ERROR};
 
 class Logger
@@ -36,7 +36,7 @@ public:
     virtual void ShowStackDistance(Level log_Lvl, StackDist stack_dist) = 0;
     virtual void EndLog() = 0;
 
-    static Logger* CreateLogger(Type type);
+    static Logger* CreateLogger(LoggerType type);
     static inline const char* toString(Level lvl)
     {
         switch (lvl)
@@ -47,7 +47,7 @@ public:
             default:        return "[Unknown level]";
         }
     }
-    static inline const char* toString(Type type)
+    static inline const char* toString(LoggerType type)
     {
         switch (type)
         {

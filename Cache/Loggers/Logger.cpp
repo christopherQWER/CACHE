@@ -6,7 +6,7 @@
 #include "ConsoleLogger.h"
 #include "FileLogger.h"
 
-Logger* Logger::CreateLogger(Type type)
+Logger* Logger::CreateLogger(LoggerType type)
 {
     Logger *p = nullptr;
     switch (type)
