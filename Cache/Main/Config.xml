@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <Modes>
-    <TraceAnalyze StatType="Detailed">
-        <TracePath Name="WebSearch_1">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</TracePath>
-        <TracePath Name="WebSearch_2">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch2.spc</TracePath>
-        <TracePath Name="WebSearch_3">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.spc</TracePath>
-        <TracePath Name="Financial_1">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial1.spc</TracePath>
-        <TracePath Name="Financial_2">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial2.spc</TracePath>
-    </TraceAnalyze>
+    <TraceAnalyzer StatType="DETAILED">
+        <Trace Name="WebSearch_1">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Trace>
+        <Trace Name="WebSearch_2">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch2.spc</Trace>
+        <Trace Name="WebSearch_3">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.spc</Trace>
+        <Trace Name="Financial_1">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial1.spc</Trace>
+        <Trace Name="Financial_2">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial2.spc</Trace>
+    </TraceAnalyzer>
     <SharedCache Size="1" RequestNum="1000000">
         <Logs>LCONSOLE</Logs>
         <Flow>FFILE</Flow>
     </SharedCache>
-    <PartialCache AppCount="5" CommonSize="1">
+    <XmlPartialCache AppCount="5" CommonSize="1">
         <Cache Size="0.2" Asu="0" hit_rate="" RequestNum="1000000">
             <Logs>LCONSOLE</Logs>
             <Flow>FFILE</Flow>
         </Cache>
-    </PartialCache>
+    </XmlPartialCache>
 </Modes>

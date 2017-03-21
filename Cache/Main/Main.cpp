@@ -1,4 +1,5 @@
 #include "../Modeling/TraceAnalyzer.h"
+#include "../Xml/XmlConfig.h"
 #include "../Utils/Paths.h"
 using namespace std;
 
@@ -19,6 +20,7 @@ void RunPartialCacheMode();
 
 int main()
 {
+    Config my_config;
     while (true)
     {
         // shows all program's modes
