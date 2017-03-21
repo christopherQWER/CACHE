@@ -15,7 +15,7 @@ set(SOURCE_FILES Main/Main.cpp
 
                  Modeling/SharedCache.cpp
                  Modeling/Client.cpp
-                 Modeling/PartialCache.cpp
+                 Modeling/XmlPartialCache.cpp
                  Modeling/TraceAnalyzer.cpp
 
                  Loggers/ConsoleLogger.cpp
@@ -43,7 +43,7 @@ set(HEADER_FILES
 
                  Modeling/SharedCache.h
                  Modeling/Client.h
-                 Modeling/PartialCache.h
+                 Modeling/XmlPartialCache.h
                  Modeling/TraceAnalyzer.h
 
                  Utils/Types.h

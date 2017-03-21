@@ -10,6 +10,10 @@
 #include "../Xml/pugixml.hpp"
 #include "../Utils/Types.h"
 
+///
+enum AnalyzerType{COMMON, DETAILED, ALL};
+
+///
 struct AppInfo
 {
     int reads;
@@ -21,11 +25,25 @@ struct AppInfo
 
 class TraceAnalyzer {
 public:
+    /// \brief [Constructor]
+    /// \param input_file []
+    /// \param output_file []
     TraceAnalyzer(const std::string& input_file, const std::string& output_file);
     ~TraceAnalyzer();
 
     void GetCommonStat();
     void GetDetailedStat();
+
+    static inline const char* toString(AnalyzerType stat_type)
+    {
+        switch (stat_type)
+        {
+            case COMMON:       return "COMMON";
+            case DETAILED:     return "DETAILED";
+            case ALL:          return "ALL";
+            default:           return "UNKNOWN";
+        }
+    }
 
 private:
     int _reads;
@@ -36,6 +54,12 @@ private:
     std::string _input_file;
     std::string _output_file;
 
+    /// \brief []
+    /// \param output_path []
     void AppendToFile(const std::string& output_path);
+
+    /// \brief []
+    /// \param output_path []
+    /// \param app_map []
     void AppendToXml(const std::string& output_path, const std::map<Asu, AppInfo>& app_map);
 };
