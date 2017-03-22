@@ -93,8 +93,8 @@ void ShowMenu(void)
 
 void RunTraceAnalyseMode()
 {
-    TraceAnalyzer *a = new TraceAnalyzer(_WEB_SEARCH_1_, _STAT_XML_);
-    a->GetDetailedStat();
+    TraceAnalyzer a = TraceAnalyzer(_WEB_SEARCH_1_, _STAT_XML_);
+    a.GetDetailedStat();
 }
 
 
