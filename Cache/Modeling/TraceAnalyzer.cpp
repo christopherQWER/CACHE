@@ -7,7 +7,7 @@
 #include "../Utils/Paths.h"
 using namespace std;
 
-TraceAnalyzer::TraceAnalyzer(const std::string& file_path, const std::string& output_file)
+TraceAnalyzer::TraceAnalyzer(const char* file_path, const char* output_file)
 {
     _reads = 0;
     _writes = 0;
@@ -15,7 +15,7 @@ TraceAnalyzer::TraceAnalyzer(const std::string& file_path, const std::string& ou
     _line_num = 0;
     _input_file = file_path;
     _output_file = output_file;
-    _trace_stream.open(file_path.c_str());
+    _trace_stream.open(file_path);
 }
 
 TraceAnalyzer::~TraceAnalyzer()
