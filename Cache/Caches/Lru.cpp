@@ -63,6 +63,20 @@ void Lru::ReorganizeCache(const Request &newRequest)
     _map_store[newRequest._lba] = _list_store.begin();
 }
 
+void Lru::Resize(ByteSize new_size)
+{
+    _max_capacity = new_size;
+    if (_curr_capacity > _max_capacity)
+    {
+        ByteSize diff = _curr_capacity - _max_capacity;
+        int number_of_pos = (diff / _CELL_SIZE_) + 1;
+        for (int i = 0; i < number_of_pos; i++)
+        {
+            DeleteOldRequest();
+        }
+    }
+}
+
 void Lru::InsertNewRequest(const Request &newRequest)
 {
     _list_store.push_front(newRequest);
