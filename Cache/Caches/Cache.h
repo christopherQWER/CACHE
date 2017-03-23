@@ -17,7 +17,7 @@ protected:
     double _hit;
     double _miss;
 
-    /// [Maximal capacity of cache]
+    /// [Maximal capacity of cache in bytes]
     ByteSize _max_capacity;
 
     ///[Average stack distance in all experiments]
@@ -33,7 +33,7 @@ public:
     /// [Average hit rate of requests]
     HitRate _hit_rate;
 
-    /// [Current capaсity of the cache]
+    /// [Current capaсity of the cache in bytes]
     ByteSize _curr_capacity;
 
     /// [Current number of element]
@@ -42,9 +42,6 @@ public:
      /// [Storage, contains logical block address as key and
      /// iterator pointed to corresponding request body as value]
     std::unordered_map<Lba, StorType::iterator> _map_store;
-
-    ///
-    Cache();
 
     ///
     /// \param capacity [Specifies the common cache size (_max_capaсity)]
