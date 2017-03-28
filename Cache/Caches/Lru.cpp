@@ -69,7 +69,15 @@ void Lru::Resize(ByteSize new_size)
     if (_curr_capacity > _max_capacity)
     {
         ByteSize diff = _curr_capacity - _max_capacity;
-        int number_of_pos = (diff / _CELL_SIZE_) + 1;
+        int number_of_pos = 0;
+        if( (diff % _CELL_SIZE_) == 0)
+        {
+            number_of_pos = diff / _CELL_SIZE_;
+        }
+        else
+        {
+            number_of_pos = diff / _CELL_SIZE_ + 1;
+        }
         for (int i = 0; i < number_of_pos; i++)
         {
             DeleteOldRequest();
