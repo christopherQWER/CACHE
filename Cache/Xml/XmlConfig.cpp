@@ -58,12 +58,15 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     cnf.trace_analyzer.type = (AnalyzerType)trace_analyzer.attribute(StatType.c_str()).as_int(1);
 
     // get trace analyzer children
-    for (pugi::xml_node child = trace_analyzer.first_child(); child; child = child.next_sibling())
+    for (pugi::xml_node child = trace_analyzer.child(XmlTrace.c_str()).first_child(); child;)
     {
-        XmlTrace trace_obj = XmlTrace();
+        pugi::xml_node next = child.next_sibling();
+
+        struct XmlTrace trace_obj = XmlTrace();
         trace_obj.name = child.attribute(Name.c_str()).as_string("");
         trace_obj.path = child.value();
         cnf.trace_analyzer.trace_list.push_back(trace_obj);
+        child = next;
     }
 
     // get shared cache info
@@ -81,7 +84,7 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     // get partial cache children
     for (pugi::xml_node child = partial_cache.first_child(); child; child = child.next_sibling())
     {
-        XmlCache cache_obj = XmlCache();
+        struct XmlCache cache_obj = XmlCache();
         cache_obj.asu = child.attribute(XmlAsu.c_str()).as_uint(0);
         cache_obj.size = child.attribute(Size.c_str()).as_double(1);
         cache_obj.hit_rate = child.attribute(XmlHitRate.c_str()).as_double(0.2);

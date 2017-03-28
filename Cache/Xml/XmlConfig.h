@@ -15,7 +15,7 @@
 struct XmlTrace{
     std::string name;
     std::string path;
-    XmlTrace() : name(""), path("") {}
+    XmlTrace() : name(std::string("")), path(std::string("")) {}
 };
 
 struct XmlTraceAnalyze {
@@ -79,22 +79,22 @@ static const std::string XmlHitRate = "HitRate";
 class XmlConfig {
 public:
 
-     /// [Serialization and deserialization from/to object]
+     /// \brief Serialize object Config to xml document object
      /// \param cnf [Input config]
      /// \param doc [Object container]
     static void Serialize(const Config &cnf, pugi::xml_document &doc);
 
-    ///
+    /// \brief  Deserialize xml-document to Config object
     /// \param doc []
     /// \param cnf []
     static void Deserialize(const pugi::xml_document &doc, Config &cnf);
 
-    ///
+    /// \brief
     /// \param file_name []
     /// \param doc []
     static void LoadFromFile(const std::string &file_name, pugi::xml_document &doc);
 
-    ///
+    /// \brief
     /// \param doc []
     /// \param file_name []
     static void SaveToFile(const pugi::xml_document &doc, const std::string &file_name);
