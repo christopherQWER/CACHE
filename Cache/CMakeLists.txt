@@ -4,6 +4,10 @@ project(Cache)
 set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES Main/Main.cpp
 
+                 Algorithms/SharedCache.cpp
+                 Algorithms/StaticPartial.cpp
+                 Algorithms/DynamicPartial.cpp
+
                  Caches/Cache.cpp
                  Caches/Lru.cpp
 
@@ -13,9 +17,7 @@ set(SOURCE_FILES Main/Main.cpp
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
 
-                 Modeling/SharedCache.cpp
                  Modeling/Client.cpp
-                 Modeling/PartialCache.cpp
                  Modeling/TraceAnalyzer.cpp
 
                  Loggers/ConsoleLogger.cpp
@@ -30,6 +32,10 @@ set(SOURCE_FILES Main/Main.cpp
                  )
 
 set(HEADER_FILES
+                 Algorithms/SharedCache.h
+                 Algorithms/StaticPartial.h
+                 Algorithms/DynamicPartial.h
+
                  Caches/Cache.h
                  Caches/Lru.h
 
@@ -41,9 +47,7 @@ set(HEADER_FILES
                  Flows/StackDistFlow.h
                  Flows/TraceFileFlow.h
 
-                 Modeling/SharedCache.h
                  Modeling/Client.h
-                 Modeling/PartialCache.h
                  Modeling/TraceAnalyzer.h
 
                  Utils/Types.h
