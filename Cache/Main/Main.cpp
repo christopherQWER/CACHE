@@ -1,4 +1,5 @@
 #include "../Modeling/TraceAnalyzer.h"
+#include "../Algorithms/SharedCache.h"
 #include "../Xml/XmlConfig.h"
 #include "../Utils/Paths.h"
 using namespace std;
@@ -13,7 +14,7 @@ enum Mode{
 
 // Functions prototypes
 void ShowMenu(void);
-void RunTraceAnalyseMode();
+void RunTraceAnalyseMode(Config my_config);
 void RunSharedCacheMode();
 void RunPartialCacheMode();
 
@@ -21,6 +22,10 @@ void RunPartialCacheMode();
 int main()
 {
     Config my_config;
+    pugi::xml_document doc;
+    XmlConfig::LoadFromFile(_XML_CONFIG_, doc);
+    XmlConfig::Deserialize(doc, my_config);
+
     while (true)
     {
         // shows all program's modes
@@ -35,7 +40,7 @@ int main()
             case TRACE_ANALYZE:
             {
                 cout << "Start trace analyser mode..." << endl;
-                RunTraceAnalyseMode();
+                RunTraceAnalyseMode(my_config);
                 break;
             }
             case SHARED_CACHE:
@@ -91,16 +96,31 @@ void ShowMenu(void)
 }
 
 
-void RunTraceAnalyseMode()
+void RunTraceAnalyseMode(Config my_config)
 {
-    TraceAnalyzer a = TraceAnalyzer(_WEB_SEARCH_1_, _STAT_XML_);
-    a.GetDetailedStat();
+    for (auto &trace : my_config.trace_analyzer.trace_list)
+    {
+        TraceAnalyzer *a = new TraceAnalyzer(trace.path.c_str(), trace.name.c_str());
+        if (my_config.trace_analyzer.type == DETAILED)
+        {
+            a->GetDetailedStat();
+        }
+        else if (my_config.trace_analyzer.type == COMMON)
+        {
+            a->GetCommonStat();
+        }
+    }
 }
 
 
 void RunSharedCacheMode()
 {
+    int errorCode = 0;
+    ByteSize cache_capasity = _1_GB_IN_BYTES_ / 4;
+    int experiment_number = 1500000;
 
+    SharedCache* sharedCache = new SharedCache(experiment_number, cache_capasity);
+    sharedCache->RunAlgorithm(_WEB_SEARCH_1_);
 }
 
 

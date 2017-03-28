@@ -51,12 +51,12 @@ void TestFlow::SameRequests()
 
     t_hit_rate = t_cache->CalculateHitRate();
 #ifdef DEBUG
-    pLogger->ShowHitRate(t_hit_rate);
+    pLogger->ShowHitRate(hit_rate);
 #endif
 
     t_stack_dist = t_cache->CalculateAvgStackDistance();
 #ifdef DEBUG
-    pLogger->ShowStackDistance(t_stack_dist);
+    pLogger->ShowStackDistance(stack_dist);
     pLogger->EndLog();
 #endif
 
@@ -93,12 +93,12 @@ void TestFlow::HalfPartSameRequests()
 
     t_hit_rate = t_cache->CalculateHitRate();
 #ifdef DEBUG
-    pLogger->ShowHitRate(t_hit_rate);
+    pLogger->ShowHitRate(hit_rate);
 #endif
 
     t_stack_dist = t_cache->CalculateAvgStackDistance();
 #ifdef DEBUG
-    pLogger->ShowStackDistance(t_stack_dist);
+    pLogger->ShowStackDistance(stack_dist);
     pLogger->EndLog();
 #endif
 
@@ -138,13 +138,13 @@ void TestFlow::DifferentRequests()
     t_hit_rate = t_cache->CalculateHitRate();
 
 #ifdef DEBUG
-    pLogger->ShowHitRate(t_hit_rate);
+    pLogger->ShowHitRate(hit_rate);
 #endif
 
     t_stack_dist = t_cache->CalculateAvgStackDistance();
 
 #ifdef DEBUG
-    pLogger->ShowStackDistance(t_stack_dist);
+    pLogger->ShowStackDistance(stack_dist);
     pLogger->EndLog();
 #endif
 
