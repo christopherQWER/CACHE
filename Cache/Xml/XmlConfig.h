@@ -15,11 +15,13 @@
 struct XmlTrace{
     std::string name;
     std::string path;
+    XmlTrace() : name(""), path("") {}
 };
 
 struct XmlTraceAnalyze {
     AnalyzerType type;
     std::list<XmlTrace> trace_list;
+    XmlTraceAnalyze() : type(DETAILED), trace_list() {}
 };
 
 struct XmlSharedCache {
@@ -27,6 +29,7 @@ struct XmlSharedCache {
     int request_num;
     LoggerType logger_type;
     FlowType flow_type;
+    XmlSharedCache() : size(0), request_num(0), logger_type(LCONSOLE), flow_type(FFILE) {}
 };
 
 struct XmlCache {
@@ -36,25 +39,28 @@ struct XmlCache {
     double hit_rate;
     LoggerType logger_type;
     FlowType flow_type;
+    XmlCache() : size(0), request_num(0), asu(0), hit_rate(0), logger_type(LCONSOLE), flow_type(FFILE) {}
 };
 
 struct XmlPartialCache {
     int app_count;
     ByteSize common_size;
     std::list<XmlCache> cache_list;
+    XmlPartialCache() : app_count(0), common_size(0), cache_list() {}
 };
 
 struct Config {
     XmlTraceAnalyze trace_analyzer;
     XmlSharedCache shared_cache;
     XmlPartialCache partial_cache;
+    Config() :  trace_analyzer(), shared_cache(), partial_cache() {}
 };
 
 static const std::string Modes = "Modes";
 
 static const std::string XmlTraceAnalyzer = "TraceAnalyzer";
 static const std::string XmlSharedCache = "SharedCache";
-static const std::string XmlPartialCache = "PartialCache";
+static const std::string XmlPartialCache = "StaticPartial";
 
 static const std::string XmlTrace = "Trace";
 static const std::string XmlCache = "Cache";

@@ -30,12 +30,12 @@ void XmlConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
     pugi::xml_node flow_node = shared_node.append_child(XmlFlow.c_str());
     flow_node.set_value(Flow::toString(cnf.shared_cache.flow_type));
 
-    // create child "PartialCache"
+    // create child "StaticPartial"
     pugi::xml_node partial_node = modes_node.append_child(XmlPartialCache.c_str());
     partial_node.append_attribute(AppCount.c_str()).set_value(cnf.partial_cache.app_count);
     partial_node.append_attribute(CommonSize.c_str()).set_value((unsigned long)cnf.partial_cache.common_size);
 
-    // create children of "PartialCache"
+    // create children of "StaticPartial"
     for (auto &cache : cnf.partial_cache.cache_list)
     {
         pugi::xml_node cache_node = partial_node.append_child(XmlCache.c_str());
@@ -58,11 +58,11 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     cnf.trace_analyzer.type = (AnalyzerType)trace_analyzer.attribute(StatType.c_str()).as_int(1);
 
     // get trace analyzer children
-    for (auto &trace : trace_analyzer.children(XmlTrace.c_str()))
+    for (pugi::xml_node child = trace_analyzer.first_child(); child; child = child.next_sibling())
     {
-        struct XmlTrace trace_obj;
-        trace_obj.name = trace.attribute(Name.c_str()).as_string("");
-        trace_obj.path = trace.value();
+        XmlTrace trace_obj = XmlTrace();
+        trace_obj.name = child.attribute(Name.c_str()).as_string("");
+        trace_obj.path = child.value();
         cnf.trace_analyzer.trace_list.push_back(trace_obj);
     }
 
@@ -79,13 +79,13 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     cnf.partial_cache.common_size = (ByteSize)partial_cache.attribute(CommonSize.c_str()).as_int(1);
 
     // get partial cache children
-    for (auto &cache : partial_cache.children(XmlCache.c_str()))
+    for (pugi::xml_node child = partial_cache.first_child(); child; child = child.next_sibling())
     {
-        struct XmlCache cache_obj;
-        cache_obj.asu = cache.attribute(XmlAsu.c_str()).as_uint(0);
-        cache_obj.size = cache.attribute(Size.c_str()).as_double(1);
-        cache_obj.hit_rate = cache.attribute(XmlHitRate.c_str()).as_double(0.2);
-        cache_obj.request_num = cache.attribute(RequestNum.c_str()).as_int(1000000);
+        XmlCache cache_obj = XmlCache();
+        cache_obj.asu = child.attribute(XmlAsu.c_str()).as_uint(0);
+        cache_obj.size = child.attribute(Size.c_str()).as_double(1);
+        cache_obj.hit_rate = child.attribute(XmlHitRate.c_str()).as_double(0.2);
+        cache_obj.request_num = child.attribute(RequestNum.c_str()).as_int(1000000);
         cache_obj.logger_type = (LoggerType)shared_cache.append_attribute(RequestNum.c_str()).as_int(LCONSOLE);
         cache_obj.flow_type = (FlowType)shared_cache.append_attribute(XmlLogs.c_str()).as_int(FFILE);
         cnf.partial_cache.cache_list.push_back(cache_obj);
