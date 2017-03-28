@@ -8,18 +8,19 @@ using namespace std;
 
 SharedCache::SharedCache(int request_number, ByteSize cache_size)
 {
-    t_hit_rate = 0;
-    t_experiments_number = request_number;
-    t_cache = new Lru(cache_size);
-    t_logger = Logger::CreateLogger(TYPE);
+    cache = new Lru(cache_size);
+    experiments_number = request_number;
 }
 
 void SharedCache::Clear()
 {
-    t_experiments_number = 0;
-    t_stack_dist = 0;
-    t_hit_rate = 0;
-    t_client_map.clear();
+    if (cache != NULL)
+    {
+        delete cache;
+    }
+    experiments_number = 0;
+    stack_dist = 0;
+    client_map.clear();
 }
 
 SharedCache::~SharedCache()
@@ -29,7 +30,7 @@ SharedCache::~SharedCache()
 
 void SharedCache::InsertToClientsMap(Client client)
 {
-    t_client_map.insert(pair<Asu, Client>(client._application_id, client));
+    client_map.insert(pair<Asu, Client>(client._application_id, client));
 }
 
 void SharedCache::CreatePlot(const string& results_dir, int gist_counter, int client_counter)
@@ -64,11 +65,11 @@ void SharedCache::CreatePlot(const string& results_dir, int gist_counter, int cl
     string pdf_command = "plot ";
     string cdf_command = "plot ";
 
-    StackDist min = t_client_map.begin()->second.stack_dist_map.begin()->first;
-    StackDist max = (--(t_client_map.begin()->second.stack_dist_map.end()))->first;
+    StackDist min = client_map.begin()->second.stack_dist_map.begin()->first;
+    StackDist max = (--(client_map.begin()->second.stack_dist_map.end()))->first;
     // Go through apps
-    int map_size = t_client_map.size();
-    for (ClientMap it = t_client_map.begin(); it != t_client_map.end(); ++it)
+    int map_size = client_map.size();
+    for (ClientMap it = client_map.begin(); it != client_map.end(); ++it)
     {
         if (min > it->second.stack_dist_map.begin()->first)
         {
@@ -147,20 +148,25 @@ void SharedCache::CreatePlot(const string& results_dir, int gist_counter, int cl
     cdf_plot.DoPlot();
 }
 
-void SharedCache::FileRequests(const string &file_name)
+void SharedCache::RunAlgorithm(const string& file_name)
 {
+    Logger *logger = Logger::CreateLogger(TYPE);
+    logger->ShowLogText(INFO, "=================Start: WebSearch1.spc=================");
+
     int counter = 0;
     int gist_counter = 0;
     int client_counter = 0;
     int module = 100000;
+
     Request *request;
+    Client client = Client();
     Logger *pLogger = Logger::CreateLogger(TYPE);
-    t_flow = new TraceFileFlow(file_name);
+    Flow *flow = new TraceFileFlow(file_name);
     string results_dir = _GISTS_DIR_ + string("//") + Utils::GetFileNameWithoutExt(file_name);
 
     pLogger->StartLog();
-    request = t_flow->GetRequest();
-    Client client = Client();
+    request = flow->GetRequest();
+
     client.Init(request, results_dir);
     InsertToClientsMap(client);
 
@@ -170,20 +176,20 @@ void SharedCache::FileRequests(const string &file_name)
         pLogger->ShowRequestInfo(INFO, counter, request->_asu, request->_lba, request->_timestamp);
 
         // Add request to LRU cache
-        t_cache->LRU(*request);
+        cache->LRU(*request);
 
         // If current application class doesn't exists => create
-        if (t_client_map.find(request->_asu) == t_client_map.end())
+        if (client_map.find(request->_asu) == client_map.end())
         {
             Client client = Client();
             client.Init(request, results_dir);
-            t_client_map.insert(pair<Asu, Client>(request->_asu, client));
+            client_map.insert(pair<Asu, Client>(request->_asu, client));
         }
         // Increment request counter for application class
-        t_client_map[request->_asu]._request_counter++;
+        client_map[request->_asu]._request_counter++;
 
         // Save stack distance for concrete class storage
-        t_client_map[request->_asu].SaveStackDist(request->_stack_distance);
+        client_map[request->_asu].SaveStackDist(request->_stack_distance);
 
         // It's time for gistogram
         if ( (counter != 0) && (counter % module == 0) )
@@ -191,31 +197,16 @@ void SharedCache::FileRequests(const string &file_name)
             CreatePlot(results_dir, gist_counter, client_counter);
             gist_counter++;
         }
-        request = t_flow->GetRequest();
+        request = flow->GetRequest();
         counter++;
     }
 
-    t_hit_rate = t_cache->CalculateHitRate();
-    pLogger->ShowHitRate(INFO, t_hit_rate);
+    cache->_hit_rate = cache->CalculateHitRate();
+    pLogger->ShowHitRate(INFO, cache->_hit_rate);
 
-    t_stack_dist = t_cache->CalculateAvgStackDistance();
-    pLogger->ShowStackDistance(INFO, t_stack_dist);
+    stack_dist = cache->CalculateAvgStackDistance();
+    pLogger->ShowStackDistance(INFO, stack_dist);
     pLogger->EndLog();
+
+    logger->ShowLogText(INFO, "==================End: WebSearch1.spc==================");
 }
-
-
-void SharedCache::MainTester()
-{
-    int errorCode = 0;
-    ByteSize cache_capasity = _1_GB_IN_BYTES_ / 4;
-    int experiment_number = 1500000;
-
-    SharedCache tester = SharedCache(experiment_number, cache_capasity);
-    tester.t_logger->ShowLogText(INFO, "=================Start: WebSearch1.spc=================");
-    //tester.TestStat(_WEB_SEARCH_1_);
-    tester.FileRequests(_WEB_SEARCH_1_);
-    tester.t_logger->ShowLogText(INFO, "==================End: WebSearch1.spc==================");
-    tester.Clear();
-}
-
-
