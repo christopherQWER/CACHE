@@ -28,7 +28,7 @@ public:
     /// \brief [Constructor]
     /// \param input_file []
     /// \param output_file []
-    TraceAnalyzer(const char* file_path, const char* output_file);
+    TraceAnalyzer(const std::string file_path, std::string output_file);
     ~TraceAnalyzer();
 
     void GetCommonStat();
