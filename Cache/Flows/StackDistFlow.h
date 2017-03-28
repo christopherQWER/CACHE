@@ -15,14 +15,14 @@ typedef std::list<Lba>::iterator buffer_itr;
 class StackDistFlow : public Flow
 {
 public:
-    /// [Needed stack distance]
+    /// Needed stack distance
     int _stack_dist_;
 
     StackDistFlow();
     ~StackDistFlow();
 
     ///
-    /// \return [request generated with specified stack distance]
+    /// \return request generated with specified stack distance
     Request* GetRequest();
 
 private:

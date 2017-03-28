@@ -6,20 +6,23 @@
 #include <iostream>
 #include <string>
 #include "../Utils/Types.h"
+#include "../Caches/Lru.h"
 #include "../Generators/Request.h"
 
 typedef std::map<StackDist, int> DistStor;
 
 class Client {
 public:
-    /// [Counter of sended requests from this application]
+    /// Counter of sended requests from this application
     int _request_counter;
 
-    /// [Client id]
+    /// Client id
     Asu _application_id;
 
-    /// [Frequency of stack distances occurances]
+    /// Frequency of stack distances occurances
     DistStor stack_dist_map;
+
+    //Lru _cache;
 
     std::string pdf_dir_path;
     std::string cdf_dir_path;
