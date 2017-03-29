@@ -3,7 +3,6 @@
 //
 
 #include "StaticPartial.h"
-#include "../Modeling/Client.h"
 
 using namespace std;
 
@@ -12,7 +11,7 @@ void StaticPartial::PercentPartial()
 
 }
 
-void StaticPartial::EqualPartial()
+void StaticPartial::EqualPartial(list<Client> clientList)
 {
     list<Client> appList;
 }
