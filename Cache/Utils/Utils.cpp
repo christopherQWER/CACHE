@@ -129,7 +129,7 @@ void Utils::ExecuteCmd(const std::string &input)
 //    {
 //#ifdef DEBUG
 //        Logger *logger = Logger::CreateLogger(TYPE);
-//        logger->ShowLogText("XmlTrace trace_file opening were faled.\n");
+//        logger->ShowLogText("Trace trace_file opening were faled.\n");
 //#endif
 //    }
 //}

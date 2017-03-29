@@ -15,15 +15,16 @@ enum Mode{
 // Functions prototypes
 void ShowMenu(void);
 void RunTraceAnalyseMode(Config my_config);
-void RunSharedCacheMode();
-void RunPartialCacheMode();
+void RunSharedCacheMode(Config my_config);
+void RunPartialCacheMode(Config my_config);
 
 
 int main()
 {
-    Config my_config;
+    Config my_config = Config();
     pugi::xml_document doc;
     XmlConfig::LoadFromFile(_XML_CONFIG_, doc);
+
     XmlConfig::Deserialize(doc, my_config);
 
     while (true)
@@ -46,7 +47,7 @@ int main()
             case SHARED_CACHE:
             {
                 cout << "Start shared cache mode..." << endl;
-                void RunSharedCacheMode();
+                RunSharedCacheMode(my_config);
                 break;
             }
             case PARTIAL_CACHE:
@@ -113,18 +114,29 @@ void RunTraceAnalyseMode(Config my_config)
 }
 
 
-void RunSharedCacheMode()
+void RunSharedCacheMode(Config my_config)
 {
-    int errorCode = 0;
-    ByteSize cache_capasity = _1_GB_IN_BYTES_ / 4;
-    int experiment_number = 1500000;
+    ByteSize cache_capasity = (my_config.shared_cache.size * _1_GB_IN_BYTES_) / 4;
+    int experiment_number = my_config.shared_cache.request_num;
 
     SharedCache* sharedCache = new SharedCache(experiment_number, cache_capasity);
     sharedCache->RunAlgorithm(_WEB_SEARCH_1_);
 }
 
 
-void RunPartialCacheMode()
+void RunPartialCacheMode(Config my_config)
 {
+    if (my_config.partial_cache.cache_list.size() > 0)
+    {
+        list<Client> appList;
+        for (const auto &cache : my_config.partial_cache.cache_list)
+        {
+            Client client = Client();
+            client._application_id = cache.asu;
+        }
+    }
+    else
+    {
 
+    }
 }

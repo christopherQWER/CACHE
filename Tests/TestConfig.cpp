@@ -19,7 +19,7 @@ TestConfig::~TestConfig()
 
     XmlConfig::LoadFromFile(_XML_CONFIG_, doc);
 
-    Config main_config;
+    Config main_config = Config();
     XmlConfig::Deserialize(doc, main_config);
 
     XmlConfig::Serialize(main_config, doc2);
