@@ -156,7 +156,8 @@ void SharedCache::RunAlgorithm(const string& file_name)
     int counter = 0;
     int gist_counter = 0;
     int client_counter = 0;
-    int module = 100000;
+    Timestamp time_step = 0;
+
 
     Request *request;
     Client client = Client();
@@ -166,6 +167,7 @@ void SharedCache::RunAlgorithm(const string& file_name)
 
     pLogger->StartLog();
     request = flow->GetRequest();
+    time_step = request->_timestamp;
 
     client.Init(request, results_dir);
     InsertToClientsMap(client);
@@ -192,11 +194,11 @@ void SharedCache::RunAlgorithm(const string& file_name)
         client_map[request->_asu].SaveStackDist(request->_stack_distance);
 
         // It's time for gistogram
-        if ( (counter != 0) && (counter % module == 0) )
-        {
-            CreatePlot(results_dir, gist_counter, client_counter);
-            gist_counter++;
-        }
+//        if ( (counter != 0) && (counter % module == 0) )
+//        {
+//            CreatePlot(results_dir, gist_counter, client_counter);
+//            gist_counter++;
+//        }
         request = flow->GetRequest();
         counter++;
     }
