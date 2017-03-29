@@ -11,8 +11,8 @@
         <Logs>LCONSOLE</Logs>
         <Flow>FFILE</Flow>
     </SharedCache>
-    <PartialCache AppCount="5" CommonSize="1">
-        <Cache Size="0.2" Asu="0" hit_rate="" RequestNum="1000000">
+    <PartialCache AppCount="5" CommonSize="1" RequestNum="1000000">
+        <Cache Size="0.2" Asu="0" HitRate="">
             <Logs>LCONSOLE</Logs>
             <Flow>FFILE</Flow>
         </Cache>

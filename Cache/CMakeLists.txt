@@ -18,6 +18,7 @@ set(SOURCE_FILES Main/Main.cpp
                  Flows/TraceFileFlow.cpp
 
                  Modeling/Client.cpp
+                 Modeling/AppClass.cpp
                  Modeling/TraceAnalyzer.cpp
 
                  Loggers/ConsoleLogger.cpp
@@ -48,6 +49,7 @@ set(HEADER_FILES
                  Flows/TraceFileFlow.h
 
                  Modeling/Client.h
+                 Modeling/AppClass.h
                  Modeling/TraceAnalyzer.h
 
                  Utils/Types.h

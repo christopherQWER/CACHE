@@ -4,10 +4,10 @@
 #pragma once
 
 #include <iostream>
-#include "../Modeling/Client.h"
+#include "../Modeling/AppClass.h"
 
 class StaticPartial {
 public:
-    void EqualPartial(std::list<Client> clientList);
+    void EqualPartial(std::list<AppClass> clientList, const std::string& file_name);
     void PercentPartial();
 };

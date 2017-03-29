@@ -2,6 +2,7 @@
 #include "../Algorithms/SharedCache.h"
 #include "../Xml/XmlConfig.h"
 #include "../Utils/Paths.h"
+#include "../Modeling/AppClass.h"
 using namespace std;
 
 // Enumeration for program modes
@@ -24,7 +25,6 @@ int main()
     Config my_config = Config();
     pugi::xml_document doc;
     XmlConfig::LoadFromFile(_XML_CONFIG_, doc);
-
     XmlConfig::Deserialize(doc, my_config);
 
     while (true)
@@ -53,7 +53,7 @@ int main()
             case PARTIAL_CACHE:
             {
                 cout << "Start partial cache mode..." << endl;
-                void RunPartialCacheMode();
+                RunPartialCacheMode(my_config);
                 break;
             }
             case EXIT:
@@ -126,13 +126,18 @@ void RunSharedCacheMode(Config my_config)
 
 void RunPartialCacheMode(Config my_config)
 {
-    if (my_config.partial_cache.cache_list.size() > 0)
+    int app_count = my_config.partial_cache.cache_list.size();
+    if (app_count > 0)
     {
-        list<Client> appList;
+        ByteSize common_size = my_config.partial_cache.common_size * _1_GB_IN_BYTES_;
+        ByteSize part_size = common_size / app_count;
+        list<AppClass> clients;
+        // Go through cache objects
         for (const auto &cache : my_config.partial_cache.cache_list)
         {
-            Client client = Client();
+            AppClass client = AppClass(part_size);
             client._application_id = cache.asu;
+            clients.push_back(client);
         }
     }
     else

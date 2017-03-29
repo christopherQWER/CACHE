@@ -57,6 +57,8 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
 
     // get trace analyzer info
     pugi::xml_node trace_analyzer = modes.child(sTraceAnalyzer.c_str());
+    cnf.trace_analyzer = XmlTraceAnalyze();
+    cnf.trace_analyzer.trace_list;
     cnf.trace_analyzer.type = static_cast<AnalyzerType>(trace_analyzer.attribute(sStatType.c_str()).as_int(1));
 
     // get trace analyzer children
@@ -69,15 +71,18 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     }
 
     // get shared cache info
-    pugi::xml_node shared_cache = doc.child(sSharedCache.c_str());
-    cnf.shared_cache.size = shared_cache.attribute(sSize.c_str()).as_double(1);
+    pugi::xml_node shared_cache = modes.child(sSharedCache.c_str());
+    cnf.shared_cache = XmlSharedCache();
+    cnf.shared_cache.size = shared_cache.attribute(sSize.c_str()).as_uint(1);
     cnf.shared_cache.request_num = shared_cache.attribute(sRequestNum.c_str()).as_int(1000000);
     cnf.shared_cache.logger_type = (LoggerType)shared_cache.append_attribute(sRequestNum.c_str()).as_int(LCONSOLE);
     cnf.shared_cache.flow_type = (FlowType)shared_cache.append_attribute(sLogs.c_str()).as_int(FFILE);
 
     // get partial cache info
-    pugi::xml_node partial_cache = doc.child(sPartialCache.c_str());
+    pugi::xml_node partial_cache = modes.child(sPartialCache.c_str());
+    cnf.partial_cache = XmlPartialCache();
     cnf.partial_cache.app_count = partial_cache.attribute(sAppCount.c_str()).as_int(0);
+    cnf.partial_cache.request_num = partial_cache.attribute(sRequestNum.c_str()).as_int(1000000);
     cnf.partial_cache.common_size = (ByteSize)partial_cache.attribute(sCommonSize.c_str()).as_int(1);
 
     // get partial cache children
@@ -85,9 +90,8 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     {
         XmlCache cache_obj = XmlCache();
         cache_obj.asu = child.attribute(sXmlAsu.c_str()).as_uint(0);
-        cache_obj.size = child.attribute(sSize.c_str()).as_double(1);
+        cache_obj.size = child.attribute(sSize.c_str()).as_uint(1);
         cache_obj.hit_rate = child.attribute(sXmlHitRate.c_str()).as_double(0.2);
-        cache_obj.request_num = child.attribute(sRequestNum.c_str()).as_int(1000000);
         cache_obj.logger_type = (LoggerType)shared_cache.append_attribute(sRequestNum.c_str()).as_int(LCONSOLE);
         cache_obj.flow_type = (FlowType)shared_cache.append_attribute(sLogs.c_str()).as_int(FFILE);
         cnf.partial_cache.cache_list.push_back(cache_obj);

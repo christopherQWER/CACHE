@@ -22,13 +22,11 @@ public:
     /// Frequency of stack distances occurances
     DistStor stack_dist_map;
 
-    //Lru _cache;
-
     std::string pdf_dir_path;
     std::string cdf_dir_path;
 
     Client();
-    ~Client();
+    virtual ~Client();
 
     void SaveStackDist(StackDist stack_dist);
     void Init(Request* request, std:: string results_dir);

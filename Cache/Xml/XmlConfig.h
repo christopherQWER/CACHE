@@ -21,11 +21,11 @@ struct XmlTrace{
 struct XmlTraceAnalyze {
     AnalyzerType type;
     std::list<XmlTrace> trace_list;
-    XmlTraceAnalyze() : type(DETAILED), trace_list(std::list<XmlTrace>(0)) {}
+    XmlTraceAnalyze() : type(DETAILED), trace_list() {}
 };
 
 struct XmlSharedCache {
-    double size;
+    ByteSize size;
     int request_num;
     LoggerType logger_type;
     FlowType flow_type;
@@ -33,43 +33,43 @@ struct XmlSharedCache {
 };
 
 struct XmlCache {
-    double size;
-    int request_num;
+    ByteSize size;
     Asu asu;
     double hit_rate;
     LoggerType logger_type;
     FlowType flow_type;
-    XmlCache() : size(0), request_num(0), asu(0), hit_rate(0), logger_type(LCONSOLE), flow_type(FFILE) {}
+    XmlCache() : size(0), asu(0), hit_rate(0), logger_type(LCONSOLE), flow_type(FFILE) {}
 };
 
 struct XmlPartialCache {
     int app_count;
+    int request_num;
     ByteSize common_size;
     std::list<XmlCache> cache_list;
-    XmlPartialCache() : app_count(0), common_size(0), cache_list(std::list<XmlCache>(0)) {}
+    XmlPartialCache() : app_count(0), request_num(0), common_size(0), cache_list(std::list<XmlCache>()) {}
 };
 
 struct Config {
     XmlTraceAnalyze trace_analyzer;
     XmlSharedCache shared_cache;
     XmlPartialCache partial_cache;
-    Config() :  trace_analyzer(XmlTraceAnalyze()), shared_cache(XmlSharedCache()), partial_cache(XmlPartialCache()) {}
+    Config() : trace_analyzer(XmlTraceAnalyze()), shared_cache(XmlSharedCache()), partial_cache(XmlPartialCache()) {}
 };
 
 static const std::string Modes = "Modes";
 
 static const std::string sTraceAnalyzer = "TraceAnalyzer";
 static const std::string sSharedCache = "SharedCache";
-static const std::string sPartialCache = "StaticPartial";
+static const std::string sPartialCache = "PartialCache";
 
 static const std::string sTrace = "Trace";
 static const std::string sCache = "Cache";
 static const std::string sLogs = "Logs";
 static const std::string sFlow = "Flow";
 
-static const std::string sName = "sName";
-static const std::string sStatType = "sStatType";
-static const std::string sSize = "sSize";
+static const std::string sName = "Name";
+static const std::string sStatType = "StatType";
+static const std::string sSize = "Size";
 static const std::string sRequestNum = "RequestNum";
 static const std::string sAppCount = "AppCount";
 static const std::string sCommonSize = "CommonSize";

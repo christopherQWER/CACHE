@@ -158,14 +158,12 @@ void SharedCache::RunAlgorithm(const string& file_name)
     int client_counter = 0;
     Timestamp time_step = 0;
 
-
     Request *request;
     Client client = Client();
-    Logger *pLogger = Logger::CreateLogger(TYPE);
     Flow *flow = new TraceFileFlow(file_name);
     string results_dir = _GISTS_DIR_ + string("//") + Utils::GetFileNameWithoutExt(file_name);
 
-    pLogger->StartLog();
+    logger->StartLog();
     request = flow->GetRequest();
     time_step = request->_timestamp;
 
@@ -175,7 +173,7 @@ void SharedCache::RunAlgorithm(const string& file_name)
     // while we not reach the value of number experiment or trace_file not ended
     while ( request != nullptr )
     {
-        pLogger->ShowRequestInfo(INFO, counter, request->_asu, request->_lba, request->_timestamp);
+        logger->ShowRequestInfo(INFO, counter, request->_asu, request->_lba, request->_timestamp);
 
         // Add request to LRU cache
         cache->LRU(*request);
@@ -204,11 +202,12 @@ void SharedCache::RunAlgorithm(const string& file_name)
     }
 
     cache->_hit_rate = cache->CalculateHitRate();
-    pLogger->ShowHitRate(INFO, cache->_hit_rate);
+    logger->ShowHitRate(INFO, cache->_hit_rate);
 
     stack_dist = cache->CalculateAvgStackDistance();
-    pLogger->ShowStackDistance(INFO, stack_dist);
-    pLogger->EndLog();
+    logger->ShowStackDistance(INFO, stack_dist);
+    logger->EndLog();
+
 
     logger->ShowLogText(INFO, "==================End: WebSearch1.spc==================");
 }
