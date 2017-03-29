@@ -21,7 +21,7 @@ struct XmlTrace{
 struct XmlTraceAnalyze {
     AnalyzerType type;
     std::list<XmlTrace> trace_list;
-    XmlTraceAnalyze() : type(DETAILED), trace_list() {}
+    XmlTraceAnalyze() : type(DETAILED), trace_list(std::list<XmlTrace>(0)) {}
 };
 
 struct XmlSharedCache {
@@ -46,35 +46,35 @@ struct XmlPartialCache {
     int app_count;
     ByteSize common_size;
     std::list<XmlCache> cache_list;
-    XmlPartialCache() : app_count(0), common_size(0), cache_list() {}
+    XmlPartialCache() : app_count(0), common_size(0), cache_list(std::list<XmlCache>(0)) {}
 };
 
 struct Config {
     XmlTraceAnalyze trace_analyzer;
     XmlSharedCache shared_cache;
     XmlPartialCache partial_cache;
-    Config() :  trace_analyzer(), shared_cache(), partial_cache() {}
+    Config() :  trace_analyzer(XmlTraceAnalyze()), shared_cache(XmlSharedCache()), partial_cache(XmlPartialCache()) {}
 };
 
 static const std::string Modes = "Modes";
 
-static const std::string XmlTraceAnalyzer = "TraceAnalyzer";
-static const std::string XmlSharedCache = "SharedCache";
-static const std::string XmlPartialCache = "StaticPartial";
+static const std::string sTraceAnalyzer = "TraceAnalyzer";
+static const std::string sSharedCache = "SharedCache";
+static const std::string sPartialCache = "StaticPartial";
 
-static const std::string XmlTrace = "Trace";
-static const std::string XmlCache = "Cache";
-static const std::string XmlLogs = "Logs";
-static const std::string XmlFlow = "Flow";
+static const std::string sTrace = "Trace";
+static const std::string sCache = "Cache";
+static const std::string sLogs = "Logs";
+static const std::string sFlow = "Flow";
 
-static const std::string Name = "Name";
-static const std::string StatType = "StatType";
-static const std::string Size = "Size";
-static const std::string RequestNum = "RequestNum";
-static const std::string AppCount = "AppCount";
-static const std::string CommonSize = "CommonSize";
-static const std::string XmlAsu = "Asu";
-static const std::string XmlHitRate = "HitRate";
+static const std::string sName = "sName";
+static const std::string sStatType = "sStatType";
+static const std::string sSize = "sSize";
+static const std::string sRequestNum = "RequestNum";
+static const std::string sAppCount = "AppCount";
+static const std::string sCommonSize = "CommonSize";
+static const std::string sXmlAsu = "Asu";
+static const std::string sXmlHitRate = "HitRate";
 
 class XmlConfig {
 public:
