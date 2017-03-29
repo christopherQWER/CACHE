@@ -4,6 +4,7 @@
 #pragma once
 #include <iostream>
 #include <deque>
+#include <ctime>
 #include <string>
 #include "../Utils/Types.h"
 
