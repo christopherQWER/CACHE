@@ -101,6 +101,7 @@ void RunTraceAnalyseMode(Config my_config)
 {
     for (auto &trace : my_config.trace_analyzer.trace_list)
     {
+        string stat_dir = "";
         TraceAnalyzer *a = new TraceAnalyzer(trace.path.c_str(), trace.name.c_str());
         if (my_config.trace_analyzer.type == DETAILED)
         {
@@ -120,7 +121,16 @@ void RunSharedCacheMode(Config my_config)
     int experiment_number = my_config.shared_cache.request_num;
 
     SharedCache* sharedCache = new SharedCache(experiment_number, cache_capasity);
-    sharedCache->RunAlgorithm(_WEB_SEARCH_1_);
+
+    if (my_config.shared_cache.flow.flow_type == FFILE)
+    {
+        sharedCache->RunAlgorithm(my_config.shared_cache.flow.path_to_flow,
+                my_config.shared_cache.logger.logger_type);
+    }
+    else
+    {
+        sharedCache->RunAlgorithm("", my_config.shared_cache.logger.logger_type);
+    }
 }
 
 

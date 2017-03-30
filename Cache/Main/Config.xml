@@ -1,20 +1,21 @@
 <?xml version="1.0"?>
 <Modes>
-    <TraceAnalyzer StatType="DETAILED">
-        <Trace Name="WebSearch_1">"//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc"</Trace>
-        <Trace Name="WebSearch_2">"//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch2.spc"</Trace>
-        <Trace Name="WebSearch_3">"//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.spc"</Trace>
-        <Trace Name="Financial_1">"//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial1.spc"</Trace>
-        <Trace Name="Financial_2">"//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial2.spc"</Trace>
+    <TraceAnalyzer Type="DETAILED">
+        <Trace Name="WebSearch_1">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Trace>
+        <Trace Name="WebSearch_2">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch2.spc</Trace>
+        <Trace Name="WebSearch_3">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.spc</Trace>
+        <Trace Name="Financial_1">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial1.spc</Trace>
+        <Trace Name="Financial_2">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial2.spc</Trace>
     </TraceAnalyzer>
     <SharedCache Size="1" RequestNum="1000000">
-        <Logs>LCONSOLE</Logs>
-        <Flow>FFILE</Flow>
+        <Logs Type="LCONSOLE"></Logs>
+        <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Flow>
     </SharedCache>
     <PartialCache AppCount="5" CommonSize="1" RequestNum="1000000">
-        <Cache Size="0.2" Asu="0" HitRate="">
-            <Logs>LCONSOLE</Logs>
-            <Flow>FFILE</Flow>
-        </Cache>
+    	<Logs Type="LCONSOLE"></Logs>
+        <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Flow>
+        <Caches>
+        	<Cache Size="0.2" Asu="0" HitRate=""/>
+        </Caches>
     </PartialCache>
 </Modes>
