@@ -5,7 +5,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "Logger.h"l
+#include "Logger.h"
 
 class ConsoleLogger : public Logger
 {

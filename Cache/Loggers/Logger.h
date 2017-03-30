@@ -4,12 +4,12 @@
 
 #pragma once
 #include <iostream>
-#include <string>
+#include <cstring>
 #include "../Utils/Types.h"
 #define UTC (3)
 
-enum LoggerType {LCONSOLE, LFILE};
-enum Level {INFO, DEBUG, ERROR};
+enum LoggerType {LCONSOLE = 0, LFILE};
+enum Level {INFO = 0, DEBUG, ERROR};
 
 class Logger
 {
@@ -20,7 +20,7 @@ public:
     virtual ~Logger(){};
     virtual void StartLog() = 0;
 
-    /// \brief              [Show detailed info about request]
+    /// \brief              Show detailed info about request
     /// \param log_Lvl
     /// \param req_number
     /// \param asu
@@ -28,7 +28,7 @@ public:
     /// \param time
     virtual void ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time) = 0;
 
-    /// \brief          [Show log string]
+    /// \brief              Show log string
     /// \param log_Lvl
     /// \param text
     virtual void ShowLogText(Level log_Lvl, const std::string &text) = 0;
@@ -55,5 +55,12 @@ public:
             case LFILE:     return "LFILE";
             default:        return "Unknown type";
         }
+    }
+    static inline LoggerType toType(const char* str_repr)
+    {
+        if (strcmp(str_repr, "LCONSOLE") == 0)
+            return LCONSOLE;
+        else if (strcmp(str_repr, "LFILE") == 0)
+            return LFILE;
     }
 };
