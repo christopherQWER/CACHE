@@ -26,9 +26,10 @@ public:
     void Clear();
 
     /// \brief
-    /// \param file_name
-    /// \param cache_size
-    void RunAlgorithm(const std::string& file_name);
+    /// \param flow_file_name
+    /// \param type
+    /// \param log_file_name
+    void RunAlgorithm(const std::string& flow_file_name, LoggerType type, const std::string& log_file_name);
 
 private:
     ///
@@ -42,5 +43,7 @@ private:
     std::map<Asu, Client> client_map;
 
     void InsertToClientsMap(Client client);
-    void CreatePlot(const std::string& results_dir, int gist_counter, int client_counter);
+
+    void CreatePdfPlot(const std::string& results_dir, int gist_counter, int client_counter);
+    void CreateCdfPlot(const std::string& results_dir, int gist_counter, int client_counter);
 };
