@@ -122,6 +122,15 @@ void Utils::ExecuteCmd(const std::string &input)
     int errorCode = system(input.c_str());
 }
 
+string Utils::SplitFilename (const std::string& file_path)
+{
+    string dir = "";
+    std::size_t found = file_path.find_last_of("/\\");
+    dir = file_path.substr(0, found);
+    return dir;
+}
+
+
 //void Utils::OpenFile(const std::string file_path)
 //{
 //    trace_file.open(file_path.c_str());

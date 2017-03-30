@@ -47,4 +47,5 @@ public:
     static std::string GetFileName(const std::string &path);
     static std::string GetFileNameWithoutExt(const std::string &path);
     static bool CreateDirectory(const std::string &dir_path);
+    static std::string SplitFilename (const std::string& str);
 };
