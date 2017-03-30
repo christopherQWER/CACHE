@@ -19,7 +19,7 @@ public:
     /// Client id
     Asu _application_id;
 
-    /// Frequency of stack distances occurances
+    /// Frequency of stack distances occuranses
     DistStor stack_dist_map;
 
     std::string pdf_dir_path;

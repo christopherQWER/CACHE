@@ -14,7 +14,7 @@
 #include "../Loggers/Logger.h"
 
 #define _1_GB_IN_BYTES_ 1073741824
-typedef std::map<Asu, Client>::iterator ClientMap;
+typedef std::map<Asu, Client> ClientMap;
 
 class SharedCache {
 public:
@@ -40,7 +40,7 @@ private:
 
     ///
     StackDist stack_dist;
-    std::map<Asu, Client> client_map;
+    ClientMap client_map;
 
     void InsertToClientsMap(Client client);
 

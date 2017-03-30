@@ -125,11 +125,11 @@ void RunSharedCacheMode(Config my_config)
     if (my_config.shared_cache.flow.flow_type == FFILE)
     {
         sharedCache->RunAlgorithm(my_config.shared_cache.flow.path_to_flow,
-                my_config.shared_cache.logger.logger_type);
+                my_config.shared_cache.logger.logger_type, "");
     }
     else
     {
-        sharedCache->RunAlgorithm("", my_config.shared_cache.logger.logger_type);
+        sharedCache->RunAlgorithm("", my_config.shared_cache.logger.logger_type, "");
     }
 }
 
@@ -139,19 +139,21 @@ void RunPartialCacheMode(Config my_config)
     int app_count = my_config.partial_cache.cache_list.size();
     if (app_count > 0)
     {
+        // size of all cache space in bytes
         ByteSize common_size = my_config.partial_cache.common_size * _1_GB_IN_BYTES_;
+        // equal partitioning between application units
         ByteSize part_size = common_size / app_count;
-        list<AppClass> clients;
+        map<Asu, AppClass> clients;
         // Go through cache objects
         for (const auto &cache : my_config.partial_cache.cache_list)
         {
-            AppClass client = AppClass(part_size);
+            AppClass client = AppClass();
             client._application_id = cache.asu;
-            clients.push_back(client);
+            client._cache = new Lru(part_size);
+            clients.insert(pair<Asu, AppClass>(cache.asu, client));
         }
     }
     else
     {
-
     }
 }

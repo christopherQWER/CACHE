@@ -5,12 +5,14 @@
 #pragma once
 #include "Client.h"
 
-
+/// Class extends "Client" class with field "cache".
+/// For partial cache reallocation needed cache object
+///
 class AppClass : public Client {
 public:
-    AppClass(ByteSize capacity);
+    AppClass();
     ~AppClass();
 
     ///
-    Lru _cache;
+    Lru *_cache;
 };

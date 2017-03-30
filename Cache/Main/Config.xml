@@ -15,7 +15,7 @@
     	<Logs Type="LCONSOLE"></Logs>
         <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Flow>
         <Caches>
-        	<Cache Size="0.2" Asu="0" HitRate=""/>
+        	<Cache Size="" Asu="0" HitRate=""/>
         </Caches>
     </PartialCache>
 </Modes>

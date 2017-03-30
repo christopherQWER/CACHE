@@ -52,7 +52,7 @@ void SharedCache::CreatePdfPlot(const string& results_dir, int gist_counter, int
 
     // Go through apps
     int map_size = client_map.size();
-    for (ClientMap it = client_map.begin(); it != client_map.end(); ++it)
+    for (ClientMap::iterator it = client_map.begin(); it != client_map.end(); ++it)
     {
         if (min > it->second.stack_dist_map.begin()->first)
         {
@@ -134,7 +134,7 @@ void SharedCache::CreateCdfPlot(const std::string& results_dir, int gist_counter
 
     // Go through apps
     int map_size = client_map.size();
-    for (ClientMap it = client_map.begin(); it != client_map.end(); ++it)
+    for (ClientMap::iterator it = client_map.begin(); it != client_map.end(); ++it)
     {
         if (min > it->second.stack_dist_map.begin()->first)
         {
@@ -159,10 +159,13 @@ void SharedCache::CreateCdfPlot(const std::string& results_dir, int gist_counter
     cdf_plot.DoPlot();
 }
 
-void SharedCache::RunAlgorithm(const string& flow_file_name, LoggerType type, const string& log_file_name)
+void SharedCache::RunAlgorithm(const string& flow_file_name,
+                               LoggerType type,
+                               const string& log_file_name)
 {
     Logger *logger = Logger::CreateLogger(type);
 
+    // Counts number of requests fo all time
     int counter = 0;
     int gist_counter = 0;
     int client_counter = 0;
@@ -209,7 +212,7 @@ void SharedCache::RunAlgorithm(const string& flow_file_name, LoggerType type, co
         // If current application class doesn't exists => create
         if (client_map.find(request->_asu) == client_map.end())
         {
-            Client client = Client();
+            Client clielnt = Client();
             client.Init(request, results_dir);
             client_map.insert(pair<Asu, Client>(request->_asu, client));
         }
@@ -223,14 +226,25 @@ void SharedCache::RunAlgorithm(const string& flow_file_name, LoggerType type, co
         if ( request->_timestamp - prev_time >= time_step )
         {
             // common directory for current gistogram number for pdf
-            string path_to_cur_pdf_gists = results_dir + string("//") + _PDF_DIR_ + string("//") + to_string(gist_counter);
+            string path_to_cur_pdf_gists = results_dir +
+                                            string("//") +
+                                           _PDF_DIR_ +
+                                            string("//") +
+                                            to_string(gist_counter);
+
             Utils::CreateDirectory(path_to_cur_pdf_gists);
+
             // common directory for current gistogram number for cdf
-            string path_to_cur_cdf_gists = results_dir + string("//") + _CDF_DIR_ + string("//") + to_string(gist_counter);
+            string path_to_cur_cdf_gists = results_dir +
+                                            string("//") +
+                                           _CDF_DIR_ +
+                                            string("//") +
+                                            to_string(gist_counter);
+
             Utils::CreateDirectory(path_to_cur_cdf_gists);
 
             // Write "stack_dist/hit_rate" files for every application unit
-            for (ClientMap it = client_map.begin(); it != client_map.end(); ++it)
+            for (ClientMap::iterator it = client_map.begin(); it != client_map.end(); ++it)
             {
                 // Txt file for current ASU with pdf
                 string pdf_txt = path_to_cur_pdf_gists + "//" + to_string(it->first) + ".txt";

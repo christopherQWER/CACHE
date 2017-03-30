@@ -5,9 +5,9 @@
 #include "AppClass.h"
 
 
-AppClass::AppClass(ByteSize capacity)
-: _cache(capacity)
+AppClass::AppClass()
 {
+    _request_counter = 0;
 }
 
 AppClass::~AppClass()
