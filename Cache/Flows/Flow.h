@@ -3,8 +3,12 @@
 //
 
 #pragma once
+
+#include <iostream>
+#include <cstring>
 #include "../Generators/Request.h"
-enum FlowType {FFILE, FGENERATOR};
+
+enum FlowType{FFILE = 0, FGENERATOR};
 
 class Flow
 {
@@ -20,5 +24,12 @@ public:
             case FGENERATOR:     return "FGENERATOR";
             default:             return "Unknown flow type";
         }
+    }
+    static inline FlowType toType(const char* str_repr)
+    {
+        if (strcmp(str_repr, "FFILE") == 0)
+            return FFILE;
+        else if (strcmp(str_repr, "FGENERATOR") == 0)
+            return FGENERATOR;
     }
 };
