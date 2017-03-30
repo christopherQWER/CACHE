@@ -30,8 +30,8 @@ public:
 
     void SaveStackDist(StackDist stack_dist);
     void Init(Request* request, std:: string results_dir);
-    void PDFGistogramm(const std::string &file_path);
-    void CDFGistogramm(const std::string &file_path);
+    void SavePdfPlotDots(const std::string& file_path);
+    void SaveCdfPlotDots(const std::string& file_path);
 
 private:
 

@@ -4,14 +4,14 @@
 
 #pragma once
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <fstream>
 #include <sstream>
 #include "../Xml/pugixml.hpp"
 #include "../Utils/Types.h"
 
 ///
-enum AnalyzerType{COMMON, DETAILED, ALL};
+enum AnalyzerType{COMMON = 0, DETAILED, ALL};
 
 ///
 struct AppInfo
@@ -43,6 +43,16 @@ public:
             case ALL:          return "ALL";
             default:           return "UNKNOWN";
         }
+    }
+
+    static inline AnalyzerType toType(const char* str_repr)
+    {
+        if (strcmp(str_repr, "COMMON") == 0)
+            return COMMON;
+        else if (strcmp(str_repr, "DETAILED") == 0)
+            return DETAILED;
+        else if (strcmp(str_repr, "ALL") == 0)
+            return ALL;
     }
 
 private:

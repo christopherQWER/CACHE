@@ -17,32 +17,25 @@ Client::~Client()
 {
 }
 
-void Client::PDFGistogramm(const std::string &file_path)
+void Client::SavePdfPlotDots(const std::string& file_path)
 {
     int count = 0;
     for (DistStor::iterator it = stack_dist_map.begin(); it != stack_dist_map.end(); ++it)
     {
-//        while (count < it->first )
-//        {
-//            Utils::AppendToFile(file_path, count, 0);
-//            count++;
-//        }
-        Utils::AppendToFile(file_path,
-                            it->first,
-                            static_cast<double>(it->second) / static_cast<double>(_request_counter));
+        double value = static_cast<double>(it->second) / static_cast<double>(_request_counter);
+        Utils::AppendToFile(file_path, it->first, value);
         count++;
     }
 }
 
-void Client::CDFGistogramm(const std::string &file_path)
+void Client::SaveCdfPlotDots(const std::string& file_path)
 {
-    double val = 0;
+    double common_val = 0;
     for (DistStor::iterator it = stack_dist_map.begin(); it != stack_dist_map.end(); ++it)
     {
-        Utils::AppendToFile(file_path, it->first,
-                            val + (static_cast<double>(it->second) / static_cast<double>(_request_counter)));
-
-        val += (static_cast<double>(it->second) / static_cast<double>(_request_counter));
+        double curr_val = static_cast<double>(it->second) / static_cast<double>(_request_counter);
+        Utils::AppendToFile(file_path, it->first, common_val + curr_val);
+        common_val += curr_val;
     }
 }
 
