@@ -53,8 +53,8 @@ struct XmlSharedCache {
 struct XmlCache {
     ByteSize size;
     Asu asu;
-    double hit_rate;
-    XmlCache() : size(0), asu(0), hit_rate(0) {}
+    double qos;
+    XmlCache() : size(0), asu(0), qos(0) {}
 };
 
 ///
@@ -104,7 +104,7 @@ static const std::string sCommonSize = "CommonSize";
 static const std::string sXmlAsu = "Asu";
 static const std::string sXmlHitRate = "HitRate";
 
-class XmlConfig {
+class MainConfig {
 public:
 
      /// \brief Serialize object Config to xml document object

@@ -9,19 +9,10 @@
 #include <sstream>
 #include "../Xml/pugixml.hpp"
 #include "../Utils/Types.h"
+#include "../Xml/AnalyzeConfig.h"
 
 ///
 enum AnalyzerType{COMMON = 0, DETAILED, ALL};
-
-///
-struct AppInfo
-{
-    int reads;
-    int writes;
-    ByteSize avg_req_size;
-    ByteSize line_num;
-    AppInfo() : reads(0), writes(0), avg_req_size(0), line_num(0) {}
-};
 
 class TraceAnalyzer {
 public:
@@ -67,9 +58,4 @@ private:
     /// \brief []
     /// \param output_path []
     void AppendToFile(const std::string& output_path);
-
-    /// \brief []
-    /// \param output_path []
-    /// \param app_map []
-    void AppendToXml(const std::string& output_path, const std::map<Asu, AppInfo>& app_map);
 };

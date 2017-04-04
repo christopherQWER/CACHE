@@ -17,11 +17,11 @@ TestConfig::~TestConfig()
     pugi::xml_document doc;
     pugi::xml_document doc2;
 
-    XmlConfig::LoadFromFile(_XML_CONFIG_, doc);
+    MainConfig::LoadFromFile(_XML_CONFIG_, doc);
 
     Config main_config = Config();
-    XmlConfig::Deserialize(doc, main_config);
+    MainConfig::Deserialize(doc, main_config);
 
-    XmlConfig::Serialize(main_config, doc2);
-    XmlConfig::SaveToFile(doc2, "//home//cat//Documents//CACHE//Config1.xml");
+    MainConfig::Serialize(main_config, doc2);
+    MainConfig::SaveToFile(doc2, "//home//cat//Documents//CACHE//Config1.xml");
 }

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 #include "../Cache/Xml/pugixml.hpp"
-#include "../Cache/Xml/XmlConfig.h"
+#include "Xml/MainConfig.h"
 #include "../Cache/Utils/Paths.h"
 
 class TestConfig {

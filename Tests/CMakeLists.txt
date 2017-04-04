@@ -27,7 +27,7 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Modeling/TraceAnalyzer.cpp
 
-                 ../Cache/Xml/XmlConfig.cpp
+                 ../Cache/Xml/MainConfig.cpp
                  ../Cache/Xml/pugixml.cpp)
 
 set(HEADER_FILES TestFlow.h
@@ -55,7 +55,7 @@ set(HEADER_FILES TestFlow.h
 
                  ../Cache/Modeling/TraceAnalyzer.h
 
-                 ../Cache/Xml/XmlConfig.h
+                 ../Cache/Xml/MainConfig.h
                  ../Cache/Xml/pugixml.hpp)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})

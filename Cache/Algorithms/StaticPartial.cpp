@@ -85,7 +85,7 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
                 it->second.SaveCdfPlotDots(cdf_txt);
             }
             // Create pdf and cdf plots of current applications
-            CreatePdfPlot(path_to_cur_pdf_gists, gist_counter, client_counter);
+            //CreatePdfPlot(path_to_cur_pdf_gists, gist_counter, client_counter);
             //CreateCdfPlot(path_to_cur_cdf_gists, gist_counter, client_counter);
 
             gist_counter++;
@@ -115,7 +115,7 @@ void StaticPartial::CreatePdfPlot(const string& results_dir, int gist_counter, i
     StackDist max = (--(client_map.begin()->second.stack_dist_map.end()))->first;
 
     // Go through apps
-    int map_size = client_map.size();
+    ByteSize map_size = client_map.size();
     for (AppMap::iterator it = client_map.begin(); it != client_map.end(); ++it)
     {
         if (min > it->second.stack_dist_map.begin()->first)

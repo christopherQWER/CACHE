@@ -37,12 +37,12 @@ public:
      /// Default constructor
     Request();
 
-     /// \brief                [Constructor]
-     /// \param asu            [application specific unit]
-     /// \param lba            [logical block address]
-     /// \param size           [size of requested bytes]
-     /// \param opcode         [operation code]
-     /// \param timestamp      [incoming time]
+     /// \brief                Constructor
+     /// \param asu            application specific unit
+     /// \param lba            logical block address
+     /// \param size           size of requested bytes
+     /// \param opcode         operation code
+     /// \param timestamp      incoming time
     Request(Asu asu, Lba lba, ByteSize size, OpCode opcode, Timestamp timestamp);
     ~Request();
 
@@ -53,9 +53,15 @@ public:
     /// \brief
     /// \param traceLog []
     /// \param reqList []
-    static void ParseRequest(std::string traceLog, std::deque<Request>& reqList);
+    static void ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
 
+    /// \brief
+    /// \param request_string
+    /// \param req
+    /// \return
+    static bool SetRequest(const std::string &request_string, Request &req);
 
+private:
     static Asu GetRandomAsu();
     static Lba GetRandomLba();
     static OpCode GetReadOpCode();

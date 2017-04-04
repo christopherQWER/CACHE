@@ -43,30 +43,11 @@ void Request::GenerateRequest(Request& rq)
     rq._timestamp = GetCurrentTime();
 }
 
-void Request::ParseRequest(string request_string, deque<Request>& req_list)
+void Request::ParseRequest(const string &request_string, deque<Request>& req_list)
 {
-    bool result = false;
-
-    istringstream origs(request_string.c_str());
     Request req = Request();
-
-    string part;
-    result = getline(origs, part, ',') &&
-             (istringstream(part) >> req._asu) &&
-             getline(origs, part, ',') &&
-             (istringstream(part) >> req._lba) &&
-             getline(origs, part, ',') &&
-             (istringstream(part) >> req._size) &&
-             getline(origs, part, ',') &&
-             ( (part.size() == 1) ? (req._opcode = part.at(0), true) : false) &&
-             getline(origs, part, ',') &&
-             (istringstream(part) >> req._timestamp);
-
-    if (!result && origs)
-    {
-        origs.setstate(ios::failbit);
+    if (!SetRequest(request_string, req))
         return;
-    }
 
     unsigned int numberOfRequests = (unsigned int) (req._size / _CELL_SIZE_);
     for (int i = 0; i < numberOfRequests + 1; i++)
@@ -105,4 +86,28 @@ OpCode Request::GetWriteOpCode()
 Timestamp Request::GetCurrentTime()
 {
     return time(0);
+}
+
+bool Request::SetRequest(const string &request_string, Request& req)
+{
+    bool result = false;
+    istringstream origs(request_string.c_str());
+    string part;
+    result = getline(origs, part, ',') &&
+            (istringstream(part) >> req._asu) &&
+            getline(origs, part, ',') &&
+            (istringstream(part) >> req._lba) &&
+            getline(origs, part, ',') &&
+            (istringstream(part) >> req._size) &&
+            getline(origs, part, ',') &&
+            ( (part.size() == 1) ? (req._opcode = part.at(0), true) : false) &&
+            getline(origs, part, ',') &&
+            (istringstream(part) >> req._timestamp);
+
+    if (!result && origs)
+    {
+        origs.setstate(ios::failbit);
+        return false;
+    }
+    return true;
 }

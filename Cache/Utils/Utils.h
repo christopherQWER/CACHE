@@ -34,18 +34,20 @@ public:
     static void WriteLines(const std::string &output_path, std::vector<std::string> &lines);
     static void ExecuteCmd(const std::string &input);
     static int DoubleToInt(double d_input);
-
-    template<typename First, typename... Rest>
-    std::string PathCombine(const First& first, const Rest&... rest)
+    //static std::string PathCombine(const char *fmt, const char* ...);
+    template<typename T>
+    static T PathCombine(T v)
     {
-        std::string result_str = "//";
-        result_str.append(first);
-        result_str.append("//");
-        return PathCombine(rest...);
+        return v;
+    }
+    template<typename T, typename... Args>
+    static T PathCombine(T first, Args... args)
+    {
+        return first + "//" + PathCombine(args...);
     }
     static std::string GetCurrentUnixTime();
     static std::string GetFileName(const std::string &path);
     static std::string GetFileNameWithoutExt(const std::string &path);
     static bool CreateDirectory(const std::string &dir_path);
-    static std::string SplitFilename (const std::string& str);
+    static std::string SplitFilename (const std::string& file_path);
 };

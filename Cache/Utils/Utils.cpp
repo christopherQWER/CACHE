@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <ctime>
+#include <cstdarg>
 #include "Utils.h"
 using namespace std;
 
@@ -126,10 +127,23 @@ string Utils::SplitFilename (const std::string& file_path)
 {
     string dir = "";
     std::size_t found = file_path.find_last_of("/\\");
-    dir = file_path.substr(0, found);
+    dir = file_path.substr(0, found - 1);
     return dir;
 }
 
+//string Utils::PathCombine(const char *fmt, const char* ...)
+//{
+//    string result_str = "";
+//    va_list args;
+//    va_start(args, fmt);
+//    while (fmt != '\0')
+//    {
+//        result_str += va_arg(args, char*);
+//        ++fmt;
+//    }
+//    va_end(args);
+//    return result_str;
+//}
 
 //void Utils::OpenFile(const std::string file_path)
 //{

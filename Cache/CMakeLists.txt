@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.6)
 project(Cache)
 
 set(CMAKE_CXX_STANDARD 11)
-set(SOURCE_FILES Main/Main.cpp
+set(SOURCE_FILES
+                 Main/Main.cpp
+                 Main/ModeRunner.cpp
 
                  Algorithms/SharedCache.cpp
                  Algorithms/StaticPartial.cpp
@@ -29,10 +31,13 @@ set(SOURCE_FILES Main/Main.cpp
                  Utils/Plot.cpp
 
                  Xml/pugixml.cpp
-                 Xml/XmlConfig.cpp
+                 Xml/MainConfig.cpp
+                 Xml/AnalyzeConfig.cpp
                  )
 
 set(HEADER_FILES
+                 Main/ModeRunner.h
+
                  Algorithms/SharedCache.h
                  Algorithms/StaticPartial.h
                  Algorithms/DynamicPartial.h
@@ -59,7 +64,8 @@ set(HEADER_FILES
 
                  Xml/pugiconfig.hpp
                  Xml/pugixml.hpp
-                 Xml/XmlConfig.h
+                 Xml/MainConfig.h
+                 Xml/AnalyzeConfig.h
 
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h

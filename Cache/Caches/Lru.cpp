@@ -37,9 +37,7 @@ void Lru::LRU(Request &newRequest)
             stack_dist = _curr_size + 1;
             DeleteOldRequest();
             _miss++;
-#ifdef DEBUG
-            pLogger->ShowLogText("\n\tCache is full...clear... ");
-#endif
+            pLogger->ShowLogText(DEBUG, "\n\tCache is full...clear... ");
         }
         else
         {
@@ -47,9 +45,7 @@ void Lru::LRU(Request &newRequest)
         }
         InsertNewRequest(newRequest);
         _curr_capacity += newRequest._size;
-#ifdef DEBUG
-        pLogger->ShowLogText("Request added to cache!\n");
-#endif
+        pLogger->ShowLogText(DEBUG, "Request added to cache!\n");
     }
     _request_counter++;
     newRequest._stack_distance = stack_dist;

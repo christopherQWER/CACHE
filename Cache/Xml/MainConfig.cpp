@@ -1,10 +1,10 @@
 //
 // Created by cat on 2/19/17.
 //
-#include "XmlConfig.h"
+#include "MainConfig.h"
 using namespace std;
 
-void XmlConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
+void MainConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
 {
     // create root "Modes"
     pugi::xml_node modes_node = doc.append_child(Modes.c_str());
@@ -23,7 +23,7 @@ void XmlConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
 
     // create child "SharedCache"
     pugi::xml_node shared_node = modes_node.append_child(sSharedCache.c_str());
-    shared_node.append_attribute(sSize.c_str()).set_value((long unsigned int)cnf.shared_cache.size);
+    shared_node.append_attribute(sSize.c_str()).set_value(static_cast<long unsigned int>(cnf.shared_cache.size));
     shared_node.append_attribute(sRequestNum.c_str()).set_value(cnf.shared_cache.request_num);
 
     // create logger tag
@@ -69,13 +69,13 @@ void XmlConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
     for (auto &cache : cnf.partial_cache.cache_list)
     {
         pugi::xml_node cache_node = caches.append_child(sCache.c_str());
-        cache_node.append_attribute(sSize.c_str()).set_value((long unsigned int)cache.size);
+        cache_node.append_attribute(sSize.c_str()).set_value(static_cast<long unsigned int>(cache.size));
         cache_node.append_attribute(sXmlAsu.c_str()).set_value(cache.asu);
-        cache_node.append_attribute(sXmlHitRate.c_str()).set_value(cache.hit_rate);
+        cache_node.append_attribute(sXmlHitRate.c_str()).set_value(cache.qos);
     }
 }
 
-void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
+void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
 {
     pugi::xml_node modes = doc.child(Modes.c_str());
 
@@ -133,13 +133,13 @@ void XmlConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
         XmlCache cache_obj = XmlCache();
         cache_obj.asu = child.attribute(sXmlAsu.c_str()).as_uint(0);
         cache_obj.size = child.attribute(sSize.c_str()).as_uint(1);
-        cache_obj.hit_rate = child.attribute(sXmlHitRate.c_str()).as_double(0.2);
+        cache_obj.qos = child.attribute(sXmlHitRate.c_str()).as_double(0.2);
         cnf.partial_cache.cache_list.push_back(cache_obj);
     }
 }
 
 //From trace_file
-void XmlConfig::LoadFromFile(const std::string &file_name, pugi::xml_document &doc)
+void MainConfig::LoadFromFile(const std::string &file_name, pugi::xml_document &doc)
 {
     pugi::xml_parse_result result = doc.load_file(file_name.c_str());
     if (result)
@@ -155,7 +155,7 @@ void XmlConfig::LoadFromFile(const std::string &file_name, pugi::xml_document &d
 }
 
 //To trace_file
-void XmlConfig::SaveToFile(const pugi::xml_document &doc, const std::string &file_name)
+void MainConfig::SaveToFile(const pugi::xml_document &doc, const std::string &file_name)
 {
     bool saveSucceeded = doc.save_file(file_name.c_str());
 }
