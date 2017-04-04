@@ -4,11 +4,10 @@
 
 #include <cmath>
 #include <ctime>
-#include <cstdarg>
 #include "Utils.h"
 using namespace std;
 
-void Utils::AppendToFile(const std::string &output_path, const std::string &text)
+void Utils::AppendToFile(const string &output_path, const string &text)
 {
     ofstream density_file;
     density_file.open(output_path.c_str(), fstream::out | fstream::app);
@@ -17,7 +16,7 @@ void Utils::AppendToFile(const std::string &output_path, const std::string &text
     density_file.close();
 }
 
-void Utils::WriteLines(const std::string &output_path, std::vector<std::string> &lines)
+void Utils::WriteLines(const string &output_path, vector<string> &lines)
 {
     ofstream density_file;
     density_file.open(output_path.c_str(), fstream::out | fstream::app);
@@ -39,33 +38,33 @@ int Utils::DoubleToInt(double d_input)
     return value;
 }
 
-std::string Utils::GetCurrentUnixTime()
+string Utils::GetCurrentUnixTime()
 {
     time_t t = time(0);
     long int now = static_cast<long int>(t);
     string str_time = "";
 
-    std::stringstream strstream;
+    stringstream strstream;
     strstream << now;
     strstream >> str_time;
 
     return str_time;
 }
 
-std::string Utils::GetFileName(const string &path)
+string Utils::GetFileName(const string &path)
 {
     // Remove directory if present.
     // Do this before extension removal incase directory has a period character.
     string copy_path = path;
     const size_t last_slash_idx = copy_path.find_last_of("\\/");
-    if (std::string::npos != last_slash_idx)
+    if (string::npos != last_slash_idx)
     {
         copy_path.erase(0, last_slash_idx + 1);
     }
     return copy_path;
 }
 
-std::string Utils::GetFileNameWithoutExt(const std::string &path)
+string Utils::GetFileNameWithoutExt(const string &path)
 {
     string name = GetFileName(path);
     size_t last_index = name.find_last_of(".");
@@ -73,7 +72,7 @@ std::string Utils::GetFileNameWithoutExt(const std::string &path)
     return clear_name;
 }
 
-bool Utils::CreateDirectory(const std::string &dir_path)
+bool Utils::CreateDirectory(const string &dir_path)
 {
 //    int status = 0;
 //    status = mkdir(dir_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -118,15 +117,15 @@ bool Utils::CreateDirectory(const std::string &dir_path)
     return bSuccess;
 }
 
-void Utils::ExecuteCmd(const std::string &input)
+void Utils::ExecuteCmd(const string &input)
 {
     int errorCode = system(input.c_str());
 }
 
-string Utils::SplitFilename (const std::string& file_path)
+string Utils::SplitFilename (const string& file_path)
 {
     string dir = "";
-    std::size_t found = file_path.find_last_of("/\\");
+    size_t found = file_path.find_last_of("/\\");
     dir = file_path.substr(0, found - 1);
     return dir;
 }
@@ -145,7 +144,7 @@ string Utils::SplitFilename (const std::string& file_path)
 //    return result_str;
 //}
 
-//void Utils::OpenFile(const std::string file_path)
+//void Utils::OpenFile(const string file_path)
 //{
 //    trace_file.open(file_path.c_str());
 //    if (! (trace_file.is_open()) )

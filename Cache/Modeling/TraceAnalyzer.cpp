@@ -4,7 +4,6 @@
 
 #include "TraceAnalyzer.h"
 #include "../Generators/Request.h"
-
 using namespace std;
 
 TraceAnalyzer::TraceAnalyzer(const string file_path, string output_file)
@@ -92,7 +91,7 @@ void TraceAnalyzer::GetDetailedStat()
             app_info.avg_req_size += req._size;
             app_info.req_num++;
             app_info.unit = req._asu;
-            app_map.insert(std::pair<Asu, AppInfo>(req._asu, app_info));
+            app_map.insert(pair<Asu, AppInfo>(req._asu, app_info));
         }
         else
         {
@@ -128,7 +127,7 @@ void TraceAnalyzer::GetDetailedStat()
     app_map.clear();
 }
 
-void TraceAnalyzer::AppendToFile(const std::string& output_path)
+void TraceAnalyzer::AppendToFile(const string& output_path)
 {
     ofstream density_file;
     density_file.open(output_path, fstream::out | fstream::app);

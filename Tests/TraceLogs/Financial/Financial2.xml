@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<TraceFile TracePath="//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial2.spc" Length="3699195" OutputPath="//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial2.xml">
+	<App Unit="0" Reads="573557" Writes="61596" RequestNumber="635153" AvgBytes="2912" />
+	<App Unit="1" Reads="811408" Writes="131868" RequestNumber="943276" AvgBytes="2230" />
+	<App Unit="2" Reads="203277" Writes="31805" RequestNumber="235082" AvgBytes="1985" />
+	<App Unit="3" Reads="178458" Writes="56516" RequestNumber="234974" AvgBytes="1380" />
+	<App Unit="4" Reads="432239" Writes="70535" RequestNumber="502774" AvgBytes="1389" />
+	<App Unit="5" Reads="60473" Writes="28334" RequestNumber="88807" AvgBytes="2059" />
+	<App Unit="6" Reads="691" Writes="13176" RequestNumber="13867" AvgBytes="45186" />
+	<App Unit="7" Reads="161705" Writes="47824" RequestNumber="209529" AvgBytes="2028" />
+	<App Unit="8" Reads="23125" Writes="8413" RequestNumber="31538" AvgBytes="1234" />
+	<App Unit="9" Reads="134040" Writes="6643" RequestNumber="140683" AvgBytes="3443" />
+	<App Unit="10" Reads="47937" Writes="37018" RequestNumber="84955" AvgBytes="2311" />
+	<App Unit="11" Reads="145059" Writes="44313" RequestNumber="189372" AvgBytes="2292" />
+	<App Unit="12" Reads="46804" Writes="14235" RequestNumber="61039" AvgBytes="4339" />
+	<App Unit="13" Reads="119660" Writes="46501" RequestNumber="166161" AvgBytes="2180" />
+	<App Unit="14" Reads="69263" Writes="30899" RequestNumber="100162" AvgBytes="1637" />
+	<App Unit="15" Reads="22242" Writes="7325" RequestNumber="29567" AvgBytes="2684" />
+	<App Unit="16" Reads="13842" Writes="1816" RequestNumber="15658" AvgBytes="10976" />
+	<App Unit="17" Reads="347" Writes="14266" RequestNumber="14613" AvgBytes="11607" />
+	<App Unit="18" Reads="1985" Writes="0" RequestNumber="1985" AvgBytes="7935" />
+</TraceFile>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<TraceFile TracePath="//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.spc" Length="4261709" OutputPath="//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.xml">
+	<App Unit="0" Reads="1439434" Writes="0" RequestNumber="1439434" AvgBytes="15536" />
+	<App Unit="1" Reads="1409113" Writes="1257" RequestNumber="1410370" AvgBytes="15912" />
+	<App Unit="2" Reads="1410492" Writes="1" RequestNumber="1410493" AvgBytes="15888" />
+	<App Unit="3" Reads="487" Writes="2" RequestNumber="489" AvgBytes="15596" />
+	<App Unit="4" Reads="486" Writes="0" RequestNumber="486" AvgBytes="15456" />
+	<App Unit="5" Reads="434" Writes="0" RequestNumber="434" AvgBytes="16704" />
+	<App Unit="6" Reads="1" Writes="0" RequestNumber="1" AvgBytes="0" />
+	<App Unit="7" Reads="1" Writes="0" RequestNumber="1" AvgBytes="0" />
+	<App Unit="8" Reads="1" Writes="0" RequestNumber="1" AvgBytes="0" />
+</TraceFile>

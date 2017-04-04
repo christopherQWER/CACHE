@@ -102,7 +102,7 @@ static const std::string sRequestNum = "RequestNum";
 static const std::string sAppCount = "AppCount";
 static const std::string sCommonSize = "CommonSize";
 static const std::string sXmlAsu = "Asu";
-static const std::string sXmlHitRate = "HitRate";
+static const std::string sQoS = "QoS";
 
 class MainConfig {
 public:

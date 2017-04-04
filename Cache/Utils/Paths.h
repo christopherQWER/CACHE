@@ -18,4 +18,4 @@
 #define _GISTS_DIR_         "//home//cat//Documents//CACHE//Tests//HitRateSnaps"
 #define _GEN_DISTR_DIR      "//home//cat//Documents//CACHE//Tests//GenGist"
 
-#define _XML_CONFIG_        "//home//cat//Documents//CACHE//Tests//Test//Config.xml"
+#define _XML_CONFIG_        "//home//cat//Documents//CACHE//Cache//Main//Config.xml"

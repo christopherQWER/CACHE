@@ -1,0 +1,5 @@
+//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial1.txt
+Reads: 1235633
+Writes: 4099354
+All: 5334987
+Average bytes IO: 3465

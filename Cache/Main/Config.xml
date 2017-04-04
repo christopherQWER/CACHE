@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Modes>
-    <TraceAnalyzer Type="DETAILED">
+    <TraceAnalyzer Type="COMMON">
         <Trace Name="WebSearch1">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Trace>
         <Trace Name="WebSearch2">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch2.spc</Trace>
         <Trace Name="WebSearch3">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.spc</Trace>
