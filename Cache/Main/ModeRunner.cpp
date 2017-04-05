@@ -115,9 +115,10 @@ void RunPartialCacheMode(Config my_config)
                     client_map.insert(pair<Asu, AppClass>(app.unit, client));
                 }
 
-                StaticPartial::EqualPartial(trace_file.path, client_map,
-                        my_config.partial_cache.logger.logger_type,
-                        my_config.partial_cache.logger.path_to_log);
+                StaticPartial staticPartial = StaticPartial(client_map);
+                staticPartial.EqualPartial(trace_file.path,
+                                            my_config.partial_cache.logger.logger_type,
+                                            my_config.partial_cache.logger.path_to_log);
             }
         }
     }

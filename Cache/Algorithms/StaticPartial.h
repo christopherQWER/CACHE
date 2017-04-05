@@ -10,20 +10,23 @@ typedef std::map<Asu, AppClass> AppMap;
 
 class StaticPartial {
 public:
-    static void EqualPartial(const std::string& flow_file_name,
-                      std::map<Asu, AppClass> client_map,
-                      LoggerType type,
-                      const std::string& log_file_name);
-    static void PercentPartial();
+    StaticPartial(std::map<Asu, AppClass> client_map);
+    void EqualPartial(const std::string& flow_file_name,
+                            LoggerType type,
+                            const std::string& log_file_name);
+    void PercentPartial();
 
 private:
     /// Input parameter set number of experiments
     int experiments_number;
 
     ///
-    StackDist stack_dist;
-    AppMap client_map;
+    int _gist_counter;
+    StackDist _stack_dist;
+    AppMap _client_map;
 
-    void CreatePdfPlot(const std::string& results_dir, int gist_counter, int client_counter);
-    void CreateCdfPlot(const std::string& results_dir, int gist_counter, int client_counter);
+    void CreatePdfPlot(const std::string& results_dir, int client_counter);
+    void CreateCdfPlot(const std::string& results_dir, int client_counter);
+
+    void CommonPlot(const std::string& flow_file_name);
 };
