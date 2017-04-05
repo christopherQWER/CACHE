@@ -59,18 +59,18 @@ struct XmlCache {
 
 ///
 struct XmlPartialCache {
-    int app_count;
-    int request_num;
+    ByteSize app_count;
+    ByteSize request_num;
     ByteSize common_size;
     XmlLog logger;
     XmlFlow flow;
-    std::list<XmlCache> cache_list;
+    std::list<XmlCache> app_list;
     XmlPartialCache() : app_count(0),
                         request_num(0),
                         common_size(0),
                         logger(XmlLog()),
                         flow(XmlFlow()),
-                        cache_list(std::list<XmlCache>()) {}
+                        app_list(std::list<XmlCache>()) {}
 };
 
 ///
@@ -88,16 +88,16 @@ static const std::string Modes = "Modes";
 static const std::string sTraceAnalyzer = "TraceAnalyzer";
 static const std::string sSharedCache = "SharedCache";
 static const std::string sPartialCache = "PartialCache";
-static const std::string sCaches = "Caches";
+static const std::string sApps = "Applications";
 
 static const std::string sTrace = "Trace";
-static const std::string sCache = "Cache";
+static const std::string sApplication = "App";
 static const std::string sLogs = "Logs";
 static const std::string sFlow = "Flow";
 
 static const std::string sName = "Name";
 static const std::string sType = "Type";
-static const std::string sSize = "Size";
+static const std::string sSize = "CacheSize";
 static const std::string sRequestNum = "RequestNum";
 static const std::string sAppCount = "AppCount";
 static const std::string sCommonSize = "CommonSize";

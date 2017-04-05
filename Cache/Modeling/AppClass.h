@@ -15,4 +15,7 @@ public:
 
     ///
     Lru *_cache;
+
+    /// QoS
+    double _QoS;
 };

@@ -1,21 +1,19 @@
 <?xml version="1.0"?>
 <Modes>
-    <TraceAnalyzer Type="COMMON">
-        <Trace Name="WebSearch1">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Trace>
-        <Trace Name="WebSearch2">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch2.spc</Trace>
-        <Trace Name="WebSearch3">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.spc</Trace>
-        <Trace Name="Financial1">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial1.spc</Trace>
-        <Trace Name="Financial2">//home//cat//Documents//CACHE//Tests//TraceLogs//Financial//Financial2.spc</Trace>
+    <TraceAnalyzer Type="DETAILED">
+        <Trace Name="WebSearch1">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch1.spc</Trace>
+        <Trace Name="WebSearch2">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch2.spc</Trace>
+        <Trace Name="WebSearch3">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch3.spc</Trace>
+        <Trace Name="Financial1">//home//cat//Documents//CACHE//Tests//Traces//Financial//Financial1.spc</Trace>
+        <Trace Name="Financial2">//home//cat//Documents//CACHE//Tests//Traces//Financial//Financial2.spc</Trace>
     </TraceAnalyzer>
-    <SharedCache Size="1" RequestNum="1000000">
+    <SharedCache CacheSize="1" RequestNum="1000000">
         <Logs Type="LCONSOLE"></Logs>
         <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Flow>
     </SharedCache>
     <PartialCache AppCount="" CommonSize="1" RequestNum="1000000">
     	<Logs Type="LCONSOLE"></Logs>
         <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Flow>
-        <Caches>
-        	<Cache Size="" Asu="0" QoS=""/>
-        </Caches>
+        <Applications/>
     </PartialCache>
 </Modes>

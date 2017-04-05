@@ -5,6 +5,7 @@
 #include "ModeRunner.h"
 #include "../Algorithms/SharedCache.h"
 #include "../Algorithms/StaticPartial.h"
+
 using namespace std;
 
 void RunTraceAnalyseMode(Config my_config)
@@ -44,7 +45,7 @@ void RunTraceAnalyseMode(Config my_config)
 
 void RunSharedCacheMode(Config my_config)
 {
-    ByteSize cache_capasity = (my_config.shared_cache.size * _1_GB_IN_BYTES_) / 4;
+    ByteSize cache_capasity = my_config.shared_cache.size * _1_GB_IN_BYTES_;
     int experiment_number = my_config.shared_cache.request_num;
 
     SharedCache* sharedCache = new SharedCache(experiment_number, cache_capasity);
@@ -63,16 +64,18 @@ void RunSharedCacheMode(Config my_config)
 
 void RunPartialCacheMode(Config my_config)
 {
-    ByteSize app_count = my_config.partial_cache.cache_list.size();
+    ByteSize app_count = my_config.partial_cache.app_list.size();
+    // size of all cache space in bytes
+    ByteSize common_size = my_config.partial_cache.common_size * _1_GB_IN_BYTES_;
+
+    // if applications are described in config
     if (app_count > 0)
     {
-        // size of all cache space in bytes
-        ByteSize common_size = my_config.partial_cache.common_size * _1_GB_IN_BYTES_;
         // equal partitioning between application units
         ByteSize part_size = common_size / app_count;
         map<Asu, AppClass> clients;
         // Go through cache objects
-        for (const auto &cache : my_config.partial_cache.cache_list)
+        for (const auto &cache : my_config.partial_cache.app_list)
         {
             AppClass client = AppClass();
             client._application_id = cache.asu;
@@ -80,7 +83,42 @@ void RunPartialCacheMode(Config my_config)
             clients.insert(pair<Asu, AppClass>(cache.asu, client));
         }
     }
+        // get applications from trace analyzer statistic
     else
     {
+        if (my_config.trace_analyzer.type == DETAILED)
+        {
+            // go through all trace files
+            for (auto &trace_file : my_config.trace_analyzer.trace_list )
+            {
+                // get xml-statistic file path
+                string trace_file_dir = Utils::SplitFilename(trace_file.path);
+                string source_file = Utils::PathCombine(trace_file_dir, trace_file.name + ".xml");
+
+                TraceInfo config = TraceInfo();
+                pugi::xml_document doc;
+                AnalyzeConfig::LoadFromFile(source_file, doc);
+                AnalyzeConfig::Deserialize(doc, config);
+
+                my_config.partial_cache.common_size = common_size;
+                my_config.partial_cache.app_count = config.apps.size();
+                my_config.partial_cache.request_num = config.length;
+                ByteSize part_size = common_size / my_config.partial_cache.app_count;
+
+                map<Asu, AppClass> client_map;
+                // Go through cache objects
+                for (const auto &app : config.apps)
+                {
+                    AppClass client = AppClass();
+                    client._application_id = app.unit;
+                    client._cache = new Lru(part_size);
+                    client_map.insert(pair<Asu, AppClass>(app.unit, client));
+                }
+
+                StaticPartial::EqualPartial(trace_file.path, client_map,
+                        my_config.partial_cache.logger.logger_type,
+                        my_config.partial_cache.logger.path_to_log);
+            }
+        }
     }
 }

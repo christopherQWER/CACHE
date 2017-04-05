@@ -33,7 +33,8 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
     Flow *flow;
     Request *request;
     Client client = Client();
-    string results_dir = _GISTS_DIR_ + string("//Shared//");
+    string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Partial"));
+    Utils::CreateDirectory(results_dir);
 
     // if flow must be from generator
     if (flow_file_name == "")
@@ -46,8 +47,10 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
     else
     {
         flow = new TraceFileFlow(flow_file_name);
-        results_dir += Utils::GetFileNameWithoutExt(flow_file_name);
-        logger->ShowLogText(INFO, "=================Start: " + Utils::GetFileNameWithoutExt(flow_file_name) + "=================");
+        string flow_name = Utils::GetFileNameWithoutExt(flow_file_name);
+        results_dir = Utils::PathCombine(results_dir, flow_name);
+        Utils::CreateDirectory(results_dir);
+        logger->ShowLogText(INFO, "=================Start: " + flow_name + "=================");
     }
 
     logger->StartLog();
@@ -67,22 +70,22 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
         if ( request->_timestamp - prev_time >= time_step )
         {
             // common directory for current gistogram number for pdf
-            string path_to_cur_pdf_gists = results_dir + string("//") + _PDF_DIR_ + string("//") + to_string(gist_counter);
+            string path_to_cur_pdf_gists = Utils::PathCombine(results_dir, string(_PDF_DIR_), to_string(gist_counter));
             Utils::CreateDirectory(path_to_cur_pdf_gists);
             // common directory for current gistogram number for cdf
-            string path_to_cur_cdf_gists = results_dir + string("//") + _CDF_DIR_ + string("//") + to_string(gist_counter);
+            string path_to_cur_cdf_gists = Utils::PathCombine(results_dir, string(_CDF_DIR_), to_string(gist_counter));
             Utils::CreateDirectory(path_to_cur_cdf_gists);
 
             // Write "stack_dist/hit_rate" files for every application unit
             for (AppMap::iterator it = client_map.begin(); it != client_map.end(); ++it)
             {
                 // Txt file for current ASU with pdf
-                string pdf_txt = path_to_cur_pdf_gists + "//" + to_string(it->first) + ".txt";
+                string pdf_txt = Utils::PathCombine(path_to_cur_pdf_gists, to_string(it->first) + ".txt");
                 // Txt file for current ASU with cdf
-                string cdf_txt = path_to_cur_cdf_gists + "//" + to_string(it->first) + ".txt";
+                string cdf_txt = Utils::PathCombine(path_to_cur_cdf_gists, to_string(it->first) + ".txt");
 
                 it->second.SavePdfPlotDots(pdf_txt);
-                it->second.SaveCdfPlotDots(cdf_txt);
+                //it->second.SaveCdfPlotDots(cdf_txt);
             }
             // Create pdf and cdf plots of current applications
             //CreatePdfPlot(path_to_cur_pdf_gists, gist_counter, client_counter);

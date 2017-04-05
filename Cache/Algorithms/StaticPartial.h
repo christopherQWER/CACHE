@@ -10,11 +10,11 @@ typedef std::map<Asu, AppClass> AppMap;
 
 class StaticPartial {
 public:
-    void EqualPartial(const std::string& flow_file_name,
+    static void EqualPartial(const std::string& flow_file_name,
                       std::map<Asu, AppClass> client_map,
                       LoggerType type,
                       const std::string& log_file_name);
-    void PercentPartial();
+    static void PercentPartial();
 
 private:
     /// Input parameter set number of experiments

@@ -177,7 +177,7 @@ void SharedCache::RunAlgorithm(const string& flow_file_name,
     Request *request;
     Flow *flow;
     Client client = Client();
-    string results_dir = _GISTS_DIR_ + string("//Shared//");
+    string results_dir = _PLOT_DATA_ + string("//Shared//");
 
     // if flow must be from generator
     if (flow_file_name == "")

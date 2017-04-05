@@ -44,9 +44,9 @@ void MainConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
 
     // create child "StaticPartial"
     pugi::xml_node partial_node = modes_node.append_child(sPartialCache.c_str());
-    partial_node.append_attribute(sAppCount.c_str()).set_value(cnf.partial_cache.app_count);
+    partial_node.append_attribute(sAppCount.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.app_count));
     partial_node.append_attribute(sCommonSize.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.common_size));
-    partial_node.append_attribute(sRequestNum.c_str()).set_value(cnf.partial_cache.request_num);
+    partial_node.append_attribute(sRequestNum.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.request_num));
 
     // create logger tag
     pugi::xml_node logger_node_1 = partial_node.append_child(sLogs.c_str());
@@ -65,10 +65,10 @@ void MainConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
     }
 
     // create children of "StaticPartial"
-    pugi::xml_node caches = partial_node.append_child(sCaches.c_str());
-    for (auto &cache : cnf.partial_cache.cache_list)
+    pugi::xml_node caches = partial_node.append_child(sApps.c_str());
+    for (auto &cache : cnf.partial_cache.app_list)
     {
-        pugi::xml_node cache_node = caches.append_child(sCache.c_str());
+        pugi::xml_node cache_node = caches.append_child(sApplication.c_str());
         cache_node.append_attribute(sSize.c_str()).set_value(static_cast<long unsigned int>(cache.size));
         cache_node.append_attribute(sXmlAsu.c_str()).set_value(cache.asu);
         cache_node.append_attribute(sQoS.c_str()).set_value(cache.qos);
@@ -112,8 +112,8 @@ void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     // get partial cache info
     cnf.partial_cache = XmlPartialCache();
     pugi::xml_node partial_cache = modes.child(sPartialCache.c_str());
-    cnf.partial_cache.app_count = partial_cache.attribute(sAppCount.c_str()).as_int(0);
-    cnf.partial_cache.request_num = partial_cache.attribute(sRequestNum.c_str()).as_int(1000000);
+    cnf.partial_cache.app_count = partial_cache.attribute(sAppCount.c_str()).as_uint(0);
+    cnf.partial_cache.request_num = partial_cache.attribute(sRequestNum.c_str()).as_uint(1000000);
     cnf.partial_cache.common_size = static_cast<ByteSize>(partial_cache.attribute(sCommonSize.c_str()).as_int(1));
 
     // get logger tag
@@ -127,14 +127,14 @@ void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     cnf.shared_cache.flow.path_to_flow = flow_node_1.text().as_string("");
 
     // get partial cache children
-    pugi::xml_node caches_node = partial_cache.child(sCaches.c_str());
-    for (pugi::xml_node child = caches_node.child(sCache.c_str()); child; child = child.next_sibling(sCache.c_str()))
+    pugi::xml_node caches_node = partial_cache.child(sApps.c_str());
+    for (pugi::xml_node child = caches_node.child(sApplication.c_str()); child; child = child.next_sibling(sApplication.c_str()))
     {
         XmlCache cache_obj = XmlCache();
         cache_obj.asu = child.attribute(sXmlAsu.c_str()).as_uint(0);
         cache_obj.size = child.attribute(sSize.c_str()).as_uint(1);
         cache_obj.qos = child.attribute(sQoS.c_str()).as_double(0.2);
-        cnf.partial_cache.cache_list.push_back(cache_obj);
+        cnf.partial_cache.app_list.push_back(cache_obj);
     }
 }
 
