@@ -15,7 +15,7 @@ void StaticPartial::PercentPartial()
 }
 
 void StaticPartial::EqualPartial(const string& flow_file_name,
-                                 std::map<Asu, AppClass> client_map,
+                                 map<Asu, AppClass> client_map,
                                  LoggerType type,
                                  const string& log_file_name)
 {
@@ -61,6 +61,9 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
     {
         logger->ShowRequestInfo(INFO, counter, request->_asu, request->_lba, request->_timestamp);
 
+        // Add request to LRU cache
+        client_map[request->_asu]._cache->LRU(*request);
+
         // Increment request counter for application class
         client_map[request->_asu]._request_counter++;
         // Save stack distance for concrete class storage
@@ -97,6 +100,19 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
         request = flow->GetRequest();
         counter++;
     }
+
+    for (map<Asu, AppClass>::iterator it = client_map.begin(); it != client_map.end(); it++)
+    {
+        it->second._cache->_hit_rate = it->second._cache->CalculateHitRate();
+        logger->ShowHitRate(INFO, it->second._cache->_hit_rate);
+
+//        it->second._stack_dist = it->second._cache->CalculateAvgStackDistance();
+//        logger->ShowStackDistance(INFO, stack_dist);
+    }
+    logger->EndLog();
+    logger->ShowLogText(INFO, "==================End: " +
+                              Utils::GetFileNameWithoutExt(flow_file_name) +
+                              "==================");
 }
 
 
