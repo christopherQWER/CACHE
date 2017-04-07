@@ -49,7 +49,10 @@ void RunSharedCacheMode(Config my_config)
     ByteSize cache_capasity = my_config.shared_cache.size * _1_GB_IN_BYTES_;
     int experiment_number = my_config.shared_cache.request_num;
 
-    SharedCache sharedCache = SharedCache(experiment_number, cache_capasity);
+    string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Shared"));
+    Utils::CreateDirectory(results_dir);
+
+    SharedCache sharedCache = SharedCache(results_dir, 60, cache_capasity, 0);
 
     if (my_config.shared_cache.flow.flow_type == FFILE)
     {
@@ -66,12 +69,13 @@ void RunSharedCacheMode(Config my_config)
 
 void RunPartialCacheMode(Config my_config)
 {
-    StaticPartial staticPartial = StaticPartial();
     ByteSize app_count = my_config.partial_cache.app_list.size();
     ByteSize common_size = my_config.partial_cache.common_size * _1_GB_IN_BYTES_;
 
     string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Partial"));
     Utils::CreateDirectory(results_dir);
+
+    StaticPartial staticPartial = StaticPartial(results_dir, 60, 0);
 
     // if applications are described in config
     if (app_count > 0)
