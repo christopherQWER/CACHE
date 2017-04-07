@@ -17,7 +17,7 @@ Cache::Cache(ByteSize capacity)
     _avg_stack_dist = 0;
 }
 
-bool Cache::IsInCache(Lba cell_address, std::unordered_map<Lba, StorType::iterator>::iterator &it)
+bool Cache::IsInCache(Lba cell_address, MapStorage::iterator &it)
 {
     it = _map_store.find(cell_address);
     return !(it == _map_store.end());

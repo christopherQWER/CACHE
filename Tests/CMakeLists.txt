@@ -14,6 +14,7 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Generators/PdfFlow.cpp
                  ../Cache/Generators/Request.cpp
+                 ../Cache/Generators/Distribution.cpp
 
                  ../Cache/Caches/Cache.cpp
                  ../Cache/Caches/Lru.cpp
@@ -43,6 +44,7 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Caches/Cache.h
 
                  ../Cache/Generators/PdfFlow.h
+                 ../Cache/Generators/Distribution.h
                  ../Cache/Generators/Request.h
 
                  ../Cache/Loggers/Logger.h

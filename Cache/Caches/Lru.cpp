@@ -51,6 +51,7 @@ void Lru::LRU(Request &newRequest)
     }
     _request_counter++;
     newRequest._stack_distance = stack_dist;
+    _avg_stack_dist += stack_dist;
 }
 
 

@@ -18,7 +18,7 @@ void TestFlow::SameRequests(int experiments_count, ByteSize cache_capasity)
     //pLogger->StartLog();
 
     double hit_rate = 0;
-    StackDist stack_dist = 0;
+    StackDist stack_dist = 1;
     Request *request;
     Lru *cache = new Lru(cache_capasity);
     StackDistFlow flow = StackDistFlow(stack_dist);
@@ -37,7 +37,7 @@ void TestFlow::SameRequests(int experiments_count, ByteSize cache_capasity)
     stack_dist = cache->CalculateAvgStackDistance();
     //pLogger->ShowStackDistance(DEBUG, stack_dist);
 
-    if (hit_rate >= 0.995 && stack_dist == 0)
+    if (hit_rate >= 0.995 && stack_dist >= 1)
     {
         cout << "Same requests: OK" << endl;
     }
@@ -56,7 +56,7 @@ void TestFlow::HalfPartSameRequests(int experiments_count, ByteSize cache_capasi
     //pLogger->StartLog();
 
     double hit_rate = 0;
-    StackDist stack_dist = experiments_count / 2;
+    StackDist stack_dist = experiments_count / 2 + 1;
     Request *request;
     Lru *cache = new Lru(cache_capasity);
     StackDistFlow flow = StackDistFlow();
@@ -75,7 +75,7 @@ void TestFlow::HalfPartSameRequests(int experiments_count, ByteSize cache_capasi
     stack_dist = cache->CalculateAvgStackDistance();
     //pLogger->ShowStackDistance(DEBUG, stack_dist);
 
-    if (hit_rate >= 0.49 && stack_dist == experiments_count / 2)
+    if (hit_rate >= 0.49 && stack_dist >= experiments_count / 2)
     {
         cout << "Half part requests: OK" << endl;
     }
@@ -140,7 +140,7 @@ void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
 
     for (int i = 0; i < experiments_count; i++)
     {
-        StackDist st_dst = pdf_generator.GetRandom();
+        StackDist st_dst = pdf_generator.GetRandomValue();
         flow.SetStackDistance(st_dst);
         request = flow.GetRequest();
         cache->LRU(*request);
@@ -152,6 +152,7 @@ void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
     stack_dist = cache->CalculateAvgStackDistance();
     //pLogger->ShowStackDistance(DEBUG, stack_dist);
 
+    pdf_generator.GetPdf(Utils::PathCombine(string(_READY_PDF), string("pdf_test.txt")));
     FreeResources(pLogger, cache, request);
     //pLogger->EndLog();
 }

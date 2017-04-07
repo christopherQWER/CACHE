@@ -10,6 +10,7 @@
 #include "../Utils/Types.h"
 
 typedef std::list<Request> StorType;
+typedef std::unordered_map<Lba, std::list<Request>::iterator> MapStorage;
 
 class Cache
 {
@@ -41,7 +42,7 @@ public:
 
      /// Storage, contains logical block address as key and
      /// iterator pointed to corresponding request body as value
-    std::unordered_map<Lba, StorType::iterator> _map_store;
+     MapStorage _map_store;
 
     /// \brief
     /// \param capacity [Specifies the common cache size (_max_capaсity)]
