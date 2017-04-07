@@ -12,16 +12,17 @@ typedef std::map<Asu, Client> ClientMap;
 class Algorithm {
 public:
 
-    Algorithm(int experiments_number, int gist_counter, std::string algorithm_dir);
+    Algorithm(std::string algorithm_dir, double _time_step, int experiments_number);
     ~Algorithm();
     void InsertToClientsMap(Asu asu, const Client& application);
     bool IsInMap(Asu asu);
     void PreparePDF();
     void PrepareCDF();
-    void DrawPDFPlot(std::string trace_name);
-    void DrawCDFPlot(std::string trace_name);
+    void DrawPDFPlot(const std::string &trace_name);
+    void DrawCDFPlot(const std::string &trace_name);
+    void CommonPlot(const std::string &flow_file_name);
 
-private:
+protected:
     /// Input parameter set number of experiments
     int             _experiments_number;
     int             _gist_counter;

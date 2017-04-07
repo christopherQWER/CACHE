@@ -1,16 +1,15 @@
 #include "../Utils/Plot.h"
-#include "../Utils/Paths.h"
 #include "SharedCache.h"
 #define TYPE LCONSOLE
 //#define DEBUG
 using namespace std;
 
 
-SharedCache::SharedCache(int request_number,
-                        int gist_counter,
-                        std::string algorithm_dir,
-                        ByteSize cache_size) :
-        Algorithm(request_number, gist_counter, algorithm_dir)
+SharedCache::SharedCache(std::string algorithm_dir,
+                         double time_step,
+                         ByteSize cache_size,
+                         int request_number) :
+        Algorithm(algorithm_dir, time_step, request_number)
 {
     _cache = new Lru(cache_size);
 }
@@ -21,14 +20,7 @@ void SharedCache::Clear()
     {
         delete _cache;
     }
-    experiments_number = 0;
-    stack_dist = 0;
     _client_map.clear();
-}
-
-SharedCache::~SharedCache()
-{
-    Clear();
 }
 
 void SharedCache::RunAlgorithm(const string& flow_file_name,
@@ -36,38 +28,32 @@ void SharedCache::RunAlgorithm(const string& flow_file_name,
                                const string& log_file_name)
 {
     Logger *logger = Logger::CreateLogger(type);
+    logger->StartLog();
 
     // Counts number of requests fo all time
     int counter = 0;
-
-    // Gists per 60 secs
-    _time_step = 60;
     double prev_time = 0;
 
     Request *request;
     Flow *flow;
     Client client = Client();
-    _algorithm_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Shared"));
-    Utils::CreateDirectory(_algorithm_dir);
 
     // if flow must be from generator
     if (flow_file_name == "")
     {
         flow = new StackDistFlow();
-        _algorithm_dir += "Generated";
-        logger->ShowLogText(INFO, "=================Start: Generated=================");
+        _algorithm_dir = Utils::PathCombine(_algorithm_dir, string("Generated"));
+        Utils::CreateDirectory(_algorithm_dir);
     }
     // else flow from trace file
     else
     {
         flow = new TraceFileFlow(flow_file_name);
         string flow_file = Utils::GetFileNameWithoutExt(flow_file_name);
-        string path = Utils::PathCombine(_algorithm_dir, flow_file);
-        Utils::CreateDirectory(path);
-        logger->ShowLogText(INFO, "=================Start: " + flow_file + "=================");
+        _algorithm_dir = Utils::PathCombine(_algorithm_dir, flow_file);
+        Utils::CreateDirectory(_algorithm_dir);
     }
 
-    logger->StartLog();
     request = flow->GetRequest();
     prev_time = request->_timestamp;
 
@@ -85,7 +71,6 @@ void SharedCache::RunAlgorithm(const string& flow_file_name,
         // If current application class doesn't exists => create
         if (!IsInMap(request->_asu))
         {
-            Client client = Client();
             client.Init(request->_asu, _algorithm_dir);
             InsertToClientsMap(request->_asu, client);
         }
@@ -97,16 +82,15 @@ void SharedCache::RunAlgorithm(const string& flow_file_name,
         {
             PreparePDF();
             PrepareCDF();
-
-            // Create pdf and cdf plots of current applications
-            DrawPDFPlot();
-            DrawCDFPlot();
             _gist_counter++;
             prev_time = request->_timestamp;
         }
+        delete request;
         request = flow->GetRequest();
         counter++;
     }
 
+    delete flow;
     logger->EndLog();
+    delete logger;
 }

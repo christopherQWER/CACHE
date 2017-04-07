@@ -7,16 +7,18 @@
 #include "../Utils/Paths.h"
 using namespace std;
 
-Algorithm::Algorithm(int experiments_number, int gist_counter, std::string algorithm_dir) :
+Algorithm::Algorithm(std::string algorithm_dir, double time_step, int experiments_number) :
         _experiments_number(experiments_number),
-        _gist_counter(gist_counter),
         _algorithm_dir(algorithm_dir),
-        _time_step(0)
+        _time_step(time_step)
 {
+    _stack_dist = 0;
+    _gist_counter = 0;
 }
 
 Algorithm::~Algorithm()
 {
+    _client_map.clear();
 }
 
 void Algorithm::InsertToClientsMap(Asu asu, const Client& application)
@@ -53,7 +55,7 @@ void Algorithm::PrepareCDF()
     }
 }
 
-void Algorithm::DrawPDFPlot(string trace_name)
+void Algorithm::DrawPDFPlot(const string &trace_name)
 {
     string working_dir = Utils::PathCombine(_algorithm_dir,
             trace_name, string(_PDF_DIR_), to_string(_gist_counter));
@@ -102,7 +104,7 @@ void Algorithm::DrawPDFPlot(string trace_name)
     pdf_plot.DoPlot();
 }
 
-void Algorithm::DrawCDFPlot(std::string trace_name)
+void Algorithm::DrawCDFPlot(const string &trace_name)
 {
     string working_dir = Utils::PathCombine(_algorithm_dir,
             trace_name, string(_CDF_DIR_), to_string(_gist_counter));
@@ -148,4 +150,24 @@ void Algorithm::DrawCDFPlot(std::string trace_name)
     }
     cdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max));
     cdf_plot.DoPlot();
+}
+
+void Algorithm::CommonPlot(const string &flow_file_name)
+{
+    string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Partial"));
+    string flow_name = Utils::GetFileNameWithoutExt(flow_file_name);
+    results_dir = Utils::PathCombine(results_dir, flow_name);
+    string path_to_cur_pdf_gists = Utils::PathCombine(results_dir, string(_PDF_DIR_), to_string(_gist_counter));
+    string path_to_cur_cdf_gists = Utils::PathCombine(results_dir, string(_CDF_DIR_), to_string(_gist_counter));
+
+    for (ClientMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
+    {
+        // Txt file for current ASU with pdf
+        string pdf_txt = Utils::PathCombine(path_to_cur_pdf_gists, to_string(it->first) + ".txt");
+        // Txt file for current ASU with cdf
+        string cdf_txt = Utils::PathCombine(path_to_cur_cdf_gists, to_string(it->first) + ".txt");
+
+        it->second.SavePdfPlotDots(pdf_txt);
+        it->second.SaveCdfPlotDots(cdf_txt);
+    }
 }

@@ -17,13 +17,13 @@
 class SharedCache : public Algorithm {
 public:
     /// \brief
-    /// \param exp_number
+    /// \param algorithm_dir
     /// \param cache_size
-    SharedCache(int request_number,
-                int gist_counter,
-                std::string algorithm_dir,
-                ByteSize cache_size);
-    ~SharedCache();
+    /// \param request_number
+    SharedCache(std::string algorithm_dir,
+                double time_step,
+                ByteSize cache_size,
+                int request_number);
     void Clear();
 
     /// \brief
@@ -35,6 +35,5 @@ public:
                     const std::string& log_file_name);
 
 private:
-
     Lru* _cache;
 };

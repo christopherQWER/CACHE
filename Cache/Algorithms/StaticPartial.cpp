@@ -5,19 +5,12 @@
 #include "StaticPartial.h"
 #include "../Flows/TraceFileFlow.h"
 #include "../Flows/StackDistFlow.h"
-#include "../Utils/Paths.h"
 #include "../Utils/Utils.h"
 
 using namespace std;
 
-StaticPartial::StaticPartial()
-{
-    experiments_number = 0;
-    _gist_counter = 0;
-    stack_dist = 0;
-}
-
-void StaticPartial::PercentPartial()
+StaticPartial::StaticPartial(std::string algorithm_dir, double time_step, int experiments_number) :
+        Algorithm(algorithm_dir, time_step, experiments_number)
 {
 }
 
@@ -30,8 +23,6 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
 
     // Counts number of requests for all time
     int counter = 0;
-    // gists per 60 secs
-    _time_step = 60;
     double prev_time = 0;
 
     Flow *flow;
@@ -67,47 +58,20 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
         {
             PreparePDF();
             PrepareCDF();
-            // Create pdf and cdf plots of current applications
-            //CreatePdfPlot(path_to_cur_pdf_gists, _gist_counter, client_counter);
-            //CreateCdfPlot(path_to_cur_cdf_gists, _gist_counter, client_counter);
             _gist_counter++;
             prev_time = request->_timestamp;
         }
-        if (request)
-        {
-            delete request;
-        }
+        delete request;
         request = flow->GetRequest();
         counter++;
     }
 
-    if (flow)
-    {
-        delete flow;
-    }
+    delete flow;
     logger->EndLog();
-    if (logger)
-    {
-        delete logger;
-    }
+    delete logger;
 }
 
-void StaticPartial::CommonPlot(const string& flow_file_name)
+void StaticPartial::PercentPartial()
 {
-    string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Partial"));
-    string flow_name = Utils::GetFileNameWithoutExt(flow_file_name);
-    results_dir = Utils::PathCombine(results_dir, flow_name);
-    string path_to_cur_pdf_gists = Utils::PathCombine(results_dir, string(_PDF_DIR_), to_string(_gist_counter));
-    string path_to_cur_cdf_gists = Utils::PathCombine(results_dir, string(_CDF_DIR_), to_string(_gist_counter));
 
-    for (ClientMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
-    {
-        // Txt file for current ASU with pdf
-        string pdf_txt = Utils::PathCombine(path_to_cur_pdf_gists, to_string(it->first) + ".txt");
-        // Txt file for current ASU with cdf
-        string cdf_txt = Utils::PathCombine(path_to_cur_cdf_gists, to_string(it->first) + ".txt");
-
-        it->second.SavePdfPlotDots(pdf_txt);
-        it->second.SaveCdfPlotDots(cdf_txt);
-    }
 }
