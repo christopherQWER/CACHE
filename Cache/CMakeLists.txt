@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.6)
 project(Cache)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 set(SOURCE_FILES
                  Main/Main.cpp
                  Main/ModeRunner.cpp
@@ -35,7 +34,7 @@ set(SOURCE_FILES
                  Xml/pugixml.cpp
                  Xml/MainConfig.cpp
                  Xml/AnalyzeConfig.cpp
-                 )
+        Generators/Distribution.cpp)
 
 set(HEADER_FILES
                  Main/ModeRunner.h

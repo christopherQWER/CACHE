@@ -3,17 +3,16 @@
 //
 
 #include "PdfFlow.h"
-
+#include "../Utils/Utils.h"
 using namespace std;
-default_random_engine generator;
-uniform_real_distribution<double> distribution(0.0, 1.0);
+
 
 PdfFlow::PdfFlow()
 {
-
+    _exp_counter = 0;
 }
 
-PdfFlow::PdfFlow(const std::string& pdf_file_path)
+PdfFlow::PdfFlow(const std::string& pdf_file_path) : _exp_counter(0)
 {
     string line = "";
     ifstream pdf_file;
@@ -38,7 +37,7 @@ PdfFlow::~PdfFlow()
     }
 }
 
-StackDist PdfFlow::GetRandom()
+StackDist PdfFlow::GetRandomValue()
 {
     GetCdfByPdf();
 
@@ -48,6 +47,15 @@ StackDist PdfFlow::GetRandom()
     map<double, StackDist>::iterator it = _cdf_storage.lower_bound(uniform_number);
     if (it != _cdf_storage.end())
     {
+        if (_experimental_pdf.find(it->second) != _experimental_pdf.end())
+        {
+            _experimental_pdf[it->second]++;
+        }
+        else
+        {
+            _experimental_pdf.insert(pair<StackDist, double>(it->second, 1));
+        }
+        _exp_counter++;
         return it->second;
     }
     return 0;
@@ -82,5 +90,17 @@ void PdfFlow::GetCdfByPdf()
     {
         sum += pdf_pair.second;
         _cdf_storage.insert(pair<double, StackDist>(sum, pdf_pair.first));
+    }
+}
+
+double PdfFlow::GetPdf(const string &path)
+{
+    int count = 0;
+    // Write "stack_dist/hit_rate" files for every application unit
+    for (PairStorage::iterator it = _experimental_pdf.begin(); it != _experimental_pdf.end(); ++it)
+    {
+        double value = static_cast<double>(it->second) / static_cast<double>(_exp_counter);
+        Utils::AppendToFile(path, it->first, value);
+        count++;
     }
 }

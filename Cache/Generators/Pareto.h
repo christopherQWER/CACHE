@@ -18,10 +18,9 @@ public:
     Pareto(int location_param, double shape_param);
     ~Pareto();
 
-
-    /// \brief  [Generates random value distributed by Pareto]
-    /// \return [random value]
-    double Generate();
+    /// \brief
+    /// \return
+    double GetRandom();
 
 
     /// \brief              [Calculates probability of density function theoretically]

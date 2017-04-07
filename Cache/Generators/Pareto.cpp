@@ -2,13 +2,9 @@
 // Created by cat on 9/25/16.
 //
 
-#include <random>
 #include <fstream>
 #include "Pareto.h"
 using namespace std;
-
-default_random_engine generator;
-uniform_real_distribution<double> distribution(0.0, 1.0);
 
 Pareto::Pareto(int location_param, double shape_param)
 {
@@ -20,7 +16,7 @@ Pareto::~Pareto()
 {
 }
 
-double Pareto::Generate()
+double Pareto::GetRandom()
 {
     double uniform_number = 0;
     double pareto_value = 0;

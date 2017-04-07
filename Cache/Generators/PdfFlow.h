@@ -7,22 +7,25 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <random>
 #include <map>
 #include "../Utils/Types.h"
+#include "Distribution.h"
 typedef std::map<StackDist, double> PairStorage;
 
-class PdfFlow {
+class PdfFlow : public Distribution{
 public:
     PdfFlow();
     PdfFlow(const std::string& pdf_file);
     ~PdfFlow();
 
-    StackDist GetRandom();
+    StackDist GetRandomValue();
+    double GetPdf(const std::string &path);
 
 private:
     PairStorage _pdf_storage;
     std::map<double, StackDist> _cdf_storage;
+    PairStorage _experimental_pdf;
+    ByteSize _exp_counter;
 
     void ParsePairs(const std::string& line_to_parse);
     void GetCdfByPdf();
