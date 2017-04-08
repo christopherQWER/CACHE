@@ -10,6 +10,7 @@
 #include "../Flows/Flow.h"
 #include "../Requests/Request.h"
 typedef std::map<StackDist, int> StackDistMap;
+typedef std::map<double, StackDist> ProportionalMap;
 
 class Client {
 public:
@@ -32,8 +33,12 @@ public:
     ~Client();
 
     void AddStackDistToMap(StackDist stack_dist);
+
     void SavePdfPlotDots(const std::string& file_path);
     void SaveCdfPlotDots(const std::string& file_path);
+
+    void LoadPdfPlotDots(const std::string& file_path, ProportionalMap &pdf_map);
+    void LoadCdfPlotDots(const std::string& file_path);
 
     StackDist GetMinStackDistance();
     StackDist GetMaxStackDistance();
@@ -41,4 +46,5 @@ public:
 private:
     StackDistMap _stack_dist_map;
     bool IsInStorage(StackDist value);
+    bool GetPairFromString(const std::string& pdf_string, std::pair<double, StackDist> &new_pair);
 };
