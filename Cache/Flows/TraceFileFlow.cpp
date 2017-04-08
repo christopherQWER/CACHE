@@ -19,12 +19,12 @@ TraceFileFlow::~TraceFileFlow()
     trace_file.close();
 }
 
-Request TraceFileFlow::GetRequest()
+Request* TraceFileFlow::GetRequest()
 {
     string buffer = "";
-    Request request = Request();
+    Request *request = new Request();
 
-    while (_request_queue.empty())
+    if (_request_queue.empty())
     {
         if (getline(trace_file, buffer))
         {
@@ -33,10 +33,11 @@ Request TraceFileFlow::GetRequest()
         else
         {
             _is_eof = true;
+            return nullptr;
         }
     }
 
-    request = _request_queue.front();
+    *request = _request_queue.front();
     _request_queue.pop_front();
     return request;
 }

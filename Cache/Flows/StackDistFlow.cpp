@@ -37,10 +37,10 @@ StackDistFlow::~StackDistFlow()
     }
 }
 
-Request StackDistFlow::GetRequest()
+Request* StackDistFlow::GetRequest()
 {
-    Request req;
-    while (_curr_request_time < _common_time)
+    Request* req = new Request();
+    if (_curr_request_time < _common_time)
     {
         if ( _request_queue.empty() )
         {
@@ -58,9 +58,13 @@ Request StackDistFlow::GetRequest()
             }
         }
         _curr_request_time = _request_queue.front()._timestamp;
-        req = _request_queue.front();
+        *req = _request_queue.front();
         _request_queue.pop_front();
         return req;
+    }
+    else
+    {
+        return nullptr;
     }
 }
 

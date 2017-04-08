@@ -21,10 +21,10 @@ void RunGenerateMode(Config my_config)
     string output_trace_file = Utils::PathCombine(xmlGenerator.flow.path_to_flow,
             Utils::GetCurrentStringUnixTime() + ".spc");
 
-    Request req = flow->GetRequest();
-    while (xmlGenerator.system_time > req._timestamp)
+    Request *req = flow->GetRequest();
+    while (xmlGenerator.system_time > req->_timestamp)
     {
-        string request_string = RequestParser::GetStringFromRequest(req);
+        string request_string = RequestParser::GetStringFromRequest(*req);
         Utils::AppendToFile(output_trace_file, request_string);
         req = flow->GetRequest();
     }

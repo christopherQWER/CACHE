@@ -18,7 +18,7 @@ public:
 
     TraceFileFlow(const std::string& source_path);
     ~TraceFileFlow();
-    Request GetRequest();
+    Request* GetRequest();
     bool IsEndOfFlow();
 
 private:

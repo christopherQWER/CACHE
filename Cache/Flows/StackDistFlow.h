@@ -16,7 +16,7 @@ public:
                   const std::string& input_pdf_path,
                   Timestamp time = 0);
     ~StackDistFlow();
-    Request GetRequest();
+    Request* GetRequest();
 
 private:
     int _common_request_num;

@@ -18,7 +18,7 @@ public:
 
     //static Flow* CreateFlow(FlowType type);
     virtual ~Flow() {};
-    virtual Request GetRequest() = 0;
+    virtual Request* GetRequest() = 0;
     virtual bool IsEndOfFlow() = 0;
 
     static inline std::string toString(FlowType type)
