@@ -14,7 +14,7 @@
 class Storage {
 public:
 
-    Storage(ByteSize commonSize,
+    Storage(double commonSize,
             const std::string &algorithm_dir,
             double _time_step,
             int experiments_number);
@@ -61,4 +61,6 @@ protected:
     /// Example:
     /// //
     std::string     _algorithm_dir;
+
+    std::string path_to_hr_vs_size;
 };

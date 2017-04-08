@@ -33,19 +33,33 @@ void RunSimulateMode(Config my_config)
             CreateXmlAppList(xmlSimulator, my_config.analyze_path);
             ClientsManager *clientsManager = new ClientsManager(xmlSimulator.app_list);
             sharedCache.CreateStorage();
-            sharedCache.Run(clientsManager->clients_map, logger, flow, xmlSimulator.with_plots);
+            sharedCache.Run(*clientsManager, logger, flow, xmlSimulator.with_plots);
             clientsManager->QosComparator(logger);
+            if (xmlSimulator.with_plots)
+            {
+                clientsManager->DrawPDFPlot(flow->flow_dir_name);
+                clientsManager->DrawCDFPlot(flow->flow_dir_name);
+            }
             break;
         }
         case PARTIAL:
         {
-            StaticPartial staticPartial = StaticPartial(xmlSimulator.common_size,
-                    xmlSimulator.plot_dir, 60, 0);
-            CreateXmlAppList(xmlSimulator, my_config.analyze_path);
-            ClientsManager* clientsManager = new ClientsManager(xmlSimulator.app_list);
-            staticPartial.CreateStorage(xmlSimulator.div_type, clientsManager->clients_map);
-            staticPartial.Run(clientsManager->clients_map, logger, flow, xmlSimulator.with_plots);
-            clientsManager->QosComparator(logger);
+            // For different cache sizes
+            for (double i = 0.5; i < 4.0; i = i + 0.5)
+            {
+                StaticPartial staticPartial = StaticPartial(i, xmlSimulator.plot_dir, 60, 0);
+                CreateXmlAppList(xmlSimulator, my_config.analyze_path);
+                ClientsManager* clientsManager = new ClientsManager(xmlSimulator.app_list);
+                staticPartial.CreateStorage(xmlSimulator.div_type, clientsManager->clients_map);
+                staticPartial.Run(*clientsManager, logger, flow, xmlSimulator.with_plots);
+                clientsManager->QosComparator(logger);
+
+                if (xmlSimulator.with_plots)
+                {
+                    clientsManager->DrawPDFPlot(flow->flow_dir_name);
+                    clientsManager->DrawCDFPlot(flow->flow_dir_name);
+                }
+            }
             break;
         }
         default:

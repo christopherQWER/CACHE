@@ -5,7 +5,7 @@
 #include "Storage.h"
 using namespace std;
 
-Storage::Storage(ByteSize commonSize,
+Storage::Storage(double commonSize,
                     const string &algorithm_dir,
                     double time_step,
                     int experiments_number) :
@@ -59,16 +59,23 @@ void Storage::GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string
         pdf_dir = Utils::PathCombine(_algorithm_dir,
                                     Flow::toString(FGENERATOR),
                                     time_string,
+                                     to_string(_common_size),
                                     string(_PDF_DIR_));
 
         cdf_dir = Utils::PathCombine(_algorithm_dir,
                                     Flow::toString(FGENERATOR),
                                     time_string,
+                                     to_string(_common_size),
                                     string(_CDF_DIR_));
+        path_to_hr_vs_size = Utils::PathCombine(_algorithm_dir,
+                                                Flow::toString(FGENERATOR),
+                                                time_string,
+                                                string(_HR_VS_SIZE));
     }
     else
     {
         pdf_dir = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name, string(_PDF_DIR_));
         cdf_dir = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name, string(_CDF_DIR_));
+        path_to_hr_vs_size = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name, string(_HR_VS_SIZE));
     }
 }

@@ -10,7 +10,7 @@ class DynamicPartialCache : public StaticPartial
 {
 public:
 
-    DynamicPartialCache(ByteSize commonSize,
+    DynamicPartialCache(double commonSize,
                         const std::string &algorithm_dir,
                         double time_step,
                         int experiments_number);

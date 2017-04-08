@@ -15,13 +15,13 @@
 class SharedStorage : public Storage {
 public:
 
-    SharedStorage(ByteSize commonSize,
+    SharedStorage(double commonSize,
                     const std::string &algorithm_dir,
                     double time_step,
                     int experiments_number);
     ~SharedStorage();
     void CreateStorage();
-    void Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots);
+    void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots);
 
 private:
     Lru* _cache;

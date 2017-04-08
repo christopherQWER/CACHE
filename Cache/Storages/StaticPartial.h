@@ -9,13 +9,13 @@ typedef std::map<Asu, Lru*>StorageMap;
 
 class StaticPartial : public Storage {
 public:
-    StaticPartial(ByteSize commonSize,
+    StaticPartial(double commonSize,
                     const std::string &algorithm_dir,
                     double time_step,
                     int experiments_number);
     ~StaticPartial();
     void CreateStorage(DivisionType type, ClientMap client_map);
-    void Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots);
+    void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots);
 
     static inline const char* toString(DivisionType type)
     {
