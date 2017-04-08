@@ -38,7 +38,8 @@ void ConsoleLogger::ShowLogText(Level log_Lvl, const string &text)
 {
     if (log_Lvl == DEBUG)
     {
-        printf("%s: %s", toString(log_Lvl), text.c_str());
+        //printf("%s: %s", toString(log_Lvl), text.c_str());
+        cout << text << endl;
     }
 }
 
