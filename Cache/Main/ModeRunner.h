@@ -8,6 +8,7 @@ enum Mode{
     TRACE_ANALYZE = 1,
     SHARED_CACHE,
     PARTIAL_CACHE,
+    PLOTS,
     EXIT
 };
 
@@ -21,6 +22,7 @@ static const char* toString(Mode mode)
     case TRACE_ANALYZE: { return "TRACE_ANALYZE";}
     case SHARED_CACHE: { return "SHARED_CACHE";}
     case PARTIAL_CACHE: { return "PARTIAL_CACHE";}
+    case PLOTS: {return "PLOTS";}
     case EXIT: {return "EXIT";}
     default: { return "UNKNOWN";}
     }
@@ -29,3 +31,4 @@ static const char* toString(Mode mode)
 void RunTraceAnalyseMode(Config my_config);
 void RunSharedCacheMode(Config my_config);
 void RunPartialCacheMode(Config my_config);
+void RunPlotsMode(Config my_config);

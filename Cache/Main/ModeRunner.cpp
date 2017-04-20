@@ -5,6 +5,7 @@
 #include "ModeRunner.h"
 #include "../Algorithms/SharedCache.h"
 #include "../Algorithms/StaticPartial.h"
+#include "../Utils/Paths.h"
 
 using namespace std;
 
@@ -48,42 +49,46 @@ void RunSharedCacheMode(Config my_config)
     ByteSize cache_capasity = my_config.shared_cache.size * _1_GB_IN_BYTES_;
     int experiment_number = my_config.shared_cache.request_num;
 
-    SharedCache* sharedCache = new SharedCache(experiment_number, cache_capasity);
+    SharedCache sharedCache = SharedCache(experiment_number, cache_capasity);
 
     if (my_config.shared_cache.flow.flow_type == FFILE)
     {
-        sharedCache->RunAlgorithm(my_config.shared_cache.flow.path_to_flow,
-                my_config.shared_cache.logger.logger_type, "");
+        sharedCache.RunAlgorithm(my_config.shared_cache.flow.path_to_flow,
+                                  my_config.shared_cache.logger.logger_type,
+                                  "");
     }
     else
     {
-        sharedCache->RunAlgorithm("", my_config.shared_cache.logger.logger_type, "");
+        sharedCache.RunAlgorithm("", my_config.shared_cache.logger.logger_type, "");
     }
 }
 
 
 void RunPartialCacheMode(Config my_config)
 {
+    StaticPartial staticPartial = StaticPartial();
     ByteSize app_count = my_config.partial_cache.app_list.size();
-    // size of all cache space in bytes
     ByteSize common_size = my_config.partial_cache.common_size * _1_GB_IN_BYTES_;
+
+    string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Partial"));
+    Utils::CreateDirectory(results_dir);
 
     // if applications are described in config
     if (app_count > 0)
     {
         // equal partitioning between application units
         ByteSize part_size = common_size / app_count;
-        map<Asu, AppClass> clients;
+        string trace_result = Utils::PathCombine(results_dir, "Generated");
         // Go through cache objects
         for (const auto &cache : my_config.partial_cache.app_list)
         {
-            AppClass client = AppClass();
-            client._application_id = cache.asu;
+            Client client = Client();
+            client.Init(cache.asu, trace_result);
             client._cache = new Lru(part_size);
-            clients.insert(pair<Asu, AppClass>(cache.asu, client));
+            staticPartial.InsertToClientsMap(cache.asu, client);
         }
     }
-        // get applications from trace analyzer statistic
+    // get applications from trace analyzer statistic
     else
     {
         if (my_config.trace_analyzer.type == DETAILED)
@@ -94,6 +99,7 @@ void RunPartialCacheMode(Config my_config)
                 // get xml-statistic file path
                 string trace_file_dir = Utils::SplitFilename(trace_file.path);
                 string source_file = Utils::PathCombine(trace_file_dir, trace_file.name + ".xml");
+                string trace_result = Utils::PathCombine(results_dir, trace_file.name);
 
                 TraceInfo config = TraceInfo();
                 pugi::xml_document doc;
@@ -105,21 +111,24 @@ void RunPartialCacheMode(Config my_config)
                 my_config.partial_cache.request_num = config.length;
                 ByteSize part_size = common_size / my_config.partial_cache.app_count;
 
-                map<Asu, AppClass> client_map;
                 // Go through cache objects
                 for (const auto &app : config.apps)
                 {
-                    AppClass client = AppClass();
-                    client._application_id = app.unit;
+                    Client client = Client();
+                    client.Init(app.unit, trace_result);
                     client._cache = new Lru(part_size);
-                    client_map.insert(pair<Asu, AppClass>(app.unit, client));
+                    staticPartial.InsertToClientsMap(app.unit, client);
                 }
-
-                StaticPartial staticPartial = StaticPartial(client_map);
                 staticPartial.EqualPartial(trace_file.path,
                                             my_config.partial_cache.logger.logger_type,
                                             my_config.partial_cache.logger.path_to_log);
             }
         }
     }
+}
+
+
+void RunPlotsMode(Config my_config)
+{
+
 }

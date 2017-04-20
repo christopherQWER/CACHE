@@ -47,6 +47,11 @@ int main()
                 RunPartialCacheMode(my_config);
                 break;
             }
+            case PLOTS:
+            {
+                pLogger->ShowLogText(DEBUG, "Start plot mode...\n");
+                break;
+            }
             case EXIT:
             {
                 pLogger->ShowLogText(DEBUG, "I'm ended.\n");
@@ -70,6 +75,7 @@ void ShowMenu(void)
     cout << to_string(TRACE_ANALYZE) + string(" --> ") + toString(TRACE_ANALYZE) << endl;
     cout << to_string(SHARED_CACHE) + string(" --> ") + toString(SHARED_CACHE) << endl;
     cout << to_string(PARTIAL_CACHE) + string(" --> ") + toString(PARTIAL_CACHE) << endl;
+    cout << to_string(PLOTS) + string(" --> ") + toString(PLOTS) << endl;
     cout << to_string(EXIT) + string(" --> EXIT") << endl;
     cout << endl;
 }

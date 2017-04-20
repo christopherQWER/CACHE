@@ -1,19 +1,23 @@
 <?xml version="1.0"?>
 <Modes>
-    <TraceAnalyzer Type="DETAILED">
+    <AnalyzerMode Type="DETAILED">
         <Trace Name="WebSearch1">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch1.spc</Trace>
         <Trace Name="WebSearch2">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch2.spc</Trace>
         <Trace Name="WebSearch3">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch3.spc</Trace>
         <Trace Name="Financial1">//home//cat//Documents//CACHE//Tests//Traces//Financial//Financial1.spc</Trace>
         <Trace Name="Financial2">//home//cat//Documents//CACHE//Tests//Traces//Financial//Financial2.spc</Trace>
-    </TraceAnalyzer>
-    <SharedCache CacheSize="1" RequestNum="1000000">
+    </AnalyzerMode>
+    <SharedMode CacheSize="1" RequestNum="1000000">
         <Logs Type="LCONSOLE"></Logs>
         <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Flow>
-    </SharedCache>
-    <PartialCache AppCount="" CommonSize="1" RequestNum="1000000">
+    </SharedMode>
+    <PartialMode AppCount="" CommonSize="1" RequestNum="1000000">
     	<Logs Type="LCONSOLE"></Logs>
         <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch1.spc</Flow>
         <Applications/>
-    </PartialCache>
+    </PartialMode>
+    <PlotMode Algorithm="">
+        <Trace Name="WebSearch1">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch1.spc</Trace>
+        <Logs Type="LCONSOLE"></Logs>
+    </PlotMode>
 </Modes>
