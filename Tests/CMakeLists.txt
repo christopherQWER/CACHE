@@ -12,7 +12,7 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Flows/TraceFileFlow.cpp
                  ../Cache/Flows/StackDistFlow.cpp
 
-                 ../Cache/Generators/Pareto.cpp
+                 ../Cache/Generators/PdfFlow.cpp
                  ../Cache/Generators/Request.cpp
 
                  ../Cache/Caches/Cache.cpp
@@ -28,6 +28,7 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Modeling/TraceAnalyzer.cpp
 
                  ../Cache/Xml/MainConfig.cpp
+                 ../Cache/Xml/AnalyzeConfig.cpp
                  ../Cache/Xml/pugixml.cpp)
 
 set(HEADER_FILES TestFlow.h
@@ -41,7 +42,7 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Caches/Lru.h
                  ../Cache/Caches/Cache.h
 
-                 ../Cache/Generators/Pareto.h
+                 ../Cache/Generators/PdfFlow.h
                  ../Cache/Generators/Request.h
 
                  ../Cache/Loggers/Logger.h
@@ -56,6 +57,7 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Modeling/TraceAnalyzer.h
 
                  ../Cache/Xml/MainConfig.h
+                 ../Cache/Xml/AnalyzeConfig.h
                  ../Cache/Xml/pugixml.hpp)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})

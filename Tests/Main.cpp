@@ -4,25 +4,19 @@
 
 #include <iostream>
 #include "TestConfig.h"
-
+#include "TestFlow.h"
+#include "TestDistribution.h"
 using namespace std;
 
-
-int main ()
+int main (void)
 {
-//    TestFlow flow_tester = TestFlow();
-//    flow_tester.MainTester();
+    TestFlow flow_tester = TestFlow();
+    TestDistribution distr_tester = TestDistribution();
+    TestConfig cnf_tester = TestConfig();
 
-//    SharedCache ff_tester = SharedCache();
-//    ff_tester.MainTester();
-
-//    TestDistribution distr_tester = TestDistribution();
+    flow_tester.MainTester();
 //    distr_tester.MainTester();
-
-//    TestFlow::MainTester();
-
-    TestConfig *cnf = new TestConfig();
-    cnf->MainTester();
+//    cnf_tester.MainTester();
 
     cin.get();
     return 0;

@@ -1,8 +1,6 @@
 #include "TestFlow.h"
-#define TYPE CONSOLE_LOGGER
-//#define DEBUG
-//#define FILE LFILE
-//#define LCONSOLE
+#define TYPE LCONSOLE
+#define _1_GB_IN_BYTES_ 1073741824
 using namespace std;
 
 
@@ -10,211 +8,178 @@ TestFlow::TestFlow()
 {
 }
 
-TestFlow::TestFlow(int request_number, ByteSize cache_size)
-{
-    t_hit_rate = 0;
-    t_experiments_count = request_number;
-    t_cache = new Lru(cache_size);
-    t_logger = Logger::CreateLogger(LCONSOLE);
-}
-
-void TestFlow::Clear()
-{
-    t_experiments_count = 0;
-    t_hit_rate = 0;
-    //delete t_cache;
-}
-
 TestFlow::~TestFlow()
 {
 }
 
-void TestFlow::SameRequests()
+void TestFlow::SameRequests(int experiments_count, ByteSize cache_capasity)
 {
+    Logger *pLogger = Logger::CreateLogger(TYPE);
+    //pLogger->StartLog();
+
+    double hit_rate = 0;
+    StackDist stack_dist = 0;
     Request *request;
-    StackDistFlow *fl = new StackDistFlow();
-    fl->_stack_dist_ = 0;
+    Lru *cache = new Lru(cache_capasity);
+    StackDistFlow flow = StackDistFlow(stack_dist);
 
-#ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
-    pLogger->StartLog();
-#endif
-
-    for (int i = 0; i < t_experiments_count; i++)
+    for (int i = 0; i < experiments_count; i++)
     {
-        request = fl->GetRequest();
-#ifdef DEBUG
-        pLogger->ShowRequestInfo(t_request_counter, request->_asu, request->_lba, request->_timestamp);
-#endif
-        t_cache->LRU(*request);
+        flow.SetStackDistance(stack_dist);
+        request = flow.GetRequest();
+        cache->LRU(*request);
+        delete request;
     }
 
-    t_hit_rate = t_cache->CalculateHitRate();
-#ifdef DEBUG
-    pLogger->ShowHitRate(hit_rate);
-#endif
+    hit_rate = cache->CalculateHitRate();
+    //pLogger->ShowHitRate(DEBUG, hit_rate);
 
-    t_stack_dist = t_cache->CalculateAvgStackDistance();
-#ifdef DEBUG
-    pLogger->ShowStackDistance(stack_dist);
-    pLogger->EndLog();
-#endif
+    stack_dist = cache->CalculateAvgStackDistance();
+    //pLogger->ShowStackDistance(DEBUG, stack_dist);
 
-    if (t_hit_rate == 0.995 && t_stack_dist == 1)
+    if (hit_rate >= 0.995 && stack_dist == 0)
     {
-        cout << "Test for same requests: OK" << endl;
+        cout << "Same requests: OK" << endl;
     }
     else
     {
-        cout << "Test for same requests: FAILED" << endl;
+        cout << "Same requests: FAILED" << endl;
     }
+    FreeResources(pLogger, cache, request);
+    //pLogger->EndLog();
 }
 
 
-void TestFlow::HalfPartSameRequests()
+void TestFlow::HalfPartSameRequests(int experiments_count, ByteSize cache_capasity)
 {
+    Logger *pLogger = Logger::CreateLogger(TYPE);
+    //pLogger->StartLog();
+
+    double hit_rate = 0;
+    StackDist stack_dist = experiments_count / 2;
     Request *request;
-    StackDistFlow fl = StackDistFlow();
-    fl._stack_dist_ = t_experiments_count / 2 - 1;
+    Lru *cache = new Lru(cache_capasity);
+    StackDistFlow flow = StackDistFlow();
 
-#ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
-    pLogger->StartLog();
-#endif
-
-    for (int i = 0; i < t_experiments_count; i++)
+    for (int i = 0; i < experiments_count; i++)
     {
-        request = fl.GetRequest();
-#ifdef DEBUG
-        pLogger->ShowRequestInfo(t_request_counter, request->_asu, request->_lba, request->_timestamp);
-#endif
-        t_cache->LRU(*request);
+        flow.SetStackDistance(stack_dist);
+        request = flow.GetRequest();
+        cache->LRU(*request);
+        delete request;
     }
 
-    t_hit_rate = t_cache->CalculateHitRate();
-#ifdef DEBUG
-    pLogger->ShowHitRate(hit_rate);
-#endif
+    hit_rate = cache->CalculateHitRate();
+    //pLogger->ShowHitRate(DEBUG, hit_rate);
 
-    t_stack_dist = t_cache->CalculateAvgStackDistance();
-#ifdef DEBUG
-    pLogger->ShowStackDistance(stack_dist);
-    pLogger->EndLog();
-#endif
+    stack_dist = cache->CalculateAvgStackDistance();
+    //pLogger->ShowStackDistance(DEBUG, stack_dist);
 
-    if (t_hit_rate == 0.5 && t_stack_dist == 100)
+    if (hit_rate >= 0.49 && stack_dist == experiments_count / 2)
     {
-        cout << "Test for half part requests: OK" << endl;
+        cout << "Half part requests: OK" << endl;
     }
     else
     {
-        cout << "Test for half part requests: FAILED" << endl;
+        cout << "Half part requests: FAILED" << endl;
     }
+    FreeResources(pLogger, cache, request);
+    //pLogger->EndLog();
 }
 
 
-void TestFlow::DifferentRequests()
+void TestFlow::DifferentRequests(int experiments_count, ByteSize cache_capasity)
 {
+    Logger *pLogger = Logger::CreateLogger(TYPE);
+    //pLogger->StartLog();
+
+    double hit_rate = 0;
+    StackDist stack_dist = experiments_count;
     Request *request;
-    StackDistFlow fl = StackDistFlow();
-    fl._stack_dist_ = t_experiments_count;
+    Lru *cache = new Lru(cache_capasity);
+    StackDistFlow flow = StackDistFlow();
 
-#ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
-    pLogger->StartLog();
-#endif
-
-    for (int i = 0; i < t_experiments_count; i++)
+    for (int i = 0; i < experiments_count; i++)
     {
-        request = fl.GetRequest();
-
-#ifdef DEBUG
-        pLogger->ShowRequestInfo(t_request_counter, request->_asu, request->_lba, request->_timestamp);
-#endif
-
-        t_cache->LRU(*request);
+        flow.SetStackDistance(stack_dist);
+        request = flow.GetRequest();
+        cache->LRU(*request);
+        delete request;
     }
 
-    t_hit_rate = t_cache->CalculateHitRate();
+    hit_rate = cache->CalculateHitRate();
+    //pLogger->ShowHitRate(DEBUG, hit_rate);
 
-#ifdef DEBUG
-    pLogger->ShowHitRate(hit_rate);
-#endif
+    stack_dist = cache->CalculateAvgStackDistance();
+    //pLogger->ShowStackDistance(DEBUG, stack_dist);
 
-    t_stack_dist = t_cache->CalculateAvgStackDistance();
-
-#ifdef DEBUG
-    pLogger->ShowStackDistance(stack_dist);
-    pLogger->EndLog();
-#endif
-
-    if (t_hit_rate == 0 && t_stack_dist == -1)
+    if (hit_rate == 0 && stack_dist == -1)
     {
-        cout << "Test for different requests: OK" << endl;
+        cout << "Different requests: OK" << endl;
     }
     else
     {
-        cout << "Test for different requests: FAILED" << endl;
+        cout << "Different requests: FAILED" << endl;
     }
+    FreeResources(pLogger, cache, request);
+    //pLogger->EndLog();
 }
 
-void TestFlow::PDFFlow()
+void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
 {
-    double rand_num = 0;
-    double new_rand_num = 0;
-    double int_part = 0;
-    double fract_part = 0;
-    double prob = 0;
+    Logger *pLogger = Logger::CreateLogger(TYPE);
+    //pLogger->StartLog();
+
+    double hit_rate = 0;
+    StackDist stack_dist = 0;
+    string pdf_path = Utils::PathCombine(string(_READY_PDF), string("pdf.txt"));
+    PdfFlow pdf_generator = PdfFlow(pdf_path);
     Request *request;
-    Pareto gen = Pareto(10, 2);
-    double experimental_stack_dist = 0;
-    StackDistFlow *fl = new StackDistFlow();
+    Lru *cache = new Lru(cache_capasity);
+    StackDistFlow flow = StackDistFlow();
 
-#ifdef DEBUG
-    Logger *pLogger = Logger::CreateLogger(LCONSOLE);
-    pLogger->StartLog();
-#endif
-
-    // Inicialize map with rand values and pdfs (only unical values)
-    // Inicialize vector with random values
-    for (int i = 0; i < t_experiments_count; i++)
+    for (int i = 0; i < experiments_count; i++)
     {
-        //Get stack distance from pdf
-        rand_num = gen.Generate();
-        prob = gen.GetPDF(rand_num);
-        new_rand_num = gen.GetRandomByPDF(prob);
-
-        fract_part = modf(new_rand_num, &int_part);
-
-        fl->_stack_dist_ = static_cast<int>(int_part);
-        request = fl->GetRequest();
-
-        experimental_stack_dist += static_cast<Lba>(int_part);
-
-        t_cache->LRU(*request);
+        StackDist st_dst = pdf_generator.GetRandom();
+        flow.SetStackDistance(st_dst);
+        request = flow.GetRequest();
+        cache->LRU(*request);
     }
+
+    hit_rate = cache->CalculateHitRate();
+    //pLogger->ShowHitRate(DEBUG, hit_rate);
+
+    stack_dist = cache->CalculateAvgStackDistance();
+    //pLogger->ShowStackDistance(DEBUG, stack_dist);
+
+    FreeResources(pLogger, cache, request);
+    //pLogger->EndLog();
 }
 
 void TestFlow::MainTester()
 {
-    int errorCode = 0;
     ByteSize cache_capasity = _1_GB_IN_BYTES_ / 2;
+    int request_number = 400;
 
     // Initialize test environment
-    TestFlow tester;
-//    tester = TestFlow(200, cache_capasity);
-//    tester.DifferentRequests();
-//    tester.Clear();
-//
-//    tester = TestFlow(200, cache_capasity);
-//    tester.SameRequests();
-//    tester.Clear();
-//
-//    tester = TestFlow(200, cache_capasity);
-//    tester.HalfPartSameRequests();
-//    tester.Clear();
+    DifferentRequests(request_number, cache_capasity);
+    SameRequests(request_number, cache_capasity);
+    HalfPartSameRequests(request_number, cache_capasity);
+    GetPDFFlow(request_number, cache_capasity);
+}
 
-    tester = TestFlow(10000, cache_capasity);
-    tester.PDFFlow();
-    tester.Clear();
+void TestFlow::FreeResources(Logger* &pLogger, Lru* &cache, Request* &request)
+{
+//    if(request != NULL)
+//    {
+//        delete request;
+//    }
+//    if (cache != NULL)
+//    {
+//        delete cache;
+//    }
+//    if (pLogger != NULL)
+//    {
+//        delete pLogger;
+//    }
 }

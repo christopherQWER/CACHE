@@ -4,42 +4,27 @@
 
 #pragma once
 #include "../Cache/Caches/Lru.h"
-#include "../Cache/Generators/Pareto.h"
 #include "../Cache/Flows/Flow.h"
+#include "../Cache/Generators/PdfFlow.h"
 #include "../Cache/Flows/StackDistFlow.h"
-#include "../Cache/Flows/TraceFileFlow.h"
 #include "../Cache/Utils/Paths.h"
 #include "../Cache/Loggers/Logger.h"
-#ifndef TESTS_TESTFLOW_H
-#define TESTS_TESTFLOW_H
-#define _1_GB_IN_BYTES_ 1073741824
+#include "../Cache/Utils/Utils.h"
 
 class TestFlow
 {
 public:
     TestFlow();
-    TestFlow(int request_number, ByteSize cache_size);
     ~TestFlow();
-    void Clear();
 
-    static void MainTester();
+    void MainTester();
 
 private:
-    /**
-     * [input parameter set number of experiments]
-     */
-    int t_experiments_count;
-    HitRate t_hit_rate;
-    StackDist t_stack_dist;
-    Lru *t_cache;
-    Flow *t_flow;
-    Logger *t_logger;
 
-    void SameRequests();
-    void DifferentRequests();
-    void HalfPartSameRequests();
-    void PDFFlow();
+    void SameRequests(int experiments_count, ByteSize cache_capasity);
+    void DifferentRequests(int experiments_count, ByteSize cache_capasity);
+    void HalfPartSameRequests(int experiments_count, ByteSize cache_capasity);
+    void GetPDFFlow(int experiments_count, ByteSize cache_capasity);
+
+    void FreeResources(Logger* &pLogger, Lru* &cache, Request* &request);
 };
-
-
-#endif //TESTS_TESTFLOW_H

@@ -3,7 +3,7 @@
 //
 
 #include "TestDistribution.h"
-#include "Utils/Paths.h"
+
 using namespace std;
 
 TestDistribution::TestDistribution()
@@ -24,7 +24,7 @@ void TestDistribution::GetRandByPDFTest()
     map<int, double> pdf_map;
     vector<int> rand_vector_1;
     vector<int> rand_vector_2;
-    Pareto gen = Pareto(k, a);
+    //Pareto gen = Pareto(k, a);
 
     string output_file = "/home/cat/Documents/CACHE/Tests/Results/PDF.txt";
     string output_file_2 = "/home/cat/Documents/CACHE/Tests/Results/PDF_test.txt";
@@ -63,44 +63,44 @@ void TestDistribution::GetRandByPDFTest()
 
 void TestDistribution::GetPDFTest()
 {
-    int rand_int_value = 0;
-    double rand_val = 0;
-    double pdf_val = 0;
-    double sum = 0;
-    int count_experiments = 1000000;
-    int k = 10;
-    double a = 2;
-    map<int, double> values;
-    map<int, double>::iterator it;
-    Pareto gen = Pareto(k, a);
-    string output_file = _GEN_DISTR_DIR + string("//PDF.txt");
-
-    for (int i = 0; i < count_experiments; i++)
-    {
-        rand_val = gen.Generate();
-        pdf_val = gen.GetPDF(rand_val);
-        rand_int_value = Utils::DoubleToInt(rand_val);
-        it = values.find(rand_int_value);
-        if (it == values.end())
-        {
-            values.insert(pair<int, double>(rand_int_value, pdf_val));
-            sum += pdf_val;
-        }
-    }
-
-    for (it = values.begin(); it != values.end(); ++it)
-    {
-        Utils::AppendToFile(output_file, it->first, it->second);
-    }
-
-    if (sum > 0.99 && sum < 1.1)
-    {
-        cout << "PDF test: OK" << endl;
-    }
-    else
-    {
-        cout << "PDF test: FAILED" << endl;
-    }
+//    int rand_int_value = 0;
+//    double rand_val = 0;
+//    double pdf_val = 0;
+//    double sum = 0;
+//    int count_experiments = 1000000;
+//    int k = 10;
+//    double a = 2;
+//    map<int, double> values;
+//    map<int, double>::iterator it;
+//    Pareto gen = Pareto(k, a);
+//    string output_file = string("PDF.txt");
+//
+//    for (int i = 0; i < count_experiments; i++)
+//    {
+//        rand_val = gen.Generate();
+//        pdf_val = gen.GetPDF(rand_val);
+//        rand_int_value = Utils::DoubleToInt(rand_val);
+//        it = values.find(rand_int_value);
+//        if (it == values.end())
+//        {
+//            values.insert(pair<int, double>(rand_int_value, pdf_val));
+//            sum += pdf_val;
+//        }
+//    }
+//
+//    for (it = values.begin(); it != values.end(); ++it)
+//    {
+//        Utils::AppendToFile(output_file, it->first, it->second);
+//    }
+//
+//    if (sum > 0.99 && sum < 1.1)
+//    {
+//        cout << "PDF test: OK" << endl;
+//    }
+//    else
+//    {
+//        cout << "PDF test: FAILED" << endl;
+//    }
 }
 
 int TestDistribution::MainTester()

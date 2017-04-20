@@ -1,14 +1,11 @@
 //
 // Created by cat on 3/2/17.
 //
-
-#ifndef PROJECT_TESTCONFIG_H
-#define PROJECT_TESTCONFIG_H
-
+#pragma once
 #include <iostream>
 #include <string>
 #include "../Cache/Xml/pugixml.hpp"
-#include "Xml/MainConfig.h"
+#include "../Cache/Xml/MainConfig.h"
 #include "../Cache/Utils/Paths.h"
 
 class TestConfig {
@@ -18,5 +15,3 @@ public:
 
      void MainTester();
 };
-
-#endif //PROJECT_TESTCONFIG_H
