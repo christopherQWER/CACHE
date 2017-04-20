@@ -4,7 +4,7 @@
 #pragma once
 #include <iostream>
 #include "../Utils/Types.h"
-#include "../Xml/pugixml.hpp"
+#include "../Libs/pugixml.hpp"
 
 struct AppInfo
 {

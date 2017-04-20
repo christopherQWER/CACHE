@@ -30,7 +30,8 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Xml/MainConfig.cpp
                  ../Cache/Xml/AnalyzeConfig.cpp
-                 ../Cache/Xml/pugixml.cpp)
+
+                 ../Cache/Libs/pugixml.cpp)
 
 set(HEADER_FILES TestFlow.h
                  TestConfig.h
@@ -60,6 +61,7 @@ set(HEADER_FILES TestFlow.h
 
                  ../Cache/Xml/MainConfig.h
                  ../Cache/Xml/AnalyzeConfig.h
-                 ../Cache/Xml/pugixml.hpp)
+
+                 ../Cache/Libs/pugixml.hpp)
 
 add_executable(Tests ${SOURCE_FILES} ${INCLUDE_DIR})

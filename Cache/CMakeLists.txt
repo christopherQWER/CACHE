@@ -17,6 +17,7 @@ set(SOURCE_FILES
                  Generators/Request.cpp
                  Generators/Pareto.cpp
                  Generators/PdfFlow.cpp
+                 Generators/Distribution.cpp
 
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
@@ -31,10 +32,11 @@ set(SOURCE_FILES
                  Utils/Utils.cpp
                  Utils/Plot.cpp
 
-                 Xml/pugixml.cpp
+                 Libs/pugixml.cpp
+
                  Xml/MainConfig.cpp
                  Xml/AnalyzeConfig.cpp
-        Generators/Distribution.cpp)
+                 )
 
 set(HEADER_FILES
                  Main/ModeRunner.h
@@ -64,8 +66,9 @@ set(HEADER_FILES
                  Utils/Plot.h
                  Utils/Paths.h
 
-                 Xml/pugiconfig.hpp
-                 Xml/pugixml.hpp
+                 Libs/pugiconfig.hpp
+                 Libs/pugixml.hpp
+
                  Xml/MainConfig.h
                  Xml/AnalyzeConfig.h
 
