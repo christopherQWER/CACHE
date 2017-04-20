@@ -12,16 +12,17 @@
 #include "../Flows/StackDistFlow.h"
 #include "../Flows/TraceFileFlow.h"
 #include "../Loggers/Logger.h"
+#include "Algorithm.h"
 
-#define _1_GB_IN_BYTES_ 1073741824
-typedef std::map<Asu, Client> ClientMap;
-
-class SharedCache {
+class SharedCache : public Algorithm {
 public:
     /// \brief
     /// \param exp_number
     /// \param cache_size
-    SharedCache(int exp_number, ByteSize cache_size);
+    SharedCache(int request_number,
+                int gist_counter,
+                std::string algorithm_dir,
+                ByteSize cache_size);
     ~SharedCache();
     void Clear();
 
@@ -29,21 +30,11 @@ public:
     /// \param flow_file_name
     /// \param type
     /// \param log_file_name
-    void RunAlgorithm(const std::string& flow_file_name, LoggerType type, const std::string& log_file_name);
+    void RunAlgorithm(const std::string& flow_file_name,
+                    LoggerType type,
+                    const std::string& log_file_name);
 
 private:
-    ///
-    Lru *cache;
 
-    /// Input parameter set number of experiments
-    int experiments_number;
-
-    ///
-    StackDist stack_dist;
-    ClientMap client_map;
-
-    void InsertToClientsMap(Client client);
-
-    void CreatePdfPlot(const std::string& results_dir, int gist_counter, int client_counter);
-    void CreateCdfPlot(const std::string& results_dir, int gist_counter, int client_counter);
+    Lru* _cache;
 };

@@ -7,12 +7,14 @@
 #include "../Flows/StackDistFlow.h"
 #include "../Utils/Paths.h"
 #include "../Utils/Utils.h"
-#include "../Utils/Plot.h"
+
 using namespace std;
 
-StaticPartial::StaticPartial(map<Asu, AppClass> _client_map)
+StaticPartial::StaticPartial()
 {
-    _client_map = _client_map;
+    experiments_number = 0;
+    _gist_counter = 0;
+    stack_dist = 0;
 }
 
 void StaticPartial::PercentPartial()
@@ -24,39 +26,28 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
                                  const string& log_file_name)
 {
     Logger *logger = Logger::CreateLogger(type);
+    logger->StartLog();
 
-    // Counts number of requests fo all time
+    // Counts number of requests for all time
     int counter = 0;
-    int client_counter = 0;
-
-    // gists per 30 secs
-    double time_step = 300;
+    // gists per 60 secs
+    _time_step = 60;
     double prev_time = 0;
 
     Flow *flow;
     Request *request;
-    Client client = Client();
-    string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Partial"));
-    Utils::CreateDirectory(results_dir);
 
     // if flow must be from generator
     if (flow_file_name == "")
     {
         flow = new StackDistFlow();
-        results_dir += "StackDist";
-        logger->ShowLogText(INFO, "=================Start: StackDist=================");
     }
     // else flow from trace file
     else
     {
         flow = new TraceFileFlow(flow_file_name);
-        string flow_name = Utils::GetFileNameWithoutExt(flow_file_name);
-        results_dir = Utils::PathCombine(results_dir, flow_name);
-        Utils::CreateDirectory(results_dir);
-        logger->ShowLogText(INFO, "=================Start: " + flow_name + "=================");
     }
 
-    logger->StartLog();
     request = flow->GetRequest();
     prev_time = request->_timestamp;
 
@@ -66,183 +57,39 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
 
         // Add request to LRU cache
         _client_map[request->_asu]._cache->LRU(*request);
-
         // Increment request counter for application class
         _client_map[request->_asu]._request_counter++;
         // Save stack distance for concrete class storage
-        _client_map[request->_asu].SaveStackDist(request->_stack_distance);
+        _client_map[request->_asu].AddStackDistToMap(request->_stack_distance);
 
         // It's time for gistogram
-        if ( request->_timestamp - prev_time >= time_step )
+        if ( request->_timestamp - prev_time >= _time_step )
         {
-            // common directory for current gistogram number for pdf
-            string path_to_cur_pdf_gists = Utils::PathCombine(results_dir, string(_PDF_DIR_), to_string(_gist_counter));
-            Utils::CreateDirectory(path_to_cur_pdf_gists);
-            // common directory for current gistogram number for cdf
-            string path_to_cur_cdf_gists = Utils::PathCombine(results_dir, string(_CDF_DIR_), to_string(_gist_counter));
-            Utils::CreateDirectory(path_to_cur_cdf_gists);
-
-            // Write "stack_dist/hit_rate" files for every application unit
-            for (AppMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
-            {
-                // Txt file for current ASU with pdf
-                string pdf_txt = Utils::PathCombine(path_to_cur_pdf_gists, to_string(it->first) + ".txt");
-                // Txt file for current ASU with cdf
-                string cdf_txt = Utils::PathCombine(path_to_cur_cdf_gists, to_string(it->first) + ".txt");
-
-                it->second.SavePdfPlotDots(pdf_txt);
-                //it->second.SaveCdfPlotDots(cdf_txt);
-            }
+            PreparePDF();
+            PrepareCDF();
             // Create pdf and cdf plots of current applications
             //CreatePdfPlot(path_to_cur_pdf_gists, _gist_counter, client_counter);
             //CreateCdfPlot(path_to_cur_cdf_gists, _gist_counter, client_counter);
-
             _gist_counter++;
             prev_time = request->_timestamp;
+        }
+        if (request)
+        {
+            delete request;
         }
         request = flow->GetRequest();
         counter++;
     }
 
-    for (map<Asu, AppClass>::iterator it = _client_map.begin(); it != _client_map.end(); it++)
+    if (flow)
     {
-        it->second._cache->_hit_rate = it->second._cache->CalculateHitRate();
-        logger->ShowHitRate(INFO, it->second._cache->_hit_rate);
-
-//        it->second._stack_dist = it->second._cache->CalculateAvgStackDistance();
-//        logger->ShowStackDistance(INFO, stack_dist);
+        delete flow;
     }
     logger->EndLog();
-    logger->ShowLogText(INFO, "==================End: " +
-                              Utils::GetFileNameWithoutExt(flow_file_name) +
-                              "==================");
-}
-
-
-void StaticPartial::CreatePdfPlot(const string& results_dir, int client_counter)
-{
-    string pdf_plt = results_dir + string("//pdf.plt");
-    string pdf_png = results_dir + string("//pdf.png");
-
-    Plot pdf_plot = Plot("512", "512",
-                         "WebSearch_1 PDF",
-                         pdf_png, pdf_plt,
-                         "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
-                         "Pdf", pair<string, string>(to_string(0), to_string(1)),
-                         "10000", false
-    );
-
-    string pdf_command = "plot ";
-    StackDist min = _client_map.begin()->second.stack_dist_map.begin()->first;
-    StackDist max = (--(_client_map.begin()->second.stack_dist_map.end()))->first;
-
-    // Go through apps
-    ByteSize map_size = _client_map.size();
-    for (AppMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
+    if (logger)
     {
-        if (min > it->second.stack_dist_map.begin()->first)
-        {
-            min = it->second.stack_dist_map.begin()->first;
-        }
-        if (max < (--(it->second.stack_dist_map.end()))->first)
-        {
-            max = (--(it->second.stack_dist_map.end()))->first;
-        }
-        string pdf_txt = results_dir + "//" + to_string(it->first) + ".txt";
-        pdf_command += "'" + pdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
-        if (client_counter < map_size - 1)
-        {
-            pdf_command += ",\\";
-        }
-        pdf_plot.m_command_lines.push_back(pdf_command);
-        pdf_command.clear();
-        client_counter++;
+        delete logger;
     }
-    client_counter = 0;
-    switch(_gist_counter)
-    {
-        case 0:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(5000));
-            break;
-        case 1:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(6000));
-            break;
-        case 2:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(40000));
-            break;
-        case 3:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(70000));
-            break;
-        case 4:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
-            break;
-        case 5:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-            break;
-        case 6:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-            break;
-        case 7:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
-            break;
-        case 8:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-            break;
-        case 9:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(80000));
-            break;
-        case 10:
-            pdf_plot.m_xRange = pair<string, string>(to_string(2), to_string(100000));
-            break;
-        default:
-            pdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max / 3));
-            break;
-    }
-    pdf_plot.DoPlot();
-}
-
-void StaticPartial::CreateCdfPlot(const std::string& results_dir, int client_counter)
-{
-    string cdf_plt = results_dir + string("//cdf.plt");
-    string cdf_png = results_dir + string("//cdf.png");
-
-    Plot cdf_plot = Plot("512", "512",
-                         "WebSearch_1 CDF",
-                         cdf_png, cdf_plt,
-                         "Stack distance", pair<string, string>(to_string(2), to_string(100000)),
-                         "Cdf", pair<string, string>(to_string(0), to_string(1)),
-                         "10000", false
-    );
-
-    string cdf_command = "plot ";
-    StackDist min = _client_map.begin()->second.stack_dist_map.begin()->first;
-    StackDist max = (--(_client_map.begin()->second.stack_dist_map.end()))->first;
-
-    // Go through apps
-    ByteSize map_size = _client_map.size();
-    for (AppMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
-    {
-        if (min > it->second.stack_dist_map.begin()->first)
-        {
-            min = it->second.stack_dist_map.begin()->first;
-        }
-        if (max < (--(it->second.stack_dist_map.end()))->first)
-        {
-            max = (--(it->second.stack_dist_map.end()))->first;
-        }
-        string cdf_txt = results_dir + "//" + to_string(it->first) + ".txt";
-        cdf_command += "'" + cdf_txt + "'" + " using 1:2 with lines title 'Ap_" + to_string(it->first) + "'";
-
-        if (client_counter < map_size - 1)
-        {
-            cdf_command += ",\\";
-        }
-        cdf_plot.m_command_lines.push_back(cdf_command);
-        cdf_command.clear();
-        client_counter++;
-    }
-    cdf_plot.m_xRange = pair<string, string>(to_string(min + 1), to_string(max));
-    cdf_plot.DoPlot();
 }
 
 void StaticPartial::CommonPlot(const string& flow_file_name)
@@ -253,7 +100,7 @@ void StaticPartial::CommonPlot(const string& flow_file_name)
     string path_to_cur_pdf_gists = Utils::PathCombine(results_dir, string(_PDF_DIR_), to_string(_gist_counter));
     string path_to_cur_cdf_gists = Utils::PathCombine(results_dir, string(_CDF_DIR_), to_string(_gist_counter));
 
-    for (AppMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
+    for (ClientMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
     {
         // Txt file for current ASU with pdf
         string pdf_txt = Utils::PathCombine(path_to_cur_pdf_gists, to_string(it->first) + ".txt");
@@ -261,6 +108,6 @@ void StaticPartial::CommonPlot(const string& flow_file_name)
         string cdf_txt = Utils::PathCombine(path_to_cur_cdf_gists, to_string(it->first) + ".txt");
 
         it->second.SavePdfPlotDots(pdf_txt);
-        //it->second.SaveCdfPlotDots(cdf_txt);
+        it->second.SaveCdfPlotDots(cdf_txt);
     }
 }
