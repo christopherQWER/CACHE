@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.6)
 project(Cache)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 set(SOURCE_FILES
                  Main/Main.cpp
                  Main/ModeRunner.cpp
 
+                 Algorithms/Algorithm.cpp
                  Algorithms/SharedCache.cpp
                  Algorithms/StaticPartial.cpp
                  Algorithms/DynamicPartial.cpp
@@ -15,12 +17,12 @@ set(SOURCE_FILES
 
                  Generators/Request.cpp
                  Generators/Pareto.cpp
+                 Generators/PdfFlow.cpp
 
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
 
                  Modeling/Client.cpp
-                 Modeling/AppClass.cpp
                  Modeling/TraceAnalyzer.cpp
 
                  Loggers/ConsoleLogger.cpp
@@ -38,6 +40,7 @@ set(SOURCE_FILES
 set(HEADER_FILES
                  Main/ModeRunner.h
 
+                 Algorithms/Algorithm.h
                  Algorithms/SharedCache.h
                  Algorithms/StaticPartial.h
                  Algorithms/DynamicPartial.h
@@ -48,13 +51,13 @@ set(HEADER_FILES
                  Generators/Request.h
                  Generators/Pareto.h
                  Generators/Distribution.h
+                 Generators/PdfFlow.h
 
                  Flows/Flow.h
                  Flows/StackDistFlow.h
                  Flows/TraceFileFlow.h
 
                  Modeling/Client.h
-                 Modeling/AppClass.h
                  Modeling/TraceAnalyzer.h
 
                  Utils/Types.h

@@ -22,13 +22,14 @@ void Lru::LRU(Request &newRequest)
     Logger *pLogger = Logger::CreateLogger(TYPE);
     StackDist stack_dist = 0;
 
-    std::unordered_map<Lba, StorType::iterator>::iterator it = _map_store.begin();
+    unordered_map<Lba, StorType::iterator>::iterator it = _map_store.begin();
     if (IsInCache(newRequest._lba, it))
     {
         stack_dist = distance(_list_store.begin(), it->second) + 1;
         ReorganizeCache(newRequest);
         _hit++;
-        pLogger->ShowLogText(DEBUG, "Hit to cache.\n");
+//        pLogger->ShowLogText(DEBUG, "Hit to cache. Time: " +
+//                to_string(newRequest._timestamp) + "\n" );
     }
     else
     {
@@ -37,7 +38,7 @@ void Lru::LRU(Request &newRequest)
             stack_dist = _curr_size + 1;
             DeleteOldRequest();
             _miss++;
-            pLogger->ShowLogText(DEBUG, "\n\tCache is full...clear... ");
+//            pLogger->ShowLogText(DEBUG, "\n\tCache is full...clear... ");
         }
         else
         {
@@ -45,7 +46,8 @@ void Lru::LRU(Request &newRequest)
         }
         InsertNewRequest(newRequest);
         _curr_capacity += newRequest._size;
-        pLogger->ShowLogText(DEBUG, "Request added to cache!\n");
+//        pLogger->ShowLogText(DEBUG, "Request added to cache! Time: " +
+//                to_string(newRequest._timestamp) + "\n");
     }
     _request_counter++;
     newRequest._stack_distance = stack_dist;
@@ -65,7 +67,7 @@ void Lru::Resize(ByteSize new_size)
     if (_curr_capacity > _max_capacity)
     {
         ByteSize diff = _curr_capacity - _max_capacity;
-        int number_of_pos = 0;
+        ByteSize number_of_pos = 0;
         if( (diff % _CELL_SIZE_) == 0)
         {
             number_of_pos = diff / _CELL_SIZE_;

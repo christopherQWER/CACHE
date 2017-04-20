@@ -6,7 +6,7 @@
 #include "../Generators/Request.h"
 using namespace std;
 
-TraceAnalyzer::TraceAnalyzer(const string file_path, string output_file)
+TraceAnalyzer::TraceAnalyzer(const string &file_path, string &output_file)
 {
     _reads = 0;
     _writes = 0;
@@ -152,4 +152,9 @@ void TraceAnalyzer::AppendToFile(const string& output_path)
     density_file << "\n";
 
     density_file.close();
+}
+
+TraceAnalyzer::TraceAnalyzer()
+{
+
 }

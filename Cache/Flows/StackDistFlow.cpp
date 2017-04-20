@@ -8,14 +8,30 @@ using namespace std;
 StackDistFlow::StackDistFlow()
 {
     curr_buffer_size = 0;
+    _stack_dist_ = 0;
+    _address_buffer = list<Lba>();
+}
+
+StackDistFlow::StackDistFlow(StackDist stack_dist)
+{
+    _stack_dist_ = stack_dist;
+    curr_buffer_size = 0;
+    _address_buffer = list<Lba>();
 }
 
 StackDistFlow::~StackDistFlow()
 {
     _address_buffer.clear();
+    _stack_dist_ = 0;
+    curr_buffer_size = 0;
 }
 
 Request *StackDistFlow::GetRequest()
+{
+    return GenerateForApp();
+}
+
+Request* StackDistFlow::GenerateForApp()
 {
     Request *request = new Request();
     Request::GenerateRequest(*request);
@@ -37,7 +53,6 @@ Request *StackDistFlow::GetRequest()
         InsertToFront(needed_lba);
         request->_lba = needed_lba;
     }
-
     return request;
 }
 
@@ -50,7 +65,7 @@ bool StackDistFlow::IsInBuffer(Lba address)
 
 void StackDistFlow::MoveForward(int pos)
 {
-    auto it = _address_buffer.begin();
+    Buffer_itr it = _address_buffer.begin();
     advance(it, pos);
     Lba founded = *it;
     _address_buffer.erase(it);
@@ -73,4 +88,9 @@ void StackDistFlow::InsertToFront(Lba address)
 {
     _address_buffer.push_front(address);
     curr_buffer_size++;
+}
+
+void StackDistFlow::SetStackDistance(StackDist required)
+{
+    _stack_dist_ = required;
 }

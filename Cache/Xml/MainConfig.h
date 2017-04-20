@@ -74,22 +74,31 @@ struct XmlPartialCache {
 };
 
 ///
+struct XmlPlot{
+    std::list<std::string> pdf_paths;
+    std::list<std::string> cdf_paths;
+};
+
+///
 struct Config {
     XmlTraceAnalyze trace_analyzer;
     XmlSharedCache shared_cache;
     XmlPartialCache partial_cache;
+    XmlPlot xml_plot;
     Config() : trace_analyzer(XmlTraceAnalyze()),
                shared_cache(XmlSharedCache()),
-               partial_cache(XmlPartialCache()) {}
+               partial_cache(XmlPartialCache()),
+               xml_plot(XmlPlot()){}
 };
 
 static const std::string Modes = "Modes";
 
-static const std::string sTraceAnalyzer = "TraceAnalyzer";
-static const std::string sSharedCache = "SharedCache";
-static const std::string sPartialCache = "PartialCache";
-static const std::string sApps = "Applications";
+static const std::string sAnalyzerMode = "AnalyzerMode";
+static const std::string sSharedMode = "SharedMode";
+static const std::string sPartialMode = "PartialMode";
+static const std::string sPlotMode = "PlotMode";
 
+static const std::string sApps = "Applications";
 static const std::string sTrace = "Trace";
 static const std::string sApplication = "App";
 static const std::string sLogs = "Logs";

@@ -5,33 +5,36 @@
 #pragma once
 #include <iostream>
 #include <algorithm>
-
 #include "../Generators/Request.h"
 #include "../Utils/Types.h"
 #include "Flow.h"
 
-typedef std::list<Lba>::iterator buffer_itr;
+typedef std::list<Lba>::iterator Buffer_itr;
 
-class StackDistFlow : public Flow
-{
-public:
-    /// Needed stack distance
-    int _stack_dist_;
+    class StackDistFlow : public Flow
+    {
+    public:
 
-    StackDistFlow();
-    ~StackDistFlow();
+        StackDistFlow();
+        StackDistFlow(StackDist stack_dist);
+        ~StackDistFlow();
 
-    ///
-    /// \return request generated with specified stack distance
-    Request* GetRequest();
+        void SetStackDistance(StackDist required);
 
-private:
-    ByteSize curr_buffer_size;
-    std::list<Lba> _address_buffer;
+        /// \brief
+        /// \return request generated with specified stack distance
+        Request* GetRequest();
 
-    bool IsInBuffer(Lba address);
-    void MoveForward(int pos);
-    void InsertToFront(Lba address);
-    ByteSize GetBufferSize();
-    Lba GetFirst();
-};
+    private:
+        /// Needed stack distance
+        StackDist _stack_dist_;
+        ByteSize curr_buffer_size;
+        std::list<Lba> _address_buffer;
+
+        Request* GenerateForApp();
+        bool IsInBuffer(Lba address);
+        void MoveForward(int pos);
+        void InsertToFront(Lba address);
+        ByteSize GetBufferSize();
+        Lba GetFirst();
+    };

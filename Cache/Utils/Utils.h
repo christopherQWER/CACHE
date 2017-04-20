@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <sys/stat.h>
+#include "Types.h"
 
 
 class Utils
@@ -50,4 +51,5 @@ public:
     static std::string GetFileNameWithoutExt(const std::string &path);
     static bool CreateDirectory(const std::string &dir_path);
     static std::string SplitFilename (const std::string& file_path);
+    static double GetPointByTwoPoints(ByteSize x1, double y1, ByteSize x2, double y2, ByteSize x3);
 };

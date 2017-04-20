@@ -10,7 +10,7 @@ void MainConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
     pugi::xml_node modes_node = doc.append_child(Modes.c_str());
 
     // create child "TraceAnalyzer"
-    pugi::xml_node trace_analyze_node = modes_node.append_child(sTraceAnalyzer.c_str());
+    pugi::xml_node trace_analyze_node = modes_node.append_child(sAnalyzerMode.c_str());
     trace_analyze_node.append_attribute(sType.c_str()).set_value(TraceAnalyzer::toString(cnf.trace_analyzer.type));
 
     // create children of "TraceAnalyzer"
@@ -22,7 +22,7 @@ void MainConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
     }
 
     // create child "SharedCache"
-    pugi::xml_node shared_node = modes_node.append_child(sSharedCache.c_str());
+    pugi::xml_node shared_node = modes_node.append_child(sSharedMode.c_str());
     shared_node.append_attribute(sSize.c_str()).set_value(static_cast<long unsigned int>(cnf.shared_cache.size));
     shared_node.append_attribute(sRequestNum.c_str()).set_value(cnf.shared_cache.request_num);
 
@@ -43,7 +43,7 @@ void MainConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
     }
 
     // create child "StaticPartial"
-    pugi::xml_node partial_node = modes_node.append_child(sPartialCache.c_str());
+    pugi::xml_node partial_node = modes_node.append_child(sPartialMode.c_str());
     partial_node.append_attribute(sAppCount.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.app_count));
     partial_node.append_attribute(sCommonSize.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.common_size));
     partial_node.append_attribute(sRequestNum.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.request_num));
@@ -80,7 +80,7 @@ void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
     pugi::xml_node modes = doc.child(Modes.c_str());
 
     // get trace analyzer info
-    pugi::xml_node trace_analyzer = modes.child(sTraceAnalyzer.c_str());
+    pugi::xml_node trace_analyzer = modes.child(sAnalyzerMode.c_str());
     cnf.trace_analyzer = XmlTraceAnalyze();
     cnf.trace_analyzer.type = TraceAnalyzer::toType(trace_analyzer.attribute(sType.c_str()).as_string(""));
 
@@ -95,7 +95,7 @@ void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
 
     // get shared cache info
     cnf.shared_cache = XmlSharedCache();
-    pugi::xml_node shared_cache = modes.child(sSharedCache.c_str());
+    pugi::xml_node shared_cache = modes.child(sSharedMode.c_str());
     cnf.shared_cache.size = shared_cache.attribute(sSize.c_str()).as_uint(1);
     cnf.shared_cache.request_num = shared_cache.attribute(sRequestNum.c_str()).as_int(1000000);
 
@@ -111,7 +111,7 @@ void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
 
     // get partial cache info
     cnf.partial_cache = XmlPartialCache();
-    pugi::xml_node partial_cache = modes.child(sPartialCache.c_str());
+    pugi::xml_node partial_cache = modes.child(sPartialMode.c_str());
     cnf.partial_cache.app_count = partial_cache.attribute(sAppCount.c_str()).as_uint(0);
     cnf.partial_cache.request_num = partial_cache.attribute(sRequestNum.c_str()).as_uint(1000000);
     cnf.partial_cache.common_size = static_cast<ByteSize>(partial_cache.attribute(sCommonSize.c_str()).as_int(1));
@@ -136,6 +136,8 @@ void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
         cache_obj.qos = child.attribute(sQoS.c_str()).as_double(0.2);
         cnf.partial_cache.app_list.push_back(cache_obj);
     }
+
+    pugi::xml_node plot_mode = partial_cache.child(sPlotMode.c_str());
 }
 
 //From trace_file

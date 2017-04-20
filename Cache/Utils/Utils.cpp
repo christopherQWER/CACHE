@@ -122,7 +122,7 @@ void Utils::ExecuteCmd(const string &input)
     int errorCode = system(input.c_str());
 }
 
-string Utils::SplitFilename (const string& file_path)
+string Utils::SplitFilename(const string& file_path)
 {
     string dir = "";
     size_t found = file_path.find_last_of("/\\");
@@ -130,28 +130,8 @@ string Utils::SplitFilename (const string& file_path)
     return dir;
 }
 
-//string Utils::PathCombine(const char *fmt, const char* ...)
-//{
-//    string result_str = "";
-//    va_list args;
-//    va_start(args, fmt);
-//    while (fmt != '\0')
-//    {
-//        result_str += va_arg(args, char*);
-//        ++fmt;
-//    }
-//    va_end(args);
-//    return result_str;
-//}
-
-//void Utils::OpenFile(const string file_path)
-//{
-//    trace_file.open(file_path.c_str());
-//    if (! (trace_file.is_open()) )
-//    {
-//#ifdef DEBUG
-//        Logger *logger = Logger::CreateLogger(TYPE);
-//        logger->ShowLogText("Trace trace_file opening were faled.\n");
-//#endif
-//    }
-//}
+double Utils::GetPointByTwoPoints(ByteSize x1, double y1, ByteSize x2, double y2, ByteSize x3)
+{
+    // y = k*x + b;
+    return 0;
+}

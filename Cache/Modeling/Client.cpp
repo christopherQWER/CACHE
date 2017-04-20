@@ -17,10 +17,21 @@ Client::~Client()
 {
 }
 
+void Client::Init(Asu asu, std::string results_dir)
+{
+    _application_id = asu;
+    _request_counter = 0;
+    _QoS = 0;
+    pdf_dir_path = Utils::PathCombine(results_dir, _PDF_DIR_);
+    cdf_dir_path = Utils::PathCombine(results_dir, _CDF_DIR_);
+    Utils::CreateDirectory(pdf_dir_path);
+    Utils::CreateDirectory(cdf_dir_path);
+}
+
 void Client::SavePdfPlotDots(const std::string& file_path)
 {
     int count = 0;
-    for (DistStor::iterator it = stack_dist_map.begin(); it != stack_dist_map.end(); ++it)
+    for (DistStorage::iterator it = stack_dist_map.begin(); it != stack_dist_map.end(); ++it)
     {
         double value = static_cast<double>(it->second) / static_cast<double>(_request_counter);
         Utils::AppendToFile(file_path, it->first, value);
@@ -31,7 +42,7 @@ void Client::SavePdfPlotDots(const std::string& file_path)
 void Client::SaveCdfPlotDots(const std::string& file_path)
 {
     double common_val = 0;
-    for (DistStor::iterator it = stack_dist_map.begin(); it != stack_dist_map.end(); ++it)
+    for (DistStorage::iterator it = stack_dist_map.begin(); it != stack_dist_map.end(); ++it)
     {
         double curr_val = static_cast<double>(it->second) / static_cast<double>(_request_counter);
         Utils::AppendToFile(file_path, it->first, common_val + curr_val);
@@ -39,16 +50,7 @@ void Client::SaveCdfPlotDots(const std::string& file_path)
     }
 }
 
-void Client::Init(Request* request, std::string results_dir)
-{
-    _application_id = request->_asu;
-    pdf_dir_path = results_dir + "//" + _PDF_DIR_;
-    cdf_dir_path = results_dir + "//" + _CDF_DIR_;
-    Utils::CreateDirectory(pdf_dir_path);
-    Utils::CreateDirectory(cdf_dir_path);
-}
-
-void Client::SaveStackDist(StackDist stack_dist)
+void Client::AddStackDistToMap(StackDist stack_dist)
 {
     if (IsInStorage(stack_dist))
     {
