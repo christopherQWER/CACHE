@@ -6,9 +6,8 @@
 // Enumeration for program modes
 enum Mode{
     TRACE_ANALYZE = 1,
-    SHARED_CACHE,
-    PARTIAL_CACHE,
-    PLOTS,
+    GENERATE,
+    SIMULATE,
     EXIT
 };
 
@@ -19,16 +18,14 @@ static const char* toString(Mode mode)
 {
     switch (mode)
     {
-    case TRACE_ANALYZE: { return "TRACE_ANALYZE";}
-    case SHARED_CACHE: { return "SHARED_CACHE";}
-    case PARTIAL_CACHE: { return "PARTIAL_CACHE";}
-    case PLOTS: {return "PLOTS";}
-    case EXIT: {return "EXIT";}
-    default: { return "UNKNOWN";}
+        case TRACE_ANALYZE: { return "TRACE_ANALYZE";}
+        case GENERATE:      { return "GENERATE";}
+        case SIMULATE:      { return "SIMULATE";}
+        case EXIT:          { return "EXIT";}
+        default:            { return "UNKNOWN";}
     }
 }
 
 void RunTraceAnalyseMode(Config my_config);
-void RunSharedCacheMode(Config my_config);
-void RunPartialCacheMode(Config my_config);
-void RunPlotsMode(Config my_config);
+void RunSimulateMode(Config my_config);
+void RunGenerateMode(Config my_config);

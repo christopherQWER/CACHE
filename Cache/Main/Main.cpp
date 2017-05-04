@@ -1,6 +1,4 @@
 #include "../Modeling/TraceAnalyzer.h"
-#include "../Algorithms/SharedCache.h"
-#include "../Xml/MainConfig.h"
 #include "../Utils/Paths.h"
 #include "ModeRunner.h"
 using namespace std;
@@ -35,21 +33,16 @@ int main()
                 RunTraceAnalyseMode(my_config);
                 break;
             }
-            case SHARED_CACHE:
+            case SIMULATE:
             {
-                pLogger->ShowLogText(DEBUG, "Start shared cache mode...\n");
-                RunSharedCacheMode(my_config);
+                pLogger->ShowLogText(DEBUG, "Start simulate cache mode...\n");
+                RunSimulateMode(my_config);
                 break;
             }
-            case PARTIAL_CACHE:
+            case GENERATE:
             {
-                pLogger->ShowLogText(DEBUG, "Start partial cache mode...\n");
-                RunPartialCacheMode(my_config);
-                break;
-            }
-            case PLOTS:
-            {
-                pLogger->ShowLogText(DEBUG, "Start plot mode...\n");
+                pLogger->ShowLogText(DEBUG, "Start generate flow mode...\n");
+                RunGenerateMode(my_config);
                 break;
             }
             case EXIT:
@@ -67,15 +60,13 @@ int main()
 }
 
 
-
  // Function prints on display different program's modes
 void ShowMenu(void)
 {
     cout << "Choose mode:\n" << endl;
     cout << to_string(TRACE_ANALYZE) + string(" --> ") + toString(TRACE_ANALYZE) << endl;
-    cout << to_string(SHARED_CACHE) + string(" --> ") + toString(SHARED_CACHE) << endl;
-    cout << to_string(PARTIAL_CACHE) + string(" --> ") + toString(PARTIAL_CACHE) << endl;
-    cout << to_string(PLOTS) + string(" --> ") + toString(PLOTS) << endl;
+    cout << to_string(SIMULATE) + string(" --> ") + toString(SIMULATE) << endl;
+    cout << to_string(GENERATE) + string(" --> ") + toString(GENERATE) << endl;
     cout << to_string(EXIT) + string(" --> EXIT") << endl;
     cout << endl;
 }
