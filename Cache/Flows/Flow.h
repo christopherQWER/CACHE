@@ -3,18 +3,24 @@
 //
 
 #pragma once
-
 #include <iostream>
+#include <string>
 #include <cstring>
 #include "../Generators/Request.h"
+#include "../Utils/Utils.h"
 
-enum FlowType{FFILE = 0, FGENERATOR};
+enum FlowType { FFILE = 0, FGENERATOR };
 
 class Flow
 {
 public:
+    std::string flow_dir;
+
+    Flow(const std::string &flow_name);
     virtual ~Flow(){};
     virtual Request* GetRequest() = 0;
+
+    static Flow* CreateFlow(FlowType type);
 
     static inline const char* toString(FlowType type)
     {

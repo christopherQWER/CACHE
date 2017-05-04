@@ -5,18 +5,19 @@
 #include "StackDistFlow.h"
 using namespace std;
 
-StackDistFlow::StackDistFlow()
+StackDistFlow::StackDistFlow(const string& flow_name)
+        :Flow(flow_name)
 {
     curr_buffer_size = 0;
     _stack_dist_ = 0;
     _address_buffer = list<Lba>();
 }
 
-StackDistFlow::StackDistFlow(StackDist stack_dist)
+StackDistFlow::StackDistFlow(const string& flow_name, StackDist stack_dist)
+        :Flow(flow_name)
 {
+    StackDistFlow(flow_name);
     _stack_dist_ = stack_dist;
-    curr_buffer_size = 0;
-    _address_buffer = list<Lba>();
 }
 
 StackDistFlow::~StackDistFlow()

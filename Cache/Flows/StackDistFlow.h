@@ -11,30 +11,27 @@
 
 typedef std::list<Lba>::iterator Buffer_itr;
 
-    class StackDistFlow : public Flow
-    {
-    public:
+class StackDistFlow : public Flow
+{
+public:
 
-        StackDistFlow();
-        StackDistFlow(StackDist stack_dist);
-        ~StackDistFlow();
+    StackDistFlow(const std::string& flow_name);
+    StackDistFlow(const std::string& flow_name, StackDist stack_dist);
+    ~StackDistFlow();
 
-        void SetStackDistance(StackDist required);
+    void SetStackDistance(StackDist required);
+    Request* GetRequest();
 
-        /// \brief
-        /// \return request generated with specified stack distance
-        Request* GetRequest();
+private:
+    /// Needed stack distance
+    StackDist _stack_dist_;
+    ByteSize curr_buffer_size;
+    std::list<Lba> _address_buffer;
 
-    private:
-        /// Needed stack distance
-        StackDist _stack_dist_;
-        ByteSize curr_buffer_size;
-        std::list<Lba> _address_buffer;
-
-        Request* GenerateForApp();
-        bool IsInBuffer(Lba address);
-        void MoveForward(int pos);
-        void InsertToFront(Lba address);
-        ByteSize GetBufferSize();
-        Lba GetFirst();
-    };
+    Request* GenerateForApp();
+    bool IsInBuffer(Lba address);
+    void MoveForward(int pos);
+    void InsertToFront(Lba address);
+    ByteSize GetBufferSize();
+    Lba GetFirst();
+};

@@ -18,7 +18,7 @@ public:
     std::string File;
     bool _is_eof;
 
-    TraceFileFlow(const std::string& file_name);
+    TraceFileFlow(std::string flow_dir);
     ~TraceFileFlow();
     Request* GetRequest();
 
