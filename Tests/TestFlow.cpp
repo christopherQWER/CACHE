@@ -21,7 +21,7 @@ void TestFlow::SameRequests(int experiments_count, ByteSize cache_capasity)
     StackDist stack_dist = 1;
     Request *request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow(stack_dist);
+    StackDistFlow flow = StackDistFlow(<#initializer#>, stack_dist);
 
     for (int i = 0; i < experiments_count; i++)
     {
@@ -59,7 +59,7 @@ void TestFlow::HalfPartSameRequests(int experiments_count, ByteSize cache_capasi
     StackDist stack_dist = experiments_count / 2 + 1;
     Request *request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow();
+    StackDistFlow flow = StackDistFlow(<#initializer#>, <#initializer#>);
 
     for (int i = 0; i < experiments_count; i++)
     {
@@ -97,7 +97,7 @@ void TestFlow::DifferentRequests(int experiments_count, ByteSize cache_capasity)
     StackDist stack_dist = experiments_count;
     Request *request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow();
+    StackDistFlow flow = StackDistFlow(<#initializer#>, <#initializer#>);
 
     for (int i = 0; i < experiments_count; i++)
     {
@@ -136,7 +136,7 @@ void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
     PdfFlow pdf_generator = PdfFlow(pdf_path);
     Request *request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow();
+    StackDistFlow flow = StackDistFlow(<#initializer#>, <#initializer#>);
 
     for (int i = 0; i < experiments_count; i++)
     {
