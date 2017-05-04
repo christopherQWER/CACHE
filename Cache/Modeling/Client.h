@@ -7,6 +7,7 @@
 #include <string>
 #include "../Utils/Types.h"
 #include "../Caches/Lru.h"
+#include "../Flows/Flow.h"
 #include "../Generators/Request.h"
 
 typedef std::map<StackDist, int> DistStorage;
@@ -15,24 +16,12 @@ class Client {
 public:
     /// Counter of sent requests from this application
     int _request_counter;
-
-    /// Client id
     Asu _application_id;
-
-    /// Quality of service for current client
     double _QoS;
-
-    /// Frequency of stack distances occurrences
     DistStorage stack_dist_map;
-
-    /// Path to directory with pdf plots
+    Flow *flow;
     std::string pdf_dir_path;
-
-    /// Path to directory with cdf plots
     std::string cdf_dir_path;
-
-    /// Field of cache: using only if algorithm is partial!!!
-    Lru* _cache;
 
     Client();
     virtual ~Client();

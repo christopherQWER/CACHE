@@ -4,17 +4,21 @@
 
 #include "Client.h"
 #include "../Utils/Paths.h"
-#include "../Utils/Utils.h"
+
 using namespace std;
 
 Client::Client()
 {
     _request_counter = 0;
     _application_id = 0;
+    _QoS = 0;
+    pdf_dir_path = "";
+    cdf_dir_path = "";
 }
 
 Client::~Client()
 {
+    stack_dist_map.clear();
 }
 
 void Client::Init(Asu asu, std::string results_dir)

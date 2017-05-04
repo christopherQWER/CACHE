@@ -6,10 +6,10 @@ set(SOURCE_FILES
                  Main/Main.cpp
                  Main/ModeRunner.cpp
 
-                 Algorithms/Algorithm.cpp
-                 Algorithms/SharedCache.cpp
-                 Algorithms/StaticPartial.cpp
-                 Algorithms/DynamicPartial.cpp
+                 Storages/Storage.cpp
+                 Storages/SharedStorage.cpp
+                 Storages/StaticPartial.cpp
+                 Storages/DynamicPartial.cpp
 
                  Caches/Cache.cpp
                  Caches/Lru.cpp
@@ -19,6 +19,7 @@ set(SOURCE_FILES
                  Generators/PdfFlow.cpp
                  Generators/Distribution.cpp
 
+                 Flows/Flow.cpp
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
 
@@ -36,15 +37,18 @@ set(SOURCE_FILES
 
                  Xml/MainConfig.cpp
                  Xml/AnalyzeConfig.cpp
+                 Xml/AnalyzerConfig.cpp
+                 Xml/GenerateConfig.cpp
+                 Xml/SimulateConfig.cpp
                  )
 
 set(HEADER_FILES
                  Main/ModeRunner.h
 
-                 Algorithms/Algorithm.h
-                 Algorithms/SharedCache.h
-                 Algorithms/StaticPartial.h
-                 Algorithms/DynamicPartial.h
+                 Storages/Storage.h
+                 Storages/SharedCache.h
+                 Storages/StaticPartial.h
+                 Storages/DynamicPartial.h
 
                  Caches/Cache.h
                  Caches/Lru.h
@@ -71,6 +75,9 @@ set(HEADER_FILES
 
                  Xml/MainConfig.h
                  Xml/AnalyzeConfig.h
+                 Xml/AnalyzerConfig.h
+                 Xml/GenerateConfig.h
+                 Xml/SimulateConfig.h
 
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h
