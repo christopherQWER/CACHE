@@ -3,22 +3,18 @@
 //
 
 #include "StaticPartial.h"
-#include "../Flows/TraceFileFlow.h"
 #include "../Flows/StackDistFlow.h"
-#include "../Utils/Utils.h"
-
 using namespace std;
 
 StaticPartial::StaticPartial(std::string algorithm_dir, double time_step, int experiments_number) :
-        Algorithm(algorithm_dir, time_step, experiments_number)
+        Storage(algorithm_dir, time_step, cache_size, experiments_number)
 {
+    _algorithm_dir = Utils::PathCombine(algorithm_dir, "Partial");
+    Utils::CreateDirectory(_algorithm_dir);
 }
 
-void StaticPartial::EqualPartial(const string& flow_file_name,
-                                 LoggerType type,
-                                 const string& log_file_name)
+void StaticPartial::EqualPartial()
 {
-    Logger *logger = Logger::CreateLogger(type);
     logger->StartLog();
 
     // Counts number of requests for all time
@@ -27,17 +23,6 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
 
     Flow *flow;
     Request *request;
-
-    // if flow must be from generator
-    if (flow_file_name == "")
-    {
-        flow = new StackDistFlow();
-    }
-    // else flow from trace file
-    else
-    {
-        flow = new TraceFileFlow(flow_file_name);
-    }
 
     request = flow->GetRequest();
     prev_time = request->_timestamp;
@@ -66,9 +51,7 @@ void StaticPartial::EqualPartial(const string& flow_file_name,
         counter++;
     }
 
-    delete flow;
     logger->EndLog();
-    delete logger;
 }
 
 void StaticPartial::PercentPartial()

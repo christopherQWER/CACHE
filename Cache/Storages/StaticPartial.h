@@ -4,13 +4,11 @@
 #pragma once
 #include <iostream>
 #include "../Loggers/Logger.h"
-#include "Algorithm.h"
+#include "Storage.h"
 
-class StaticPartial : public Algorithm{
+class StaticPartial : public Storage{
 public:
     StaticPartial(std::string algorithm_dir, double time_step, int experiments_number);
-    void EqualPartial(const std::string& flow_file_name,
-                    LoggerType type,
-                    const std::string& log_file_name);
+    void EqualPartial();
     void PercentPartial();
 };

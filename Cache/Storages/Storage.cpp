@@ -2,12 +2,13 @@
 // Created by cat on 4/12/17.
 //
 
-#include "Algorithm.h"
+#include "Storage.h"
 #include "../Utils/Plot.h"
 #include "../Utils/Paths.h"
 using namespace std;
 
-Algorithm::Algorithm(std::string algorithm_dir, double time_step, int experiments_number) :
+Storage::Storage(ByteSize commonSize, string algorithm_dir, double time_step, int experiments_number) :
+        _common_size(commonSize),
         _experiments_number(experiments_number),
         _algorithm_dir(algorithm_dir),
         _time_step(time_step)
@@ -16,22 +17,22 @@ Algorithm::Algorithm(std::string algorithm_dir, double time_step, int experiment
     _gist_counter = 0;
 }
 
-Algorithm::~Algorithm()
+Storage::~Storage()
 {
     _client_map.clear();
 }
 
-void Algorithm::InsertToClientsMap(Asu asu, const Client& application)
+void Storage::InsertToClientsMap(Asu asu, const Client& application)
 {
     _client_map.insert(pair<Asu, Client>(asu, application));
 }
 
-bool Algorithm::IsInMap(Asu asu)
+bool Storage::IsInMap(Asu asu)
 {
     return !(_client_map.find(asu) == _client_map.end());
 }
 
-void Algorithm::PreparePDF()
+void Storage::PreparePDF()
 {
     // Write "stack_dist/hit_rate" files for every application unit
     for (ClientMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
@@ -43,7 +44,7 @@ void Algorithm::PreparePDF()
     }
 }
 
-void Algorithm::PrepareCDF()
+void Storage::PrepareCDF()
 {
     // Write "stack_dist/hit_rate" files for every application unit
     for (ClientMap::iterator it = _client_map.begin(); it != _client_map.end(); ++it)
@@ -55,7 +56,7 @@ void Algorithm::PrepareCDF()
     }
 }
 
-void Algorithm::DrawPDFPlot(const string &trace_name)
+void Storage::DrawPDFPlot(const string &trace_name)
 {
     string working_dir = Utils::PathCombine(_algorithm_dir,
             trace_name, string(_PDF_DIR_), to_string(_gist_counter));
@@ -104,7 +105,7 @@ void Algorithm::DrawPDFPlot(const string &trace_name)
     pdf_plot.DoPlot();
 }
 
-void Algorithm::DrawCDFPlot(const string &trace_name)
+void Storage::DrawCDFPlot(const string &trace_name)
 {
     string working_dir = Utils::PathCombine(_algorithm_dir,
             trace_name, string(_CDF_DIR_), to_string(_gist_counter));
@@ -152,7 +153,7 @@ void Algorithm::DrawCDFPlot(const string &trace_name)
     cdf_plot.DoPlot();
 }
 
-void Algorithm::CommonPlot(const string &flow_file_name)
+void Storage::CommonPlot(const string &flow_file_name)
 {
     string results_dir = Utils::PathCombine(string(_PLOT_DATA_), string("Partial"));
     string flow_name = Utils::GetFileNameWithoutExt(flow_file_name);
