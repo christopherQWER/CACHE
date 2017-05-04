@@ -4,6 +4,7 @@
 #pragma once
 #include <iostream>
 #include "../Utils/Types.h"
+#include "MainConfig.h"
 #include "../Libs/pugixml.hpp"
 
 struct AppInfo
@@ -41,10 +42,8 @@ static const std::string sAvgBytes = "AvgBytes";
 static const std::string sReqNum = "RequestNumber";
 
 
-class AnalyzeConfig {
+class AnalyzeConfig : MainConfig{
 public:
     static void Serialize(const TraceInfo &trace_info, pugi::xml_document &doc);
     static void Deserialize(const pugi::xml_document &doc, TraceInfo &trace_info);
-    static void SaveToFile(const pugi::xml_document &doc, const std::string &file_name);
-    static void LoadFromFile(const std::string &file_name, pugi::xml_document &doc);
 };

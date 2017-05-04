@@ -6,141 +6,20 @@ using namespace std;
 
 void MainConfig::Serialize(const Config &cnf, pugi::xml_document &doc)
 {
-    // create root "Modes"
     pugi::xml_node modes_node = doc.append_child(Modes.c_str());
-
-    // create child "TraceAnalyzer"
-    pugi::xml_node trace_analyze_node = modes_node.append_child(sAnalyzerMode.c_str());
-    trace_analyze_node.append_attribute(sType.c_str()).set_value(TraceAnalyzer::toString(cnf.trace_analyzer.type));
-
-    // create children of "TraceAnalyzer"
-    for (auto &trace : cnf.trace_analyzer.trace_list)
-    {
-        pugi::xml_node trace_node = trace_analyze_node.append_child(sTrace.c_str());
-        trace_node.append_attribute(sName.c_str()).set_value(trace.name.c_str());
-        trace_node.set_value(trace.path.c_str());
-    }
-
-    // create child "SharedCache"
-    pugi::xml_node shared_node = modes_node.append_child(sSharedMode.c_str());
-    shared_node.append_attribute(sSize.c_str()).set_value(static_cast<long unsigned int>(cnf.shared_cache.size));
-    shared_node.append_attribute(sRequestNum.c_str()).set_value(cnf.shared_cache.request_num);
-
-    // create logger tag
-    pugi::xml_node logger_node = shared_node.append_child(sLogs.c_str());
-    logger_node.append_attribute(sType.c_str()).set_value(Logger::toString(cnf.shared_cache.logger.logger_type));
-    if (cnf.shared_cache.logger.logger_type == LCONSOLE)
-    {
-        logger_node.set_value(cnf.shared_cache.logger.path_to_log.c_str());
-    }
-
-    // create flow tag
-    pugi::xml_node flow_node = shared_node.append_child(sFlow.c_str());
-    flow_node.append_attribute(sType.c_str()).set_value(Flow::toString(cnf.shared_cache.flow.flow_type));
-    if(cnf.shared_cache.flow.flow_type == FFILE)
-    {
-        flow_node.set_value(cnf.shared_cache.flow.path_to_flow.c_str());
-    }
-
-    // create child "StaticPartial"
-    pugi::xml_node partial_node = modes_node.append_child(sPartialMode.c_str());
-    partial_node.append_attribute(sAppCount.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.app_count));
-    partial_node.append_attribute(sCommonSize.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.common_size));
-    partial_node.append_attribute(sRequestNum.c_str()).set_value(static_cast<unsigned long>(cnf.partial_cache.request_num));
-
-    // create logger tag
-    pugi::xml_node logger_node_1 = partial_node.append_child(sLogs.c_str());
-    logger_node_1.append_attribute(sType.c_str()).set_value(Logger::toString(cnf.shared_cache.logger.logger_type));
-    if (cnf.shared_cache.logger.logger_type == LCONSOLE)
-    {
-        logger_node_1.set_value(cnf.shared_cache.logger.path_to_log.c_str());
-    }
-
-    // create flow tag
-    pugi::xml_node flow_node_1 = partial_node.append_child(sFlow.c_str());
-    flow_node_1.append_attribute(sType.c_str()).set_value(Flow::toString(cnf.shared_cache.flow.flow_type));
-    if(cnf.shared_cache.flow.flow_type == FFILE)
-    {
-        flow_node_1.set_value(cnf.shared_cache.flow.path_to_flow.c_str());
-    }
-
-    // create children of "StaticPartial"
-    pugi::xml_node caches = partial_node.append_child(sApps.c_str());
-    for (auto &cache : cnf.partial_cache.app_list)
-    {
-        pugi::xml_node cache_node = caches.append_child(sApplication.c_str());
-        cache_node.append_attribute(sSize.c_str()).set_value(static_cast<long unsigned int>(cache.size));
-        cache_node.append_attribute(sXmlAsu.c_str()).set_value(cache.asu);
-        cache_node.append_attribute(sQoS.c_str()).set_value(cache.qos);
-    }
+    pugi::xml_node generate_node = modes_node.append_child(sGenerate.c_str());
+    pugi::xml_node simulate_node = modes_node.append_child(sSimulate.c_str());
+    pugi::xml_node analyze_node = modes_node.append_child(sAnalyzerMode.c_str());
 }
 
 void MainConfig::Deserialize(const pugi::xml_document &doc, Config &cnf)
 {
     pugi::xml_node modes = doc.child(Modes.c_str());
-
-    // get trace analyzer info
-    pugi::xml_node trace_analyzer = modes.child(sAnalyzerMode.c_str());
-    cnf.trace_analyzer = XmlTraceAnalyze();
-    cnf.trace_analyzer.type = TraceAnalyzer::toType(trace_analyzer.attribute(sType.c_str()).as_string(""));
-
-    // get trace analyzer children
-    for (pugi::xml_node child = trace_analyzer.child(sTrace.c_str()); child; child = child.next_sibling(sTrace.c_str()))
-    {
-        XmlTrace trace_obj = XmlTrace();
-        trace_obj.name = child.attribute(sName.c_str()).as_string("");
-        trace_obj.path = child.text().as_string("");
-        cnf.trace_analyzer.trace_list.push_back(trace_obj);
-    }
-
-    // get shared cache info
-    cnf.shared_cache = XmlSharedCache();
-    pugi::xml_node shared_cache = modes.child(sSharedMode.c_str());
-    cnf.shared_cache.size = shared_cache.attribute(sSize.c_str()).as_uint(1);
-    cnf.shared_cache.request_num = shared_cache.attribute(sRequestNum.c_str()).as_int(1000000);
-
-    // get logger tag
-    pugi::xml_node log_node = shared_cache.child(sLogs.c_str());
-    cnf.shared_cache.logger.logger_type = Logger::toType(log_node.attribute(sType.c_str()).as_string(""));
-    cnf.shared_cache.logger.path_to_log = log_node.text().as_string("");
-
-    // get flow tag
-    pugi::xml_node flow_node = shared_cache.child(sFlow.c_str());
-    cnf.shared_cache.flow.flow_type = Flow::toType(flow_node.attribute(sType.c_str()).as_string(""));
-    cnf.shared_cache.flow.path_to_flow = flow_node.text().as_string("");
-
-    // get partial cache info
-    cnf.partial_cache = XmlPartialCache();
-    pugi::xml_node partial_cache = modes.child(sPartialMode.c_str());
-    cnf.partial_cache.app_count = partial_cache.attribute(sAppCount.c_str()).as_uint(0);
-    cnf.partial_cache.request_num = partial_cache.attribute(sRequestNum.c_str()).as_uint(1000000);
-    cnf.partial_cache.common_size = static_cast<ByteSize>(partial_cache.attribute(sCommonSize.c_str()).as_int(1));
-
-    // get logger tag
-    pugi::xml_node log_node_1 = partial_cache.child(sLogs.c_str());
-    cnf.shared_cache.logger.logger_type = Logger::toType(log_node_1.attribute(sType.c_str()).as_string(""));
-    cnf.shared_cache.logger.path_to_log = log_node_1.text().as_string("");
-
-    // get flow tag
-    pugi::xml_node flow_node_1 = partial_cache.child(sFlow.c_str());
-    cnf.shared_cache.flow.flow_type = Flow::toType(flow_node_1.attribute(sType.c_str()).as_string(""));
-    cnf.shared_cache.flow.path_to_flow = flow_node_1.text().as_string("");
-
-    // get partial cache children
-    pugi::xml_node caches_node = partial_cache.child(sApps.c_str());
-    for (pugi::xml_node child = caches_node.child(sApplication.c_str()); child; child = child.next_sibling(sApplication.c_str()))
-    {
-        XmlCache cache_obj = XmlCache();
-        cache_obj.asu = child.attribute(sXmlAsu.c_str()).as_uint(0);
-        cache_obj.size = child.attribute(sSize.c_str()).as_uint(1);
-        cache_obj.qos = child.attribute(sQoS.c_str()).as_double(0.2);
-        cnf.partial_cache.app_list.push_back(cache_obj);
-    }
-
-    pugi::xml_node plot_mode = partial_cache.child(sPlotMode.c_str());
+    cnf.simulate_path = modes.child(sSimulate.c_str()).text().as_string("");
+    cnf.generate_path = modes.child(sGenerate.c_str()).text().as_string("");
+    cnf.analyze_path = modes.child(sAnalyzerMode.c_str()).text().as_string("");
 }
 
-//From trace_file
 void MainConfig::LoadFromFile(const std::string &file_name, pugi::xml_document &doc)
 {
     pugi::xml_parse_result result = doc.load_file(file_name.c_str());
@@ -162,8 +41,43 @@ void MainConfig::LoadFromFile(const std::string &file_name, pugi::xml_document &
     }
 }
 
-//To trace_file
 void MainConfig::SaveToFile(const pugi::xml_document &doc, const string &file_name)
 {
     bool saveSucceeded = doc.save_file(file_name.c_str());
+}
+
+void MainConfig::SerializeLogger(const XmlLog& logger, pugi::xml_node& root_node)
+{
+    pugi::xml_node logger_node = root_node.append_child(sLogs.c_str());
+    logger_node.append_attribute(sType.c_str()).set_value(Logger::toString(logger.logger_type));
+    if (logger.logger_type == LCONSOLE)
+    {
+        logger_node.set_value(logger.path_to_log.c_str());
+    }
+}
+
+void MainConfig::DeserializeLogger(const pugi::xml_node& root_node, XmlLog& logger)
+{
+    pugi::xml_node log_node = root_node.child(sLogs.c_str());
+    logger.logger_type = Logger::toType(log_node.attribute(sType.c_str()).as_string(""));
+    logger.path_to_log = log_node.text().as_string("");
+}
+
+void MainConfig::SerializeFlow(const XmlFlow& flow, pugi::xml_node& root_node)
+{
+    pugi::xml_node flow_node = root_node.append_child(sFlow.c_str());
+    flow_node.append_attribute(sType.c_str()).set_value(Flow::toString(flow.flow_type));
+    flow_node.append_attribute(sAppCount.c_str()).set_value(flow.app_count);
+    if(flow.flow_type == FFILE)
+    {
+        flow_node.set_value(flow.path_to_flow.c_str());
+    }
+}
+
+void MainConfig::DeserializeFlow(const pugi::xml_node& root_node, XmlFlow& flow)
+{
+    pugi::xml_node flow_node = root_node.child(sFlow.c_str());
+    flow.flow_type = Flow::toType(flow_node.attribute(sType.c_str()).as_string(""));
+    flow.app_count = flow_node.text().as_int(0);
+    flow.path_to_flow = flow_node.text().as_string("");
 }

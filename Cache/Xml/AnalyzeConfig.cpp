@@ -41,23 +41,3 @@ void AnalyzeConfig::Deserialize(const pugi::xml_document &doc, TraceInfo &trace_
         trace_info.apps.push_back(app_inf);
     }
 }
-
-void AnalyzeConfig::SaveToFile(const pugi::xml_document &doc, const std::string &file_name)
-{
-    bool saveSucceeded = doc.save_file(file_name.c_str());
-}
-
-void AnalyzeConfig::LoadFromFile(const std::string &file_name, pugi::xml_document &doc)
-{
-    pugi::xml_parse_result result = doc.load_file(file_name.c_str());
-    if (result)
-    {
-        std::cout << "XML [" << file_name << "] parsed without errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n\n";
-    }
-    else
-    {
-        std::cout << "XML [" << file_name << "] parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
-        std::cout << "Error description: " << result.description() << "\n";
-        std::cout << "Error offset: " << result.offset << " (error at [..." << (file_name.c_str() + result.offset) << "]\n\n";
-    }
-}

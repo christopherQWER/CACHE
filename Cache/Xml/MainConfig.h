@@ -6,101 +6,36 @@
 #include <iostream>
 #include <string>
 #include "../Libs/pugixml.hpp"
-
 #include "../Loggers/Logger.h"
 #include "../Flows/Flow.h"
 #include "../Utils/Types.h"
-#include "../Modeling/TraceAnalyzer.h"
 
-/// <Trace Name="WebSearch_1">path</Trace>
-struct XmlTrace{
-    std::string name;
-    std::string path;
-    XmlTrace() : name(std::string("")), path(std::string("")) {}
-};
-
-///
-struct XmlLog{
+struct XmlLog {
     LoggerType logger_type;
     std::string path_to_log;
     XmlLog() : logger_type(LCONSOLE), path_to_log(std::string("")){}
 };
 
-///
-struct XmlFlow{
+struct XmlFlow {
     FlowType flow_type;
+    int app_count;
     std::string path_to_flow;
     XmlFlow() : flow_type(FFILE), path_to_flow(std::string("")) {}
 };
 
-///
-struct XmlTraceAnalyze {
-    AnalyzerType type;
-    std::list<XmlTrace> trace_list;
-    XmlTraceAnalyze() : type(DETAILED), trace_list() {}
-};
-
-///
-struct XmlSharedCache {
-    ByteSize size;
-    int request_num;
-    XmlLog logger;
-    XmlFlow flow;
-    XmlSharedCache() : size(0), request_num(0), logger(XmlLog()), flow(XmlFlow()) {}
-};
-
-///
-struct XmlCache {
-    ByteSize size;
-    Asu asu;
-    double qos;
-    XmlCache() : size(0), asu(0), qos(0) {}
-};
-
-///
-struct XmlPartialCache {
-    ByteSize app_count;
-    ByteSize request_num;
-    ByteSize common_size;
-    XmlLog logger;
-    XmlFlow flow;
-    std::list<XmlCache> app_list;
-    XmlPartialCache() : app_count(0),
-                        request_num(0),
-                        common_size(0),
-                        logger(XmlLog()),
-                        flow(XmlFlow()),
-                        app_list(std::list<XmlCache>()) {}
-};
-
-///
-struct XmlPlot{
-    std::list<std::string> pdf_paths;
-    std::list<std::string> cdf_paths;
-};
-
-///
 struct Config {
-    XmlTraceAnalyze trace_analyzer;
-    XmlSharedCache shared_cache;
-    XmlPartialCache partial_cache;
-    XmlPlot xml_plot;
-    Config() : trace_analyzer(XmlTraceAnalyze()),
-               shared_cache(XmlSharedCache()),
-               partial_cache(XmlPartialCache()),
-               xml_plot(XmlPlot()){}
+    std::string simulate_path;
+    std::string generate_path;
+    std::string analyze_path;
+    Config() : simulate_path(std::string("")),
+               generate_path(std::string("")),
+               analyze_path(std::string("")){}
 };
 
 static const std::string Modes = "Modes";
 
-static const std::string sAnalyzerMode = "AnalyzerMode";
-static const std::string sSharedMode = "SharedMode";
-static const std::string sPartialMode = "PartialMode";
-static const std::string sPlotMode = "PlotMode";
-
-static const std::string sApps = "Applications";
-static const std::string sTrace = "Trace";
 static const std::string sApplication = "App";
+static const std::string sAppCount = "sAppCount";
 static const std::string sLogs = "Logs";
 static const std::string sFlow = "Flow";
 
@@ -108,31 +43,26 @@ static const std::string sName = "Name";
 static const std::string sType = "Type";
 static const std::string sSize = "CacheSize";
 static const std::string sRequestNum = "RequestNum";
-static const std::string sAppCount = "AppCount";
-static const std::string sCommonSize = "CommonSize";
+
 static const std::string sXmlAsu = "Asu";
 static const std::string sQoS = "QoS";
+
+static const std::string sSimulate = "Simulate";
+static const std::string sGenerate = "Generate";
+static const std::string sAnalyzerMode = "Analyze";
 
 class MainConfig {
 public:
 
-     /// \brief Serialize object Config to xml document object
-     /// \param cnf [Input config]
-     /// \param doc [Object container]
     static void Serialize(const Config &cnf, pugi::xml_document &doc);
-
-    /// \brief  Deserialize xml-document to Config object
-    /// \param doc []
-    /// \param cnf []
     static void Deserialize(const pugi::xml_document &doc, Config &cnf);
 
-    /// \brief
-    /// \param file_name []
-    /// \param doc []
-    static void LoadFromFile(const std::string &file_name, pugi::xml_document &doc);
+    static void SerializeLogger(const XmlLog& logger, pugi::xml_node& root_node);
+    static void DeserializeLogger(const pugi::xml_node &root_node, XmlLog &logger);
 
-    /// \brief
-    /// \param doc []
-    /// \param file_name []
+    static void SerializeFlow(const XmlFlow& flow, pugi::xml_node& root_node);
+    static void DeserializeFlow(const pugi::xml_node &root_node, XmlFlow &flow);
+
+    static void LoadFromFile(const std::string &file_name, pugi::xml_document &doc);
     static void SaveToFile(const pugi::xml_document &doc, const std::string &file_name);
 };
