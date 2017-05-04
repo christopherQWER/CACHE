@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<Generate>
+    <Flow Type="FGENERATOR" AppCount=""></Flow>
+    <Logs Type="LCONSOLE"></Logs>
+</Generate>
