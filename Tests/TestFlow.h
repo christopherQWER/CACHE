@@ -5,7 +5,7 @@
 #pragma once
 #include "../Cache/Caches/Lru.h"
 #include "../Cache/Flows/Flow.h"
-#include "../Cache/Generators/PdfFlow.h"
+#include "Generators/StackDistance.h"
 #include "../Cache/Flows/StackDistFlow.h"
 #include "../Cache/Utils/Paths.h"
 #include "../Cache/Loggers/Logger.h"

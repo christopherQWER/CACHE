@@ -7,22 +7,21 @@
 #include <string>
 #include <fstream>
 #include <deque>
-
 #include "Flow.h"
-#include "../Generators/Request.h"
+#include "../Requests/Request.h"
 
 
 class TraceFileFlow : public Flow
 {
 public:
     std::string File;
-    bool _is_eof;
 
-    TraceFileFlow(std::string flow_dir);
+    TraceFileFlow(const std::string& source_path);
     ~TraceFileFlow();
     Request* GetRequest();
 
 private:
+    bool _is_eof;
     std::deque<Request> _request_queue;
     std::ifstream trace_file;
 };

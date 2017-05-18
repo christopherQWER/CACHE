@@ -5,10 +5,11 @@
 #include "TraceFileFlow.h"
 using namespace std;
 
-TraceFileFlow::TraceFileFlow(string flow_name)
-        :Flow(flow_name)
+
+TraceFileFlow::TraceFileFlow(const std::string& source_path)
 {
-    trace_file.open(flow_dir.c_str());
+    trace_file.open(source_path.c_str());
+    File = source_path;
     _is_eof = trace_file.is_open();
 }
 

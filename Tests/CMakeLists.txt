@@ -12,9 +12,10 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Flows/TraceFileFlow.cpp
                  ../Cache/Flows/StackDistFlow.cpp
 
-                 ../Cache/Generators/PdfFlow.cpp
-                 ../Cache/Generators/Request.cpp
-                 ../Cache/Generators/Distribution.cpp
+                 ../Cache/Generators/StackDistance.cpp
+                 ../Cache/Generators/RandomValue.cpp
+
+                 ../Cache/Requests/Request.cpp
 
                  ../Cache/Caches/Cache.cpp
                  ../Cache/Caches/Lru.cpp
@@ -24,7 +25,7 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Loggers/FileLogger.cpp
 
                  ../Cache/Utils/Utils.cpp
-                 ../Cache/Utils/Plot.cpp
+                 ../Cache/Utils/GnuPlot.cpp
 
                  ../Cache/Modeling/TraceAnalyzer.cpp
 
@@ -44,9 +45,10 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Caches/Lru.h
                  ../Cache/Caches/Cache.h
 
-                 ../Cache/Generators/PdfFlow.h
-                 ../Cache/Generators/Distribution.h
-                 ../Cache/Generators/Request.h
+                 ../Cache/Generators/StackDistance.h
+                 ../Cache/Generators/RandomValue.h
+
+                 ../Cache/Requests/Request.h
 
                  ../Cache/Loggers/Logger.h
                  ../Cache/Loggers/ConsoleLogger.h
@@ -55,7 +57,7 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Utils/Utils.h
                  ../Cache/Utils/Types.h
                  ../Cache/Utils/Paths.h
-                 ../Cache/Utils/Plot.h
+                 ../Cache/Utils/GnuPlot.h
 
                  ../Cache/Modeling/TraceAnalyzer.h
 

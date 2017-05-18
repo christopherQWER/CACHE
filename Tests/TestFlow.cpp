@@ -27,7 +27,7 @@ void TestFlow::SameRequests(int experiments_count, ByteSize cache_capasity)
     {
         flow.SetStackDistance(stack_dist);
         request = flow.GetRequest();
-        cache->LRU(*request);
+        cache->AddToCache(*request);
         delete request;
     }
 
@@ -65,7 +65,7 @@ void TestFlow::HalfPartSameRequests(int experiments_count, ByteSize cache_capasi
     {
         flow.SetStackDistance(stack_dist);
         request = flow.GetRequest();
-        cache->LRU(*request);
+        cache->AddToCache(*request);
         delete request;
     }
 
@@ -103,7 +103,7 @@ void TestFlow::DifferentRequests(int experiments_count, ByteSize cache_capasity)
     {
         flow.SetStackDistance(stack_dist);
         request = flow.GetRequest();
-        cache->LRU(*request);
+        cache->AddToCache(*request);
         delete request;
     }
 
@@ -133,7 +133,7 @@ void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
     double hit_rate = 0;
     StackDist stack_dist = 0;
     string pdf_path = Utils::PathCombine(string(_READY_PDF), string("pdf.txt"));
-    PdfFlow pdf_generator = PdfFlow(pdf_path);
+    StackDistance pdf_generator = StackDistance(pdf_path);
     Request *request;
     Lru *cache = new Lru(cache_capasity);
     StackDistFlow flow = StackDistFlow(<#initializer#>, <#initializer#>);
@@ -143,7 +143,7 @@ void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
         StackDist st_dst = pdf_generator.GetRandomValue();
         flow.SetStackDistance(st_dst);
         request = flow.GetRequest();
-        cache->LRU(*request);
+        cache->AddToCache(*request);
     }
 
     hit_rate = cache->CalculateHitRate();
@@ -152,7 +152,7 @@ void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
     stack_dist = cache->CalculateAvgStackDistance();
     //pLogger->ShowStackDistance(DEBUG, stack_dist);
 
-    pdf_generator.GetPdf(Utils::PathCombine(string(_READY_PDF), string("pdf_test.txt")));
+    pdf_generator.WritePairsToFile(Utils::PathCombine(string(_READY_PDF), string("pdf_test.txt")));
     FreeResources(pLogger, cache, request);
     //pLogger->EndLog();
 }

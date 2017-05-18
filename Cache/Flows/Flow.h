@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "../Generators/Request.h"
+#include "../Requests/Request.h"
 #include "../Utils/Utils.h"
 
 enum FlowType { FFILE = 0, FGENERATOR };
@@ -14,13 +14,9 @@ enum FlowType { FFILE = 0, FGENERATOR };
 class Flow
 {
 public:
-    std::string flow_dir;
-
-    Flow(const std::string &flow_name);
-    virtual ~Flow(){};
+    //static Flow* CreateFlow(FlowType type);
+    virtual ~Flow() {};
     virtual Request* GetRequest() = 0;
-
-    static Flow* CreateFlow(FlowType type);
 
     static inline const char* toString(FlowType type)
     {
@@ -28,7 +24,7 @@ public:
         {
             case FFILE:          return "FFILE";
             case FGENERATOR:     return "FGENERATOR";
-            default:             return "Unknown flow type";
+            default:             return "Unknown flow stor_type";
         }
     }
     static inline FlowType toType(const char* str_repr)
@@ -38,4 +34,7 @@ public:
         else if (strcmp(str_repr, "FGENERATOR") == 0)
             return FGENERATOR;
     }
+
+private:
+    std::string flow_nature;
 };
