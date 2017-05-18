@@ -36,7 +36,10 @@ void ConsoleLogger::ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba 
 
 void ConsoleLogger::ShowLogText(Level log_Lvl, const string &text)
 {
-    printf("%s: %s", toString(log_Lvl), text.c_str());
+    if (log_Lvl == DEBUG)
+    {
+        printf("%s: %s", toString(log_Lvl), text.c_str());
+    }
 }
 
 void ConsoleLogger::ShowHitRate(Level log_Lvl, HitRate hit_rate)

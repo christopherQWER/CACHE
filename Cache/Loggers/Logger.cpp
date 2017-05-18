@@ -20,7 +20,7 @@ Logger* Logger::CreateLogger(LoggerType type)
             break;
 
         default:
-            printf("There is no such logger type!");
+            printf("There is no such logger stor_type!");
     }
     return p;
 }

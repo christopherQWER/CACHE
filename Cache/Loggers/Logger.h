@@ -20,17 +20,7 @@ public:
     virtual ~Logger(){};
     virtual void StartLog() = 0;
 
-    /// \brief              Show detailed info about request
-    /// \param log_Lvl
-    /// \param req_number
-    /// \param asu
-    /// \param lba
-    /// \param time
     virtual void ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time) = 0;
-
-    /// \brief              Show log string
-    /// \param log_Lvl
-    /// \param text
     virtual void ShowLogText(Level log_Lvl, const std::string &text) = 0;
     virtual void ShowHitRate(Level log_Lvl, HitRate hit_rate) = 0;
     virtual void ShowStackDistance(Level log_Lvl, StackDist stack_dist) = 0;
@@ -53,7 +43,7 @@ public:
         {
             case LCONSOLE:  return "LCONSOLE";
             case LFILE:     return "LFILE";
-            default:        return "Unknown type";
+            default:        return "Unknown stor_type";
         }
     }
     static inline LoggerType toType(const char* str_repr)
