@@ -51,7 +51,7 @@
 #	pragma warning(disable: 177) // function was declared but never referenced
 #	pragma warning(disable: 279) // controlling expression is constant
 #	pragma warning(disable: 1478 1786) // function was declared "deprecated"
-#	pragma warning(disable: 1684) // conversion from pointer to same-sized integral type
+#	pragma warning(disable: 1684) // conversion from pointer to same-sized integral stor_type
 #endif
 
 #if defined(__BORLANDC__) && defined(PUGIXML_HEADER_ONLY)
@@ -417,7 +417,7 @@ PUGI__NS_BEGIN
 	#define PUGI__GETPAGE_IMPL(header) (header).get_page()
 #else
 	#define PUGI__GETHEADER_IMPL(object, page, flags) (((reinterpret_cast<char*>(object) - reinterpret_cast<char*>(page)) << 8) | (flags))
-	// this macro casts pointers through void* to avoid 'cast increases required alignment of target type' warnings
+	// this macro casts pointers through void* to avoid 'cast increases required alignment of target stor_type' warnings
 	#define PUGI__GETPAGE_IMPL(header) static_cast<impl::xml_memory_page*>(const_cast<void*>(static_cast<const void*>(reinterpret_cast<const char*>(&header) - (header >> 8))))
 #endif
 
@@ -634,14 +634,14 @@ PUGI__NS_BEGIN
 			assert(full_size < max_encoded_offset || (page->busy_size == full_size && page_offset == 0));
 			header->full_size = static_cast<uint16_t>(full_size < max_encoded_offset ? full_size / xml_memory_block_alignment : 0);
 
-			// round-trip through void* to avoid 'cast increases required alignment of target type' warning
+			// round-trip through void* to avoid 'cast increases required alignment of target stor_type' warning
 			// header is guaranteed a pointer-sized alignment, which should be enough for char_t
 			return static_cast<char_t*>(static_cast<void*>(header + 1));
 		}
 
 		void deallocate_string(char_t* string)
 		{
-			// this function casts pointers through void* to avoid 'cast increases required alignment of target type' warnings
+			// this function casts pointers through void* to avoid 'cast increases required alignment of target stor_type' warnings
 			// we're guaranteed the proper (pointer-sized) alignment on the input string if it was allocated via allocate_string
 
 			// get header
@@ -750,7 +750,7 @@ PUGI__NS_BEGIN
 
 		xml_memory_page* get_page() const
 		{
-			// round-trip through void* to silence 'cast increases required alignment of target type' warnings
+			// round-trip through void* to silence 'cast increases required alignment of target stor_type' warnings
 			const char* page_marker = reinterpret_cast<const char*>(this) - (_page << compact_alignment_log2);
 			const char* page = page_marker - *reinterpret_cast<const uint32_t*>(static_cast<const void*>(page_marker));
 
@@ -946,7 +946,7 @@ PUGI__NS_BEGIN
 
 				if (static_cast<uintptr_t>(offset) < (65535 << 7))
 				{
-					// round-trip through void* to silence 'cast increases required alignment of target type' warnings
+					// round-trip through void* to silence 'cast increases required alignment of target stor_type' warnings
 					uint16_t* base = reinterpret_cast<uint16_t*>(static_cast<void*>(reinterpret_cast<char*>(this) - base_offset));
 
 					if (*base == 0)
@@ -991,7 +991,7 @@ PUGI__NS_BEGIN
 				{
 					xml_memory_page* page = compact_get_page(this, header_offset);
 
-					// round-trip through void* to silence 'cast increases required alignment of target type' warnings
+					// round-trip through void* to silence 'cast increases required alignment of target stor_type' warnings
 					const uint16_t* base = reinterpret_cast<const uint16_t*>(static_cast<const void*>(reinterpret_cast<const char*>(this) - base_offset));
 					assert(*base);
 
@@ -1037,7 +1037,7 @@ namespace pugi
 
 	struct xml_node_struct
 	{
-		xml_node_struct(impl::xml_memory_page* page, xml_node_type type): header(page, type), namevalue_base(0)
+		xml_node_struct(impl::xml_memory_page* page, xml_node_type stor_type): header(page, stor_type), namevalue_base(0)
 		{
 			PUGI__STATIC_ASSERT(sizeof(xml_node_struct) == 12);
 		}
@@ -1609,7 +1609,7 @@ PUGI__NS_BEGIN
 					// process aligned single-byte (ascii) blocks
 					if ((reinterpret_cast<uintptr_t>(data) & 3) == 0)
 					{
-						// round-trip through void* to silence 'cast increases required alignment of target type' warnings
+						// round-trip through void* to silence 'cast increases required alignment of target stor_type' warnings
 						while (size >= 4 && (*static_cast<const uint32_t*>(static_cast<const void*>(data)) & 0x80808080) == 0)
 						{
 							result = Traits::low(result, data[0]);
@@ -1790,7 +1790,7 @@ PUGI__NS_BEGIN
 	PUGI__FN void convert_wchar_endian_swap(wchar_t* result, const wchar_t* data, size_t length)
 	{
 		for (size_t i = 0; i < length; ++i)
-			result[i] = static_cast<wchar_t>(endian_swap(static_cast<wchar_selector<sizeof(wchar_t)>::type>(data[i])));
+			result[i] = static_cast<wchar_t>(endian_swap(static_cast<wchar_selector<sizeof(wchar_t)>::stor_type>(data[i])));
 	}
 #endif
 PUGI__NS_END
@@ -2074,8 +2074,8 @@ PUGI__NS_BEGIN
 
 	template <typename D> PUGI__FN bool convert_buffer_generic(char_t*& out_buffer, size_t& out_length, const void* contents, size_t size, D)
 	{
-		const typename D::type* data = static_cast<const typename D::type*>(contents);
-		size_t data_length = size / sizeof(typename D::type);
+		const typename D::stor_type* data = static_cast<const typename D::stor_type*>(contents);
+		size_t data_length = size / sizeof(typename D::stor_type);
 
 		// first pass: get length in wchar_t units
 		size_t length = D::process(data, data_length, 0, wchar_counter());
@@ -2895,7 +2895,7 @@ PUGI__NS_BEGIN
 		// <![...]]>
 		// <!...>
 		// First group can not contain nested groups
-		// Second group can contain nested groups of the same type
+		// Second group can contain nested groups of the same stor_type
 		// Third group can contain all other groups
 		char_t* parse_doctype_primitive(char_t* s)
 		{
@@ -3133,7 +3133,7 @@ PUGI__NS_BEGIN
 			PUGI__SCANWHILE(PUGI__IS_CHARTYPE(*s, ct_symbol));
 			PUGI__CHECK_ERROR(status_bad_pi, s);
 
-			// determine node type; stricmp / strcasecmp is not portable
+			// determine node stor_type; stricmp / strcasecmp is not portable
 			bool declaration = (target[0] | ' ') == 'x' && (target[1] | ' ') == 'm' && (target[2] | ' ') == 'l' && target + 3 == s;
 
 			if (declaration ? PUGI__OPTSET(parse_declaration) : PUGI__OPTSET(parse_pi))
@@ -4182,7 +4182,7 @@ PUGI__NS_BEGIN
 				break;
 
 			default:
-				assert(false && "Invalid node type");
+				assert(false && "Invalid node stor_type");
 		}
 	}
 
@@ -6771,12 +6771,12 @@ namespace pugi
 		case status_out_of_memory: return "Could not allocate memory";
 		case status_internal_error: return "Internal error occurred";
 
-		case status_unrecognized_tag: return "Could not determine tag type";
+		case status_unrecognized_tag: return "Could not determine tag stor_type";
 
 		case status_bad_pi: return "Error parsing document declaration/processing instruction";
 		case status_bad_comment: return "Error parsing comment";
 		case status_bad_cdata: return "Error parsing CDATA section";
-		case status_bad_doctype: return "Error parsing document type declaration";
+		case status_bad_doctype: return "Error parsing document stor_type declaration";
 		case status_bad_pcdata: return "Error parsing PCDATA section";
 		case status_bad_start_element: return "Error parsing start element tag";
 		case status_bad_attribute: return "Error parsing element attribute";
@@ -6836,7 +6836,7 @@ namespace pugi
 
 		// setup first page marker
 	#ifdef PUGIXML_COMPACT
-		// round-trip through void* to avoid 'cast increases required alignment of target type' warning
+		// round-trip through void* to avoid 'cast increases required alignment of target stor_type' warning
 		page->compact_page_marker = reinterpret_cast<uint32_t*>(static_cast<void*>(reinterpret_cast<char*>(page) + sizeof(impl::xml_memory_page)));
 		*page->compact_page_marker = sizeof(impl::xml_memory_page);
 	#endif
@@ -8562,7 +8562,7 @@ PUGI__NS_BEGIN
 			break;
 
 		default:
-			assert(false && "Invalid variable type");
+			assert(false && "Invalid variable stor_type");
 		}
 	}
 
@@ -8583,7 +8583,7 @@ PUGI__NS_BEGIN
 			return lhs->set(static_cast<const xpath_variable_boolean*>(rhs)->value);
 
 		default:
-			assert(false && "Invalid variable type");
+			assert(false && "Invalid variable stor_type");
 			return false;
 		}
 	}
@@ -8670,7 +8670,7 @@ PUGI__NS_BEGIN
 			return *min_element(begin, end, document_order_comparator());
 
 		default:
-			assert(false && "Invalid node set type");
+			assert(false && "Invalid node set stor_type");
 			return xpath_node();
 		}
 	}
@@ -9284,7 +9284,7 @@ PUGI__NS_BEGIN
 	class xpath_ast_node
 	{
 	private:
-		// node type
+		// node stor_type
 		char _type;
 		char _rettype;
 
@@ -9307,7 +9307,7 @@ PUGI__NS_BEGIN
 			double number;
 			// variable for ast_variable
 			xpath_variable* variable;
-			// node test for ast_step (node name/namespace/node type/pi target)
+			// node test for ast_step (node name/namespace/node stor_type/pi target)
 			const char_t* nodetest;
 			// table for ast_opt_translate_table
 			const unsigned char* table;
@@ -9901,7 +9901,7 @@ PUGI__NS_BEGIN
 			case axis_ancestor:
 			case axis_ancestor_or_self:
 			{
-				if (axis == axis_ancestor_or_self && _test == nodetest_type_node) // reject attributes based on principal node type test
+				if (axis == axis_ancestor_or_self && _test == nodetest_type_node) // reject attributes based on principal node stor_type test
 					if (step_push(ns, a, p, alloc) & once)
 						return;
 
@@ -9921,7 +9921,7 @@ PUGI__NS_BEGIN
 			case axis_descendant_or_self:
 			case axis_self:
 			{
-				if (_test == nodetest_type_node) // reject attributes based on principal node type test
+				if (_test == nodetest_type_node) // reject attributes based on principal node stor_type test
 					step_push(ns, a, p, alloc);
 
 				break;
@@ -10186,7 +10186,7 @@ PUGI__NS_BEGIN
 				if (_rettype == xpath_type_boolean)
 					return _data.variable->get_boolean();
 
-				// fallthrough to type conversion
+				// fallthrough to stor_type conversion
 			}
 
 			default:
@@ -10211,7 +10211,7 @@ PUGI__NS_BEGIN
 				}
 
 				default:
-					assert(false && "Wrong expression for return type boolean");
+					assert(false && "Wrong expression for return stor_type boolean");
 					return false;
 				}
 			}
@@ -10322,7 +10322,7 @@ PUGI__NS_BEGIN
 				if (_rettype == xpath_type_number)
 					return _data.variable->get_number();
 
-				// fallthrough to type conversion
+				// fallthrough to stor_type conversion
 			}
 
 			default:
@@ -10347,7 +10347,7 @@ PUGI__NS_BEGIN
 				}
 
 				default:
-					assert(false && "Wrong expression for return type number");
+					assert(false && "Wrong expression for return stor_type number");
 					return 0;
 				}
 
@@ -10606,7 +10606,7 @@ PUGI__NS_BEGIN
 				if (_rettype == xpath_type_string)
 					return xpath_string::from_const(_data.variable->get_string());
 
-				// fallthrough to type conversion
+				// fallthrough to stor_type conversion
 			}
 
 			default:
@@ -10630,7 +10630,7 @@ PUGI__NS_BEGIN
 				}
 
 				default:
-					assert(false && "Wrong expression for return type string");
+					assert(false && "Wrong expression for return stor_type string");
 					return xpath_string();
 				}
 			}
@@ -10756,11 +10756,11 @@ PUGI__NS_BEGIN
 					return ns;
 				}
 
-				// fallthrough to type conversion
+				// fallthrough to stor_type conversion
 			}
 
 			default:
-				assert(false && "Wrong expression for return type node set");
+				assert(false && "Wrong expression for return stor_type node set");
 				return xpath_node_set_raw();
 			}
 		}
@@ -11388,7 +11388,7 @@ PUGI__NS_BEGIN
 
 				if (nt_type == nodetest_none)
 				{
-					// node type test or processing-instruction
+					// node stor_type test or processing-instruction
 					if (_lexer.current() == lex_open_brace)
 					{
 						_lexer.next();
@@ -11400,7 +11400,7 @@ PUGI__NS_BEGIN
 							nt_type = parse_node_test_type(nt_name);
 
 							if (nt_type == nodetest_none)
-								throw_error("Unrecognized node type");
+								throw_error("Unrecognized node stor_type");
 
 							nt_name = xpath_lexer_string();
 						}
@@ -11419,7 +11419,7 @@ PUGI__NS_BEGIN
 						}
 						else
 						{
-							throw_error("Unmatched brace near node type test");
+							throw_error("Unmatched brace near node stor_type test");
 						}
 					}
 					// QName or NCName:*
@@ -12069,7 +12069,7 @@ namespace pugi
 			return static_cast<const impl::xpath_variable_boolean*>(this)->name;
 
 		default:
-			assert(false && "Invalid variable type");
+			assert(false && "Invalid variable stor_type");
 			return 0;
 		}
 	}

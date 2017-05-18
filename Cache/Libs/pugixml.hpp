@@ -101,11 +101,11 @@
 
 namespace pugi
 {
-	// Character type used for all internal storage and operations; depends on PUGIXML_WCHAR_MODE
+	// Character stor_type used for all internal storage and operations; depends on PUGIXML_WCHAR_MODE
 	typedef PUGIXML_CHAR char_t;
 
 #ifndef PUGIXML_NO_STL
-	// String type used for operations that work with STL string; depends on PUGIXML_WCHAR_MODE
+	// String stor_type used for operations that work with STL string; depends on PUGIXML_WCHAR_MODE
 	typedef std::basic_string<PUGIXML_CHAR, std::char_traits<PUGIXML_CHAR>, std::allocator<PUGIXML_CHAR> > string_t;
 #endif
 }
@@ -124,7 +124,7 @@ namespace pugi
 		node_comment,		// Comment tag, i.e. '<!-- text -->'
 		node_pi,			// Processing instruction, i.e. '<?name?>'
 		node_declaration,	// Document declaration, i.e. '<?xml version="1.0"?>'
-		node_doctype		// Document type declaration, i.e. '<!DOCTYPE doc>'
+		node_doctype		// Document stor_type declaration, i.e. '<!DOCTYPE doc>'
 	};
 
 	// Parsing options
@@ -161,7 +161,7 @@ namespace pugi
 	// This flag determines if document declaration (node_declaration) is added to the DOM tree. This flag is off by default.
 	const unsigned int parse_declaration = 0x0100;
 
-	// This flag determines if document type declaration (node_doctype) is added to the DOM tree. This flag is off by default.
+	// This flag determines if document stor_type declaration (node_doctype) is added to the DOM tree. This flag is off by default.
 	const unsigned int parse_doctype = 0x0200;
 
 	// This flag determines if plain character data (node_pcdata) that is the only child of the parent node and that consists only
@@ -377,7 +377,7 @@ namespace pugi
 		bool set_name(const char_t* rhs);
 		bool set_value(const char_t* rhs);
 
-		// Set attribute value with type conversion (numbers are converted to strings, boolean is converted to "true"/"false")
+		// Set attribute value with stor_type conversion (numbers are converted to strings, boolean is converted to "true"/"false")
 		bool set_value(int rhs);
 		bool set_value(unsigned int rhs);
 		bool set_value(long rhs);
@@ -459,7 +459,7 @@ namespace pugi
 		// Check if node is empty.
 		bool empty() const;
 
-		// Get node type
+		// Get node stor_type
 		xml_node_type type() const;
 
 		// Get node name, or "" if node is empty or it has no name
@@ -499,7 +499,7 @@ namespace pugi
 		// Get attribute, starting the search from a hint (and updating hint so that searching for a sequence of attributes is fast)
 		xml_attribute attribute(const char_t* name, xml_attribute& hint) const;
 
-		// Get child value of current node; that is, value of the first child node of type PCDATA/CDATA
+		// Get child value of current node; that is, value of the first child node of stor_type PCDATA/CDATA
 		const char_t* child_value() const;
 
 		// Get child value of child with specified name. Equivalent to child(name).child_value().
@@ -521,7 +521,7 @@ namespace pugi
 		xml_attribute insert_copy_after(const xml_attribute& proto, const xml_attribute& attr);
 		xml_attribute insert_copy_before(const xml_attribute& proto, const xml_attribute& attr);
 
-		// Add child node with specified type. Returns added node, or empty node on errors.
+		// Add child node with specified stor_type. Returns added node, or empty node on errors.
 		xml_node append_child(xml_node_type type = node_element);
 		xml_node prepend_child(xml_node_type type = node_element);
 		xml_node insert_child_after(xml_node_type type, const xml_node& node);
@@ -728,7 +728,7 @@ namespace pugi
 		// Set text (returns false if object is empty or there is not enough memory)
 		bool set(const char_t* rhs);
 
-		// Set text with type conversion (numbers are converted to strings, boolean is converted to "true"/"false")
+		// Set text with stor_type conversion (numbers are converted to strings, boolean is converted to "true"/"false")
 		bool set(int rhs);
 		bool set(unsigned int rhs);
 		bool set(long rhs);
@@ -930,19 +930,19 @@ namespace pugi
 		status_out_of_memory,		// Could not allocate memory
 		status_internal_error,		// Internal error occurred
 
-		status_unrecognized_tag,	// Parser could not determine tag type
+		status_unrecognized_tag,	// Parser could not determine tag stor_type
 
 		status_bad_pi,				// Parsing error occurred while parsing document declaration/processing instruction
 		status_bad_comment,			// Parsing error occurred while parsing comment
 		status_bad_cdata,			// Parsing error occurred while parsing CDATA section
-		status_bad_doctype,			// Parsing error occurred while parsing document type declaration
+		status_bad_doctype,			// Parsing error occurred while parsing document stor_type declaration
 		status_bad_pcdata,			// Parsing error occurred while parsing PCDATA section
 		status_bad_start_element,	// Parsing error occurred while parsing start element tag
 		status_bad_attribute,		// Parsing error occurred while parsing element attribute
 		status_bad_end_element,		// Parsing error occurred while parsing end element tag
 		status_end_element_mismatch,// There was a mismatch of start-end tags (closing tag had incorrect name, some tag was not closed or there was an excessive closing tag)
 
-		status_append_invalid_root,	// Unable to append nodes since root type is not node_element or node_document (exclusive to xml_node::append_buffer)
+		status_append_invalid_root,	// Unable to append nodes since root stor_type is not node_element or node_document (exclusive to xml_node::append_buffer)
 
 		status_no_document_element	// Parsing resulted in a document without element nodes
 	};
@@ -1042,10 +1042,10 @@ namespace pugi
 	};
 
 #ifndef PUGIXML_NO_XPATH
-	// XPath query return type
+	// XPath query return stor_type
 	enum xpath_value_type
 	{
-		xpath_type_none,	  // Unknown type (query failed to compile)
+		xpath_type_none,	  // Unknown stor_type (query failed to compile)
 		xpath_type_node_set,  // Node set (xpath_node_set)
 		xpath_type_number,	  // Number
 		xpath_type_string,	  // String
@@ -1090,16 +1090,16 @@ namespace pugi
 		// Get variable name
 		const char_t* name() const;
 
-		// Get variable type
+		// Get variable stor_type
 		xpath_value_type type() const;
 
-		// Get variable value; no type conversion is performed, default value (false, NaN, empty string, empty node set) is returned on type mismatch error
+		// Get variable value; no stor_type conversion is performed, default value (false, NaN, empty string, empty node set) is returned on stor_type mismatch error
 		bool get_boolean() const;
 		double get_number() const;
 		const char_t* get_string() const;
 		const xpath_node_set& get_node_set() const;
 
-		// Set variable value; no type conversion is performed, false is returned on type mismatch error
+		// Set variable value; no stor_type conversion is performed, false is returned on stor_type mismatch error
 		bool set(bool value);
 		bool set(double value);
 		bool set(const char_t* value);
@@ -1138,7 +1138,7 @@ namespace pugi
 		// Add a new variable or get the existing one, if the types match
 		xpath_variable* add(const char_t* name, xpath_value_type type);
 
-		// Set value of an existing variable; no type conversion is performed, false is returned if there is no such variable or if types mismatch
+		// Set value of an existing variable; no stor_type conversion is performed, false is returned if there is no such variable or if types mismatch
 		bool set(const char_t* name, bool value);
 		bool set(const char_t* name, double value);
 		bool set(const char_t* name, const char_t* value);
@@ -1179,37 +1179,37 @@ namespace pugi
 		xpath_query& operator=(xpath_query&& rhs);
 	#endif
 
-		// Get query expression return type
+		// Get query expression return stor_type
 		xpath_value_type return_type() const;
 
-		// Evaluate expression as boolean value in the specified context; performs type conversion if necessary.
+		// Evaluate expression as boolean value in the specified context; performs stor_type conversion if necessary.
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws std::bad_alloc on out of memory errors.
 		bool evaluate_boolean(const xpath_node& n) const;
 
-		// Evaluate expression as double value in the specified context; performs type conversion if necessary.
+		// Evaluate expression as double value in the specified context; performs stor_type conversion if necessary.
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws std::bad_alloc on out of memory errors.
 		double evaluate_number(const xpath_node& n) const;
 
 	#ifndef PUGIXML_NO_STL
-		// Evaluate expression as string value in the specified context; performs type conversion if necessary.
+		// Evaluate expression as string value in the specified context; performs stor_type conversion if necessary.
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws std::bad_alloc on out of memory errors.
 		string_t evaluate_string(const xpath_node& n) const;
 	#endif
 
-		// Evaluate expression as string value in the specified context; performs type conversion if necessary.
+		// Evaluate expression as string value in the specified context; performs stor_type conversion if necessary.
 		// At most capacity characters are written to the destination buffer, full result size is returned (includes terminating zero).
 		// If PUGIXML_NO_EXCEPTIONS is not defined, throws std::bad_alloc on out of memory errors.
 		// If PUGIXML_NO_EXCEPTIONS is defined, returns empty  set instead.
 		size_t evaluate_string(char_t* buffer, size_t capacity, const xpath_node& n) const;
 
 		// Evaluate expression as node set in the specified context.
-		// If PUGIXML_NO_EXCEPTIONS is not defined, throws xpath_exception on type mismatch and std::bad_alloc on out of memory errors.
+		// If PUGIXML_NO_EXCEPTIONS is not defined, throws xpath_exception on stor_type mismatch and std::bad_alloc on out of memory errors.
 		// If PUGIXML_NO_EXCEPTIONS is defined, returns empty node set instead.
 		xpath_node_set evaluate_node_set(const xpath_node& n) const;
 
 		// Evaluate expression as node set in the specified context.
 		// Return first node in document order, or empty node if node set is empty.
-		// If PUGIXML_NO_EXCEPTIONS is not defined, throws xpath_exception on type mismatch and std::bad_alloc on out of memory errors.
+		// If PUGIXML_NO_EXCEPTIONS is not defined, throws xpath_exception on stor_type mismatch and std::bad_alloc on out of memory errors.
 		// If PUGIXML_NO_EXCEPTIONS is defined, returns empty node instead.
 		xpath_node evaluate_node(const xpath_node& n) const;
 
@@ -1287,7 +1287,7 @@ namespace pugi
 	class PUGIXML_CLASS xpath_node_set
 	{
 	public:
-		// Collection type
+		// Collection stor_type
 		enum type_t
 		{
 			type_unsorted,			// Not ordered
@@ -1295,7 +1295,7 @@ namespace pugi
 			type_sorted_reverse		// Sorted by document order (descending)
 		};
 
-		// Constant iterator type
+		// Constant iterator stor_type
 		typedef const xpath_node* const_iterator;
 
 		// We define non-constant iterator to be the same as constant iterator so that various generic algorithms (i.e. boost foreach) work
@@ -1304,7 +1304,7 @@ namespace pugi
 		// Default constructor. Constructs empty set.
 		xpath_node_set();
 
-		// Constructs a set from iterator range; data is not checked for duplicates and is not sorted according to provided type, so be careful
+		// Constructs a set from iterator range; data is not checked for duplicates and is not sorted according to provided stor_type, so be careful
 		xpath_node_set(const_iterator begin, const_iterator end, type_t type = type_unsorted);
 
 		// Destructor
@@ -1320,7 +1320,7 @@ namespace pugi
 		xpath_node_set& operator=(xpath_node_set&& rhs);
 	#endif
 
-		// Get collection type
+		// Get collection stor_type
 		type_t type() const;
 
 		// Get collection size
