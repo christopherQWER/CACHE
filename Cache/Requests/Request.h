@@ -10,8 +10,7 @@
 
 /// Size of standard memory cell
 #define _CELL_SIZE_ 512
-#define LOW_ADDRESS_BOUND 5000
-#define UP_ADDRESS_BOUND 500000
+
 
 class Request
 {
@@ -37,29 +36,29 @@ public:
      /// Default constructor
     Request();
 
-     /// \brief                Constructor
-     /// \param asu            application specific unit
-     /// \param lba            logical block address
-     /// \param size           size of requested bytes
-     /// \param opcode         operation code
-     /// \param timestamp      incoming time
+     /// \brief                 Constructor
+     /// \param asu             application specific unit
+     /// \param lba             logical block address
+     /// \param size            size of requested bytes
+     /// \param opcode          operation code
+     /// \param timestamp       incoming time
     Request(Asu asu, Lba lba, ByteSize size, OpCode opcode, Timestamp timestamp);
     ~Request();
 
-     /// \brief                 [Function generates request]
+     /// \brief                 Function generates request
      /// \param rq
     static void GenerateRequest(Request& rq);
 
     /// \brief
-    /// \param traceLog []
-    /// \param reqList []
+    /// \param traceLog
+    /// \param reqList
     static void ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
 
-    /// \brief
+    /// \brief                  Function gets all required fields from string
     /// \param request_string
     /// \param req
     /// \return
-    static bool SetRequest(const std::string &request_string, Request &req);
+    static bool GetRequestFromString(const std::string& request_string, Request& req);
 
 private:
     static Asu GetRandomAsu();

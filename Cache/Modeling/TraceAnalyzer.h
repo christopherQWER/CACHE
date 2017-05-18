@@ -11,15 +11,10 @@
 #include "../Utils/Types.h"
 #include "../Xml/AnalyzeConfig.h"
 
-///
 enum AnalyzerType{COMMON = 0, DETAILED, ALL};
 
 class TraceAnalyzer {
 public:
-    /// \brief [Constructor]
-    /// \param input_file []
-    /// \param output_file []
-    TraceAnalyzer();
     TraceAnalyzer(const std::string &file_path, std::string &output_file);
     ~TraceAnalyzer();
 
@@ -52,11 +47,10 @@ private:
     int _writes;
     ByteSize _avg_req_size;
     ByteSize _line_num;
+
     std::ifstream _trace_stream;
     std::string _input_file;
     std::string _output_file;
 
-    /// \brief []
-    /// \param output_path []
     void AppendToFile(const std::string& output_path);
 };

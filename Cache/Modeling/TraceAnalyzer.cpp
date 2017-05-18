@@ -3,7 +3,6 @@
 //
 
 #include "TraceAnalyzer.h"
-#include "../Generators/Request.h"
 using namespace std;
 
 TraceAnalyzer::TraceAnalyzer(const string &file_path, string &output_file)
@@ -34,7 +33,7 @@ void TraceAnalyzer::GetCommonStat()
     while (getline(_trace_stream, buffer))
     {
         Request req = Request();
-        if (!Request::SetRequest(buffer, req))
+        if (!Request::GetRequestFromString(buffer, req))
         {
             return;
         }
@@ -68,7 +67,7 @@ void TraceAnalyzer::GetDetailedStat()
     while (getline(_trace_stream, buffer))
     {
         Request req = Request();
-        if (!Request::SetRequest(buffer, req))
+        if (!Request::GetRequestFromString(buffer, req))
         {
             return;
         }

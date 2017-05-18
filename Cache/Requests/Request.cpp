@@ -5,12 +5,12 @@
 #include <sstream>
 #include <algorithm>
 #include "Request.h"
+#include "../Generators/UniformReal.h"
+#include "../Generators/UniformInt.h"
+#include "../Generators/LbaGen.h"
 using namespace std;
-
-//For random generator
-random_device rd;     /* Only used once to initialise (seed) engine */
-mt19937 rng(rd());    /* Random-number engine used (Mersenne-Twister in this case) */
-
+LbaGen lba_gen = LbaGen();
+UniformInt uni_int_asu = UniformInt(1, 20);
 
 Request::Request()
 {
@@ -47,7 +47,7 @@ void Request::GenerateRequest(Request& rq)
 void Request::ParseRequest(const string &request_string, deque<Request>& req_list)
 {
     Request req = Request();
-    if (!SetRequest(request_string, req))
+    if (!GetRequestFromString(request_string, req))
         return;
 
     unsigned int numberOfRequests = (unsigned int) (req._size / _CELL_SIZE_);
@@ -57,21 +57,23 @@ void Request::ParseRequest(const string &request_string, deque<Request>& req_lis
         {
             return;
         }
-        Request rq = Request(req._asu, req._lba + _CELL_SIZE_ * i, _CELL_SIZE_, req._opcode, req._timestamp);
+        Request rq = Request(req._asu,
+                            req._lba + _CELL_SIZE_ * i,
+                            _CELL_SIZE_,
+                            req._opcode,
+                            req._timestamp);
         req_list.push_back(rq);
     }
 }
 
 Asu Request::GetRandomAsu()
 {
-    uniform_int_distribution<int> uni(1, 20); /* Guaranteed unbiased */
-    return (Asu) uni(rng);
+    return static_cast<Asu>(uni_int.GetRandom());
 }
 
 Lba Request::GetRandomLba()
 {
-    uniform_int_distribution<int> uni(LOW_ADDRESS_BOUND, UP_ADDRESS_BOUND); /* Guaranteed unbiased */
-    return (Lba) uni(rng);
+    return lba_gen.GetRandom();
 }
 
 OpCode Request::GetReadOpCode()
@@ -89,7 +91,7 @@ Timestamp Request::GetCurrentTime()
     return time(0);
 }
 
-bool Request::SetRequest(const string &request_string, Request& req)
+bool Request::GetRequestFromString(const string& request_string, Request& req)
 {
     bool result = false;
     istringstream origs(request_string.c_str());
