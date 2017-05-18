@@ -6,7 +6,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <list>
-#include "../Generators/Request.h"
+#include "../Requests/Request.h"
 #include "../Utils/Types.h"
 
 typedef std::list<Request> StorType;

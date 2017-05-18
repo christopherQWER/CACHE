@@ -11,17 +11,15 @@ public:
     /// \brief
     /// \param capacity []
     Lru(ByteSize capacity);
-
-    ///
     ~Lru();
 
     ///
     /// \param newRequest []
-    void LRU(Request &newRequest);
+    void AddToCache(Request& newRequest);
 
     ///
     /// \param newRequest []
-    void ReorganizeCache(const Request &newRequest);
+    void ReorganizeCache(const Request& newRequest);
 
     ///
     /// \param new_size
@@ -29,7 +27,7 @@ public:
 
     ///
     /// \param newRequest []
-    void InsertNewRequest(const Request &newRequest);
+    void InsertNewRequest(const Request& newRequest);
 
     ///
     void DeleteOldRequest();
