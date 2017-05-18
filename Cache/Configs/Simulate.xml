@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Simulate Type="Partial" AppCount="" CommonSize="1" RequestNum="" WithPlots="true">
+<Simulate Type="Partial" Division="" AppCount="" CommonSize="1" RequestNum="" WithPlots="true">
     <Logs Type="LCONSOLE"></Logs>
     <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch1.spc</Flow>
     <Applications/>
