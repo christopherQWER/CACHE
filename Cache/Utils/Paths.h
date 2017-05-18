@@ -17,4 +17,4 @@
 #define _TRACES_DIR_        "//home//cat//Documents//CACHE//Tests//Traces"
 #define _READY_PDF          "//home//cat//Documents//CACHE//Tests//Pdf"
 
-#define _XML_CONFIG_        "//home//cat//Documents//CACHE//Cache//Main//Config.xml"
+#define _XML_CONFIG_        "//home//cat//Documents//CACHE//Cache//Configs//Config.xml"

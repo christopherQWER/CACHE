@@ -2,14 +2,14 @@
 // Created by cat on 12/13/16.
 //
 
-#include "Plot.h"
+#include "GnuPlot.h"
 using namespace std;
 
-Plot::~Plot()
+GnuPlot::~GnuPlot()
 {
 }
 
-Plot::Plot(std::string pxHeight,
+GnuPlot::GnuPlot(std::string pxHeight,
            std::string pxWidth,
            std::string title,
            std::string png_path,
@@ -34,7 +34,7 @@ Plot::Plot(std::string pxHeight,
     m_IsNoKey = isNoKey;
 }
 
-void Plot::SetTerminal()
+void GnuPlot::SetTerminal()
 {
     string str = "set terminal  png size ";
     str += m_pxHeight + "," + m_pxWidth;
@@ -42,7 +42,7 @@ void Plot::SetTerminal()
     m_config.push_back(str);
 }
 
-void Plot::SetLegend()
+void GnuPlot::SetLegend()
 {
     string str = "";
     if (m_IsNoKey)
@@ -52,7 +52,7 @@ void Plot::SetLegend()
     }
 }
 
-void Plot::SetTitle()
+void GnuPlot::SetTitle()
 {
     string str = "set title \"";
     str += m_title;
@@ -60,7 +60,7 @@ void Plot::SetTitle()
     m_config.push_back(str);
 }
 
-void Plot::SetOutputPict()
+void GnuPlot::SetOutputPict()
 {
     string str = "set output '";
     str += m_outPngPath;
@@ -68,7 +68,7 @@ void Plot::SetOutputPict()
     m_config.push_back(str);
 }
 
-void Plot::SetYLabel()
+void GnuPlot::SetYLabel()
 {
     string str = "set ylabel \"";
     str += m_yLabel;
@@ -76,14 +76,14 @@ void Plot::SetYLabel()
     m_config.push_back(str);
 }
 
-void Plot::SetYRange()
+void GnuPlot::SetYRange()
 {
     string str = "set yrange [";
     str += m_yRange.first + ":" + m_yRange.second + "]";
     m_config.push_back(str);
 }
 
-void Plot::SetXLabel()
+void GnuPlot::SetXLabel()
 {
     string str = "set xlabel \"";
     str += m_xLabel;
@@ -91,25 +91,25 @@ void Plot::SetXLabel()
     m_config.push_back(str);
 }
 
-void Plot::SetXRange()
+void GnuPlot::SetXRange()
 {
     string str = "set xrange [";
     str += m_xRange.first + ":" + m_xRange.second + "]";
     m_config.push_back(str);
 }
 
-void Plot::SetGrid()
+void GnuPlot::SetGrid()
 {
     string str = "set grid xtics ytics";
     m_config.push_back(str);
 }
 
-void Plot::AppendPlotLine(const std::string &line)
+void GnuPlot::AppendPlotLine(const std::string &line)
 {
     m_config.push_back(line);
 }
 
-void Plot::DoPlot()
+void GnuPlot::DoPlot()
 {
     SetTerminal();
     SetLegend();

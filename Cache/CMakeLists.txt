@@ -4,7 +4,12 @@ project(Cache)
 set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
                  Main/Main.cpp
-                 Main/ModeRunner.cpp
+
+                 Main/Modes/AnalyzeMode.cpp
+                 Main/Modes/GenerateMode.cpp
+                 Main/Modes/SimulateMode.cpp
+
+                 Math/LeastSquareMethod.cpp
 
                  Storages/Storage.cpp
                  Storages/SharedStorage.cpp
@@ -14,16 +19,24 @@ set(SOURCE_FILES
                  Caches/Cache.cpp
                  Caches/Lru.cpp
 
-                 Generators/Request.cpp
+                 Requests/Request.cpp
+
                  Generators/Pareto.cpp
-                 Generators/PdfFlow.cpp
-                 Generators/Distribution.cpp
+                 Generators/TimeGen.cpp
+                 Generators/StackDistance.cpp
+                 Generators/LbaGen.cpp
+                 Generators/RandomValue.cpp
+                 Generators/UniformReal.cpp
+                 Generators/UniformInt.cpp
+                 Generators/Exponential.cpp
 
                  Flows/Flow.cpp
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
 
-                 Modeling/Client.cpp
+                 Clients/Client.cpp
+                 Clients/ClientsManager.cpp
+
                  Modeling/TraceAnalyzer.cpp
 
                  Loggers/ConsoleLogger.cpp
@@ -31,19 +44,22 @@ set(SOURCE_FILES
                  Loggers/Logger.cpp
 
                  Utils/Utils.cpp
-                 Utils/Plot.cpp
+                 Utils/GnuPlot.cpp
 
                  Libs/pugixml.cpp
 
                  Xml/MainConfig.cpp
                  Xml/AnalyzeConfig.cpp
-                 Xml/AnalyzerConfig.cpp
-                 Xml/GenerateConfig.cpp
-                 Xml/SimulateConfig.cpp
+
+                 Xml/XmlModes/XmlAnalyzeMode.cpp
+                 Xml/XmlModes/XmlGenerateMode.cpp
+                 Xml/XmlModes/XmlSimulateMode.cpp
                  )
 
 set(HEADER_FILES
-                 Main/ModeRunner.h
+                 Main/Modes/ModeRunner.h
+
+                 Math/LeastSquareMethod.h
 
                  Storages/Storage.h
                  Storages/SharedCache.h
@@ -53,21 +69,29 @@ set(HEADER_FILES
                  Caches/Cache.h
                  Caches/Lru.h
 
-                 Generators/Request.h
+                 Requests/Request.h
+
                  Generators/Pareto.h
-                 Generators/Distribution.h
-                 Generators/PdfFlow.h
+                 Generators/TimeGen.h
+                 Generators/RandomValue.h
+                 Generators/StackDistance.h
+                 Generators/LbaGen.h
+                 Generators/UniformReal.h
+                 Generators/UniformInt.h
+                 Generators/Exponential.h
 
                  Flows/Flow.h
                  Flows/StackDistFlow.h
                  Flows/TraceFileFlow.h
 
-                 Modeling/Client.h
+                 Clients/Client.h
+                 Clients/ClientsManager.h
+
                  Modeling/TraceAnalyzer.h
 
                  Utils/Types.h
                  Utils/Utils.h
-                 Utils/Plot.h
+                 Utils/GnuPlot.h
                  Utils/Paths.h
 
                  Libs/pugiconfig.hpp
@@ -75,9 +99,10 @@ set(HEADER_FILES
 
                  Xml/MainConfig.h
                  Xml/AnalyzeConfig.h
-                 Xml/AnalyzerConfig.h
-                 Xml/GenerateConfig.h
-                 Xml/SimulateConfig.h
+
+                 Xml/XmlModes/XmlAnalyzeMode.h
+                 Xml/XmlModes/XmlGenerateMode.h
+                 Xml/XmlModes/XmlSimulateMode.h
 
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h

@@ -5,7 +5,7 @@
 #pragma once
 #include <algorithm>
 #include <string>
-#include "../Modeling/Client.h"
+#include "../Clients/Client.h"
 #include "../Caches/Lru.h"
 #include "../Generators/Pareto.h"
 #include "../Flows/Flow.h"
@@ -17,12 +17,13 @@
 class SharedStorage : public Storage {
 public:
 
-    SharedStorage(std::string algorithm_dir,
+    SharedStorage(ByteSize commonSize,
+                    const std::string &algorithm_dir,
                     double time_step,
-                    ByteSize cache_size,
-                    int request_number);
-    void Clear();
-    void RunAlgorithm(Logger* &logger, Flow* &flow, bool with_plots);
+                    int experiments_number);
+    ~SharedStorage();
+    void CreateStorage();
+    void Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots);
 
 private:
     Lru* _cache;

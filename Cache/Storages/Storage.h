@@ -5,25 +5,22 @@
 #pragma once
 #include <string>
 #include <cstring>
-#include "../Modeling/Client.h"
+#include "../Clients/ClientsManager.h"
 #include "../Caches/Lru.h"
 #define _1_GB_IN_BYTES_ 1073741824
-typedef std::map<Asu, Client> ClientMap;
-
 enum StorageType{SHARED=0, PARTIAL};
 
 class Storage {
 public:
 
-    Storage(ByteSize commonSize, std::string algorithm_dir, double _time_step, int experiments_number);
-    ~Storage();
-    void InsertToClientsMap(Asu asu, const Client& application);
-    bool IsInMap(Asu asu);
-    void PreparePDF();
-    void PrepareCDF();
-    void DrawPDFPlot(const std::string &trace_name);
-    void DrawCDFPlot(const std::string &trace_name);
-    void CommonPlot(const std::string &flow_file_name);
+    Storage(ByteSize commonSize,
+            const std::string &algorithm_dir,
+            double _time_step,
+            int experiments_number);
+    virtual ~Storage();
+
+    void PreparePDF(const ClientMap& clients_map, const std::string& pdf_dir_path);
+    void PrepareCDF(const ClientMap& clients_map, const std::string& cdf_dir_path);
 
     static inline const char* toString(StorageType type)
     {
@@ -31,7 +28,7 @@ public:
         {
             case SHARED:          return "SHARED";
             case PARTIAL:         return "PARTIAL";
-            default:              return "Unknown storage type";
+            default:              return "Unknown storage stor_type";
         }
     }
     static inline StorageType toType(const char* str_repr)
@@ -43,13 +40,9 @@ public:
     }
 
 protected:
-    /// Input parameter set number of experiments
     int             _experiments_number;
     int             _gist_counter;
     double          _time_step;
     ByteSize        _common_size;
     std::string     _algorithm_dir;
-
-    StackDist       _stack_dist;
-    ClientMap       _client_map;
 };

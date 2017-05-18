@@ -8,7 +8,7 @@
 #include <vector>
 #include "Utils.h"
 
-class Plot {
+class GnuPlot {
 public:
     std::string m_pxHeight;
     std::string m_pxWidth;
@@ -25,7 +25,7 @@ public:
 
     std::vector<std::string> m_config;
 
-    Plot(std::string pxHeight,
+    GnuPlot(std::string pxHeight,
          std::string pxWidth,
          std::string title,
          std::string png_path,
@@ -36,7 +36,7 @@ public:
          std::pair<std::string, std::string> y_Range,
          std::string tics,
          bool isNoKey);
-    ~Plot();
+    ~GnuPlot();
 
     void SetTerminal();
     void SetLegend();
