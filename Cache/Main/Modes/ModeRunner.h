@@ -1,7 +1,14 @@
 //
 // Created by cat on 4/2/17.
 //
-#include "../Xml/MainConfig.h"
+#include "../../Xml/MainConfig.h"
+#include "../../Xml/XmlModes/XmlAnalyzeMode.h"
+#include "../../Xml/XmlModes/XmlGenerateMode.h"
+#include "../../Xml/XmlModes/XmlSimulateMode.h"
+#include "../../Flows/TraceFileFlow.h"
+#include "../../Flows/StackDistFlow.h"
+#include "../../Storages/SharedStorage.h"
+#include "../../Storages/StaticPartial.h"
 
 // Enumeration for program modes
 enum Mode{
