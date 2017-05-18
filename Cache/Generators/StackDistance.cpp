@@ -2,17 +2,14 @@
 // Created by cat on 4/20/17.
 //
 
-#include "PdfFlow.h"
+#include "StackDistance.h"
+#include "UniformReal.h"
 #include "../Utils/Utils.h"
 using namespace std;
+UniformReal uniform_gen = UniformReal(0.0, 1.0);
 
-
-PdfFlow::PdfFlow()
-{
-    _exp_counter = 0;
-}
-
-PdfFlow::PdfFlow(const std::string& pdf_file_path) : _exp_counter(0)
+StackDistance::StackDistance(const std::string& pdf_file_path)
+        : _exp_counter(0)
 {
     string line = "";
     ifstream pdf_file;
@@ -20,12 +17,13 @@ PdfFlow::PdfFlow(const std::string& pdf_file_path) : _exp_counter(0)
 
     while (getline(pdf_file, line))
     {
-        ParsePairs(line);
+        pair<StackDist, double> parsed_pair = ParsePairs(line);
+        _pdf_storage.insert(parsed_pair);
     }
     pdf_file.close();
 }
 
-PdfFlow::~PdfFlow()
+StackDistance::~StackDistance()
 {
     if (_cdf_storage.size() > 0)
     {
@@ -37,12 +35,12 @@ PdfFlow::~PdfFlow()
     }
 }
 
-StackDist PdfFlow::GetRandomValue()
+StackDist StackDistance::GetRandomValue()
 {
-    GetCdfByPdf();
+    CreateCdfStorage();
 
     double uniform_number = 0;
-    uniform_number = distribution(generator);
+    uniform_number = uniform_gen.GetRandom();
 
     map<double, StackDist>::iterator it = _cdf_storage.lower_bound(uniform_number);
     if (it != _cdf_storage.end())
@@ -61,7 +59,7 @@ StackDist PdfFlow::GetRandomValue()
     return 0;
 }
 
-void PdfFlow::ParsePairs(const std::string& line_to_parse)
+pair<StackDist, double> StackDistance::ParsePairs(const std::string& line_to_parse)
 {
     pair<StackDist, double> parsed;
     StackDist stackDist = 0;
@@ -80,10 +78,9 @@ void PdfFlow::ParsePairs(const std::string& line_to_parse)
     }
     parsed.first = stackDist;
     parsed.second = pdf_value;
-    _pdf_storage.insert(parsed);
 }
 
-void PdfFlow::GetCdfByPdf()
+void StackDistance::CreateCdfStorage()
 {
     double sum = 0;
     for(auto& pdf_pair : _pdf_storage)
@@ -93,13 +90,13 @@ void PdfFlow::GetCdfByPdf()
     }
 }
 
-double PdfFlow::GetPdf(const string &path)
+double StackDistance::WritePairsToFile(const string& path)
 {
     int count = 0;
     // Write "stack_dist/hit_rate" files for every application unit
     for (PairStorage::iterator it = _experimental_pdf.begin(); it != _experimental_pdf.end(); ++it)
     {
-        double value = static_cast<double>(it->second) / static_cast<double>(_exp_counter);
+        double value = it->second / static_cast<double>(_exp_counter);
         Utils::AppendToFile(path, it->first, value);
         count++;
     }
