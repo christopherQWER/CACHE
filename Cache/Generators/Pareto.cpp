@@ -2,9 +2,10 @@
 // Created by cat on 9/25/16.
 //
 
-#include <fstream>
 #include "Pareto.h"
+#include "UniformReal.h"
 using namespace std;
+UniformReal uniform_gen = UniformReal(0.0, 1.0);
 
 Pareto::Pareto(int location_param, double shape_param)
 {
@@ -24,11 +25,7 @@ double Pareto::GetRandom()
     while (pareto_value == 0)
     {
         //get uniform number
-        while (uniform_number == 0)
-        {
-            uniform_number = distribution(generator);
-        }
-
+        uniform_number = uniform_gen.GetRandom();
         //get pareto value
         pareto_value = static_cast<double>(_location_param) / pow(uniform_number, 1.0 / _shape_param);
     }
@@ -51,21 +48,4 @@ double Pareto::GetCDF(double random_value)
         return 0;
     double cdf = 1 - pow((_location_param / random_value), _shape_param);
     return cdf;
-}
-
-double Pareto::GetRandomByPDF(double probably)
-{
-    double number = distribution(generator);
-//    Mmap_itr lower_itr = probabilities.lower_bound(probably);
-//    return lower_itr->second;
-}
-
-void ParseLine(const string& line, int& rand_value, double& pdf)
-{
-    string part;
-    istringstream origs(line.c_str());
-    bool result = getline(origs, part, ',') &&
-             (istringstream(part) >> rand_value) &&
-             getline(origs, part, ',') &&
-             (istringstream(part) >> pdf);
 }

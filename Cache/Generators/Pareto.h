@@ -5,9 +5,9 @@
 #pragma once
 #include <map>
 #include "../Utils/Utils.h"
-#include "Distribution.h"
+#include "RandomValue.h"
 
-class Pareto : public Distribution
+class Pareto : public RandomValue
 {
 public:
 
@@ -34,22 +34,10 @@ public:
     /// \return                 [cdf value]
     double GetCDF(double random_value);
 
-
-    /// \brief          [Generates random value by distribution pdf]
-    /// \param probably
-    /// \return         [random value]
-    double GetRandomByPDF(double probably);
-
 private:
      /// [parameter for indentation of distribution]
     int _location_param;
 
     /// [parameter for shape of distribution]
     double _shape_param;
-
-    /// [commone counter of generated values]
-    int _common_counter;
-
-    /// [storage with random value as key and number of occurences as value]
-    std::map<int, int> _counter_map;
 };
