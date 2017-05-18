@@ -1,9 +1,10 @@
 #include "../Modeling/TraceAnalyzer.h"
 #include "../Utils/Paths.h"
-#include "ModeRunner.h"
-using namespace std;
+#include "Modes/ModeRunner.h"
 #define TYPE LCONSOLE
-// Functions prototypes
+using namespace std;
+
+
 void ShowMenu(void);
 
 
