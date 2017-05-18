@@ -4,8 +4,8 @@
 
 #pragma once
 #include <iostream>
-#include "../Modeling/TraceAnalyzer.h"
-#include "MainConfig.h"
+#include "../../Modeling/TraceAnalyzer.h"
+#include "../MainConfig.h"
 
 /// <Trace Name="WebSearch_1">path</Trace>
 struct XmlTrace {
@@ -23,7 +23,7 @@ struct XmlTraceAnalyze {
 
 static const std::string sTrace = "Trace";
 
-class AnalyzerConfig : public MainConfig {
+class XmlAnalyzeMode : public MainConfig {
 public:
 
     static void Serialize(const XmlTraceAnalyze &analyze_cnf, pugi::xml_document &doc);

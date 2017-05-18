@@ -2,9 +2,9 @@
 // Created by cat on 4/23/17.
 //
 
-#include "AnalyzerConfig.h"
+#include "XmlAnalyzeMode.h"
 
-void AnalyzerConfig::Serialize(const XmlTraceAnalyze& analyze_cnf, pugi::xml_document& doc)
+void XmlAnalyzeMode::Serialize(const XmlTraceAnalyze& analyze_cnf, pugi::xml_document& doc)
 {
     // create child "TraceAnalyzer"
     pugi::xml_node trace_analyze_node = doc.append_child(sAnalyzerMode.c_str());
@@ -19,7 +19,7 @@ void AnalyzerConfig::Serialize(const XmlTraceAnalyze& analyze_cnf, pugi::xml_doc
     }
 }
 
-void AnalyzerConfig::Deserialize(const pugi::xml_document& doc, XmlTraceAnalyze& analyze_cnf)
+void XmlAnalyzeMode::Deserialize(const pugi::xml_document& doc, XmlTraceAnalyze& analyze_cnf)
 {
     // get trace analyzer info
     pugi::xml_node trace_analyzer = doc.child(sAnalyzerMode.c_str());

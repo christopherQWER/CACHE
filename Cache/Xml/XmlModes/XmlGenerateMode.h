@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "MainConfig.h"
+#include "../MainConfig.h"
 
 struct XmlGenerate{
     XmlLog logger;
     XmlFlow flow;
 };
 
-class GenerateConfig : public MainConfig {
+class XmlGenerateMode : public MainConfig {
 public:
 
     static void Serialize(const XmlGenerate &gen_cnf, pugi::xml_document &doc);

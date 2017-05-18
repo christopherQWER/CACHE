@@ -4,8 +4,9 @@
 #pragma once
 #include <iostream>
 #include "../Utils/Types.h"
-#include "MainConfig.h"
 #include "../Libs/pugixml.hpp"
+#include "MainConfig.h"
+
 
 struct AppInfo
 {
