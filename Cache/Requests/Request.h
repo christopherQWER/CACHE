@@ -5,11 +5,7 @@
 #include <iostream>
 #include <deque>
 #include <ctime>
-#include <string>
 #include "../Utils/Types.h"
-
-/// Size of standard memory cell
-#define _CELL_SIZE_ 512
 
 
 class Request
@@ -43,27 +39,9 @@ public:
      /// \param opcode          operation code
      /// \param timestamp       incoming time
     Request(Asu asu, Lba lba, ByteSize size, OpCode opcode, Timestamp timestamp);
-    ~Request();
 
-     /// \brief                 Function generates request
-     /// \param rq
-    static void GenerateRequest(Request& rq);
-
-    /// \brief
-    /// \param traceLog
-    /// \param reqList
-    static void ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
-
-    /// \brief                  Function gets all required fields from string
-    /// \param request_string
-    /// \param req
-    /// \return
-    static bool GetRequestFromString(const std::string& request_string, Request& req);
-
-private:
-    static Asu GetRandomAsu();
-    static Lba GetRandomLba();
-    static OpCode GetReadOpCode();
-    static OpCode GetWriteOpCode();
-    static Timestamp GetCurrentTime();
+    bool operator < (Request x)
+    {
+        return _timestamp < x._timestamp;
+    }
 };
