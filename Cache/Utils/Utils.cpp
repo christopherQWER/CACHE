@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <ctime>
+#include <unistd.h>
 #include "Utils.h"
 using namespace std;
 
@@ -38,7 +39,7 @@ int Utils::DoubleToInt(double d_input)
     return value;
 }
 
-string Utils::GetCurrentUnixTime()
+string Utils::GetCurrentStringUnixTime()
 {
     time_t t = time(0);
     long int now = static_cast<long int>(t);
@@ -134,4 +135,12 @@ double Utils::GetPointByTwoPoints(ByteSize x1, double y1, ByteSize x2, double y2
 {
     // y = k*x + b;
     return 0;
+}
+
+std::string Utils::GetWorkingDirectory()
+{
+    char buffer[FILENAME_MAX];
+    getcwd(buffer, FILENAME_MAX);
+    string current_dir(buffer);
+    return current_dir;
 }

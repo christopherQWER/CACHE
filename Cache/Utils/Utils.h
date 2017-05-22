@@ -46,7 +46,8 @@ public:
     {
         return first + "//" + PathCombine(args...);
     }
-    static std::string GetCurrentUnixTime();
+    static std::string GetCurrentStringUnixTime();
+    static std::string GetWorkingDirectory();
     static std::string GetFileName(const std::string &path);
     static std::string GetFileNameWithoutExt(const std::string &path);
     static bool CreateDirectory(const std::string &dir_path);
