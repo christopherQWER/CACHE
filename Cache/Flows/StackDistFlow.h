@@ -5,20 +5,33 @@
 #pragma once
 #include <iostream>
 #include <algorithm>
-#include "../Requests/Request.h"
+#include "../Requests/RequestGenerator.h"
 #include "../Utils/Types.h"
 #include "Flow.h"
-
+UniformInt *uni_int_asu;
+StackDistanceGen *stack_dist_gen;
 
 class StackDistFlow : public Flow
 {
 public:
-    StackDistFlow();
+    StackDistFlow(int clients_count,
+                  const std::string& input_pdf_path,
+                  Timestamp time = 0);
     ~StackDistFlow();
-
-    Request* GetRequest();
+    Request GetRequest();
 
 private:
-    /// Time since begin of experiment
-    Timestamp _beginning_time;
+    int _common_request_num;
+    int _curr_request_num;
+
+    Timestamp _common_time;
+    Timestamp _curr_request_time;
+
+    int _app_count;
+    std::string _input_pdf;
+    std::deque<Request> _request_queue;
+
+    static Asu GenerateAsu();
+    static StackDist GenerateStackDistance();
+    bool IsEndOfFlow();
 };

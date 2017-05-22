@@ -3,35 +3,72 @@
 //
 
 #include "StackDistFlow.h"
-#include "../Generators/Exponential.h"
-#include "../Generators/LbaGen.h"
 using namespace std;
-Exponential exp_gen = Exponential(3.5);
-LbaGen lba_gen = LbaGen();
 
-StackDistFlow::StackDistFlow()
+
+StackDistFlow::StackDistFlow(int client_count, const string& input_pdf_path, Timestamp time = 0)
 {
-    _beginning_time = 0;
+    if (client_count > 0)
+    {
+        _app_count = client_count;
+        _input_pdf = input_pdf_path;
+        _common_time = time;
+        _curr_request_time = 0;
+        _common_request_num = 0;
+        _curr_request_num = 0;
+        uni_int_asu = new UniformInt(1, client_count);
+    }
+    stack_dist_gen = new StackDistanceGen(input_pdf_path);
 }
 
 StackDistFlow::~StackDistFlow()
 {
-    _address_buffer.clear();
-    _stack_dist_ = 0;
-    curr_buffer_size = 0;
-    _beginning_time = 0;
+    if (uni_int_asu != nullptr)
+    {
+        delete uni_int_asu;
+    }
+    if (stack_dist_gen != nullptr)
+    {
+        delete stack_dist_gen;
+    }
 }
 
-Request *StackDistFlow::GetRequest()
+Request StackDistFlow::GetRequest()
 {
-    Request *request = new Request();
-    Request::GenerateRequest(*request);
-    _beginning_time += exp_gen.GetRandom();
-    request->_timestamp = _beginning_time;
-    Lba needed_lba = 0;
-    //int size = GetBufferSize();
-
-
-    return request;
+    while (_curr_request_time < _common_time)
+    {
+        if ( _request_queue.empty() )
+        {
+            list<Request> tmp;
+            for (int i = 0; i < _app_count; i++)
+            {
+                Request request = RequestGenerator::GenerateRequest(GenerateAsu(),
+                        GenerateStackDistance());
+                tmp.push_back(request);
+            }
+            sort(tmp.begin(), tmp.end());
+            for (auto request : tmp)
+            {
+                _request_queue.push_back(request);
+            }
+        }
+        _curr_request_time = _request_queue.front()._timestamp;
+        return _request_queue.front();
+    }
+    return nullptr;
 }
 
+Asu StackDistFlow::GenerateAsu()
+{
+    return static_cast<Asu>(uni_int_asu->GetRandomValue());
+}
+
+StackDist StackDistFlow::GenerateStackDistance()
+{
+    return static_cast<StackDist>(stack_dist_gen->GetRandomValue());
+}
+
+bool StackDistFlow::IsEndOfFlow()
+{
+    return _curr_request_time > _common_time;
+}

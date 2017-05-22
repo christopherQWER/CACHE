@@ -8,7 +8,7 @@
 #include <fstream>
 #include <deque>
 #include "Flow.h"
-#include "../Requests/Request.h"
+#include "../Requests/RequestParser.h"
 
 
 class TraceFileFlow : public Flow
@@ -18,7 +18,8 @@ public:
 
     TraceFileFlow(const std::string& source_path);
     ~TraceFileFlow();
-    Request* GetRequest();
+    Request GetRequest();
+    bool IsEndOfFlow();
 
 private:
     bool _is_eof;

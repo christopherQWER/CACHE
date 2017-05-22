@@ -14,9 +14,12 @@ enum FlowType { FFILE = 0, FGENERATOR };
 class Flow
 {
 public:
+    FlowType current_type;
+    std::string flow_dir_name;
+
     //static Flow* CreateFlow(FlowType type);
     virtual ~Flow() {};
-    virtual Request* GetRequest() = 0;
+    virtual Request GetRequest() = 0;
 
     static inline const char* toString(FlowType type)
     {
@@ -34,7 +37,4 @@ public:
         else if (strcmp(str_repr, "FGENERATOR") == 0)
             return FGENERATOR;
     }
-
-private:
-    std::string flow_nature;
 };
