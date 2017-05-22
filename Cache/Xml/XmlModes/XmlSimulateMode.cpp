@@ -15,6 +15,8 @@ void XmlSimulateMode::Serialize(const XmlSimulate& sim_cnf, pugi::xml_document& 
 
     SerializeLogger(sim_cnf.logger, simulation_node);
     SerializeFlow(sim_cnf.flow, simulation_node);
+    pugi::xml_node plot_dir_node = simulation_node.append_child(sPlotDir.c_str());
+    plot_dir_node.set_value(sim_cnf.plot_dir.c_str());
 
     pugi::xml_node clients = simulation_node.append_child(sApps.c_str());
     for (auto &client : sim_cnf.app_list)
@@ -37,6 +39,7 @@ void XmlSimulateMode::Deserialize(const pugi::xml_document& doc, XmlSimulate& si
 
     DeserializeLogger(simulation_node, sim_cnf.logger);
     DeserializeFlow(simulation_node, sim_cnf.flow);
+    sim_cnf.plot_dir = simulation_node.child(sPlotDir.c_str()).text().as_string("");
 
     pugi::xml_node caches_node = simulation_node.child(sApps.c_str());
     for (pugi::xml_node child = caches_node.child(sApplication.c_str()); child;

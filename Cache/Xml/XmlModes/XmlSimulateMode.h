@@ -4,7 +4,6 @@
 
 #pragma once
 #include "../MainConfig.h"
-#include "../../Storages/Storage.h"
 #include "../../Storages/StaticPartial.h"
 
 struct XmlClient {
@@ -23,22 +22,25 @@ struct XmlSimulate {
     bool with_plots;
     XmlLog logger;
     XmlFlow flow;
+    std::string plot_dir;
     std::list<XmlClient> app_list;
 
-    XmlSimulate() : StorageType(SHARED),
-                    DivisionType(EQUAL),
+    XmlSimulate() : stor_type(SHARED),
+                    div_type(EQUAL),
                     app_count(0),
                     request_num(0),
                     common_size(0),
                     with_plots(false),
                     logger(XmlLog()),
                     flow(XmlFlow()),
+                    plot_dir(""),
                     app_list(std::list<XmlClient>()) {}
 };
 
 static const std::string sWithPlots = "WithPlots";
 static const std::string sApps = "Applications";
 static const std::string sCommonSize = "CommonSize";
+static const std::string sPlotDir = "PlotDir";
 
 class XmlSimulateMode : public MainConfig {
 public:

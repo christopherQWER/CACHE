@@ -20,7 +20,9 @@ struct XmlFlow {
     FlowType flow_type;
     int app_count;
     std::string path_to_flow;
-    XmlFlow() : flow_type(FFILE), path_to_flow(std::string("")) {}
+    XmlFlow() : flow_type(FFILE),
+                app_count(0),
+                path_to_flow(std::string("")) {}
 };
 
 struct Config {
@@ -44,7 +46,7 @@ static const std::string sType = "Type";
 static const std::string sRequestNum = "RequestNum";
 
 static const std::string sXmlAsu = "Asu";
-static const std::string sQoS = "QoS";
+static const std::string sQoS = "required_qos";
 
 static const std::string sSimulate = "Simulate";
 static const std::string sGenerate = "Generate";

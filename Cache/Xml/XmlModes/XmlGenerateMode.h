@@ -9,7 +9,18 @@
 struct XmlGenerate{
     XmlLog logger;
     XmlFlow flow;
+    double system_time;
+    std::string input_pdf_dir;
+
+    XmlGenerate() : logger(XmlLog()),
+                    flow(XmlFlow()),
+                    system_time(0),
+                    input_pdf_dir("")
+                    {}
 };
+
+const std::string sSystemTime = "SystemTime";
+const std::string sInputPdf = "InputPdf";
 
 class XmlGenerateMode : public MainConfig {
 public:
