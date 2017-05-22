@@ -30,34 +30,36 @@ void SharedStorage::CreateStorage()
 void SharedStorage::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots)
 {
     logger->StartLog();
-    int counter = 0;
     double prev_time = 0;
-    Request* request = flow->GetRequest();
+    Request request = flow->GetRequest();
+
+    std::string pdf_dir = "", cdf_dir = "";
+    GetOutputDirs((const Flow*&) flow, pdf_dir, cdf_dir);
 
     // while we not reach the value of number experiment or trace_file not ended
     while ( flow->GetRequest() != nullptr )
     {
         // Add request to AddToCache cache
-        _cache->AddToCache(*request);
-        clients_map[request->_asu]._request_counter++;
-        clients_map[request->_asu].AddStackDistToMap(request->_stack_distance);
+        _cache->AddToCache(request);
+        clients_map[request._asu].request_counter++;
+        clients_map[request._asu].AddStackDistToMap(request._stack_distance);
 
-        // It's time for gistogram
+        // It's time for histogram
         if (with_plots)
         {
-            if ( request->_timestamp - prev_time >= _time_step )
+            if ( request._timestamp - prev_time >= _time_step )
             {
-                std::string pdf_dir =;
-                PreparePDF(clients_map, );
-                PrepareCDF(clients_map, );
-                _gist_counter++;
-                prev_time = request->_timestamp;
+                PreparePDF(clients_map, pdf_dir);
+                PrepareCDF(clients_map, cdf_dir);
+                _hist_counter++;
+                prev_time = request._timestamp;
             }
+            clients_map[request._asu].result_gist_counter++;
         }
 
         delete request;
         request = flow->GetRequest();
-        counter++;
     }
+
     logger->EndLog();
 }

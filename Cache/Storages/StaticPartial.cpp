@@ -41,7 +41,7 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
             {
                 for (const auto &client : client_map)
                 {
-                    ByteSize part_size = (_common_size * client.second._QoS) / 100;
+                    ByteSize part_size = (_common_size * client.second.required_qos) / 100;
                     _inner_storage.insert(pair<Asu, Lru>(client.first, Lru(part_size)));
                 }
                 break;
@@ -50,40 +50,43 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
     }
 }
 
-void StaticPartial::Run(Logger*& logger, Flow*& flow, bool with_plots)
+void StaticPartial::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots)
 {
     logger->StartLog();
 
-    // Counts number of requests for all time
-    int counter = 0;
     double prev_time = 0;
-    Request *request;
+    Request request = flow->GetRequest();
 
-    request = flow->GetRequest();
-    prev_time = request->_timestamp;
+    std::string pdf_dir = "", cdf_dir = "";
+    GetOutputDirs((const Flow*&) flow, pdf_dir, cdf_dir);
 
     while ( request != nullptr )
     {
         // Add request to AddToCache cache
-        _inner_storage[request->_asu].AddToCache(*request);
-        // Increment request counter for application class
-        _inner_storage[request->_asu]._request_counter++;
+        _inner_storage[request._asu].AddToCache(request);
+        _inner_storage[request._asu]._request_counter++;
+        clients_map[request._asu].AddStackDistToMap(request._stack_distance);
 
-        // It's time for gistogram
+        // It's time for histogram
         if (with_plots)
         {
-            if ( request->_timestamp - prev_time >= _time_step )
+            if ( request._timestamp - prev_time >= _time_step )
             {
-                PreparePDF();
-                PrepareCDF();
-                _gist_counter++;
-                prev_time = request->_timestamp;
+                PreparePDF(clients_map, pdf_dir);
+                PrepareCDF(clients_map, cdf_dir);
+                _hist_counter++;
+                prev_time = request._timestamp;
             }
+            clients_map[request._asu].result_gist_counter++;
         }
 
         delete request;
         request = flow->GetRequest();
-        counter++;
+    }
+
+    for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
+    {
+        it->second.experimental_qos = _inner_storage[it->first].CalculateHitRate();
     }
     logger->EndLog();
 }

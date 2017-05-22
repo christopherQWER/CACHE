@@ -3,8 +3,6 @@
 //
 #pragma once
 #include <iostream>
-#include "../Loggers/Logger.h"
-#include "../Clients/ClientsManager.h"
 #include "Storage.h"
 typedef std::map<Asu, Lru>StorageMap;
 
@@ -21,7 +19,7 @@ public:
                     int experiments_number);
     ~StaticPartial();
     void CreateStorage(DivisionType type, ClientMap client_map);
-    void Run(Logger*& logger, Flow*& flow, bool with_plots);
+    void Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots);
 
 private:
     StorageMap _inner_storage;

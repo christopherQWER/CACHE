@@ -22,6 +22,8 @@ public:
     void PreparePDF(const ClientMap& clients_map, const std::string& pdf_dir_path);
     void PrepareCDF(const ClientMap& clients_map, const std::string& cdf_dir_path);
 
+    void GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string& cdf_dir);
+
     static inline const char* toString(StorageType type)
     {
         switch (type)
@@ -40,9 +42,22 @@ public:
     }
 
 protected:
+    ///
     int             _experiments_number;
-    int             _gist_counter;
+
+    /// Counter of created
+    int             _hist_counter;
+
+    /// Time distance between histogram's values saving (per 60 sec, per 10 minutes, etc.)
     double          _time_step;
+
+    /// The common size of cache for all application classes
     ByteSize        _common_size;
+
+    /// Absolute path to directory what named as current storage type.
+    /// It constructs from input parameter 'algorithm_dir' and name of current
+    /// using storage.
+    /// Example:
+    /// //
     std::string     _algorithm_dir;
 };

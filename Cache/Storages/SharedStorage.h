@@ -5,9 +5,7 @@
 #pragma once
 #include <algorithm>
 #include <string>
-#include "../Clients/Client.h"
 #include "../Caches/Lru.h"
-#include "../Generators/Pareto.h"
 #include "../Flows/Flow.h"
 #include "../Flows/StackDistFlow.h"
 #include "../Flows/TraceFileFlow.h"
