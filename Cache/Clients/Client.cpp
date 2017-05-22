@@ -5,18 +5,14 @@
 #include "Client.h"
 using namespace std;
 
-Client::Client()
-{
-    _request_counter = 0;
-    _application_id = 0;
-    _QoS = 0;
-}
 
 void Client::Client(Asu asu, double qos)
 {
-    Client();
-    _application_id = asu;
-    _QoS = qos;
+    application_id = asu;
+    required_qos = qos;
+    result_gist_counter = 0;
+    request_counter = 0;
+    output_file_name = "";
 }
 
 Client::~Client()
@@ -43,13 +39,12 @@ bool Client::IsInStorage(StackDist value)
 
 void Client::SavePdfPlotDots(const std::string& file_path)
 {
-    int count = 0;
     for (StackDistMap::iterator it = _stack_dist_map.begin(); it != _stack_dist_map.end(); ++it)
     {
-        double value = static_cast<double>(it->second) / static_cast<double>(_request_counter);
+        double value = static_cast<double>(it->second) / static_cast<double>(request_counter);
         Utils::AppendToFile(file_path, it->first, value);
-        count++;
     }
+    result_gist_counter++;
 }
 
 void Client::SaveCdfPlotDots(const std::string& file_path)
@@ -57,8 +52,19 @@ void Client::SaveCdfPlotDots(const std::string& file_path)
     double common_val = 0;
     for (StackDistMap::iterator it = _stack_dist_map.begin(); it != _stack_dist_map.end(); ++it)
     {
-        double curr_val = static_cast<double>(it->second) / static_cast<double>(_request_counter);
+        double curr_val = static_cast<double>(it->second) / static_cast<double>(request_counter);
         Utils::AppendToFile(file_path, it->first, common_val + curr_val);
         common_val += curr_val;
     }
+    result_gist_counter++;
+}
+
+StackDist Client::GetMinStackDistance()
+{
+    return _stack_dist_map.begin()->first;
+}
+
+StackDist Client::GetMaxStackDistance()
+{
+    return (--(_stack_dist_map.end()))->first;
 }
