@@ -12,5 +12,5 @@ private:
 public:
 
     UniformInt(int min, int max);
-    double GetRandom();
+    int GetRandomValue();
 };

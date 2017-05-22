@@ -12,7 +12,7 @@ UniformInt::UniformInt(int min, int max)
     distribution = uniform_int_distribution<int>(min, max);
 }
 
-double UniformInt::GetRandom()
+int UniformInt::GetRandomValue()
 {
     return distribution(generator);
 }

@@ -10,7 +10,7 @@
 #include "RandomValue.h"
 typedef std::map<StackDist, double> PairStorage;
 
-class StackDistance : public RandomValue {
+class StackDistanceGen : public RandomValue {
 public:
     /// \brief              Load's pdf histogram values from text file
     ///                     in format:
@@ -19,8 +19,8 @@ public:
     ///                           ...
     ///                     and initializes pdf storage.
     /// \param pdf_file
-    StackDistance(const std::string& pdf_file);
-    ~StackDistance();
+    StackDistanceGen(const std::string& pdf_file);
+    ~StackDistanceGen();
 
     StackDist GetRandomValue();
 

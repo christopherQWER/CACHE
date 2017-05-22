@@ -9,9 +9,9 @@ class RandomValue {
 public:
     std::default_random_engine generator;
 
-    RandomValue();
-    virtual double GetRandom() = 0;
-    virtual double GetPDF(double random_value) = 0;
-    virtual double GetCDF(double random_value) = 0;
-    virtual double GetRandomByPDF(double probably) = 0;
+    //virtual RandomValue() = 0;
+    //virtual double GetRandomValue() = 0;
+    //virtual double GetPDF(double random_value) = 0;
+    //virtual double GetCDF(double random_value) = 0;
+    //virtual double GetRandomByPDF(double probably) = 0;
 };

@@ -7,8 +7,8 @@
 #include "../Utils/Types.h"
 
 typedef std::list<Lba> AddressList;
-#define LOW_ADDRESS_BOUND 5000
-#define UP_ADDRESS_BOUND 500000
+#define LOW_ADDRESS_BOUND 400000
+#define UP_ADDRESS_BOUND 50000000
 
 class LbaGen : RandomValue{
 public:

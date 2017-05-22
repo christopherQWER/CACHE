@@ -2,13 +2,13 @@
 // Created by cat on 4/20/17.
 //
 
-#include "StackDistance.h"
+#include "StackDistanceGen.h"
 #include "UniformReal.h"
 #include "../Utils/Utils.h"
 using namespace std;
 UniformReal uniform_gen = UniformReal(0.0, 1.0);
 
-StackDistance::StackDistance(const std::string& pdf_file_path)
+StackDistanceGen::StackDistanceGen(const std::string& pdf_file_path)
         : _exp_counter(0)
 {
     string line = "";
@@ -23,7 +23,7 @@ StackDistance::StackDistance(const std::string& pdf_file_path)
     pdf_file.close();
 }
 
-StackDistance::~StackDistance()
+StackDistanceGen::~StackDistanceGen()
 {
     if (_cdf_storage.size() > 0)
     {
@@ -35,7 +35,7 @@ StackDistance::~StackDistance()
     }
 }
 
-StackDist StackDistance::GetRandomValue()
+StackDist StackDistanceGen::GetRandomValue()
 {
     CreateCdfStorage();
 
@@ -59,7 +59,7 @@ StackDist StackDistance::GetRandomValue()
     return 0;
 }
 
-pair<StackDist, double> StackDistance::ParsePairs(const std::string& line_to_parse)
+pair<StackDist, double> StackDistanceGen::ParsePairs(const std::string& line_to_parse)
 {
     pair<StackDist, double> parsed;
     StackDist stackDist = 0;
@@ -80,7 +80,7 @@ pair<StackDist, double> StackDistance::ParsePairs(const std::string& line_to_par
     parsed.second = pdf_value;
 }
 
-void StackDistance::CreateCdfStorage()
+void StackDistanceGen::CreateCdfStorage()
 {
     double sum = 0;
     for(auto& pdf_pair : _pdf_storage)
@@ -90,7 +90,7 @@ void StackDistance::CreateCdfStorage()
     }
 }
 
-double StackDistance::WritePairsToFile(const string& path)
+double StackDistanceGen::WritePairsToFile(const string& path)
 {
     int count = 0;
     // Write "stack_dist/hit_rate" files for every application unit

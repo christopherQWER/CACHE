@@ -5,7 +5,3 @@
 #include "RandomValue.h"
 using namespace std;
 
-RandomValue::RandomValue()
-{
-
-}
