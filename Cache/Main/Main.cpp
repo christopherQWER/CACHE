@@ -1,19 +1,21 @@
 #include "../Modeling/TraceAnalyzer.h"
-#include "../Utils/Paths.h"
 #include "Modes/ModeRunner.h"
 #define TYPE LCONSOLE
 using namespace std;
 
-
 void ShowMenu(void);
 
 
-int main()
+int main(int argc, char* argv[])
 {
     Logger *pLogger = Logger::CreateLogger(TYPE);
     Config my_config = Config();
     pugi::xml_document doc;
-    MainConfig::LoadFromFile(_XML_CONFIG_, doc);
+    if (argc < 2)
+    {
+        cout << "Error, invalid input argument! Required path to config file." << endl;
+    }
+    MainConfig::LoadFromFile(argv[1], doc);
     MainConfig::Deserialize(doc, my_config);
 
     while (true)
