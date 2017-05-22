@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <Generate>
-    <Flow Type="FGENERATOR" AppCount=""></Flow>
+    <Flow Type="FGENERATOR" AppCount="2">//home//cat//Documents//CACHE//Tests//Traces//Generated</Flow>
     <Logs Type="LCONSOLE"></Logs>
+    <SystemTime>3600</SystemTime>
+    <InputPdf>//home//cat//Documents//CACHE//Tests//Pdf</InputPdf>
 </Generate>

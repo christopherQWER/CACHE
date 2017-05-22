@@ -2,5 +2,6 @@
 <Simulate Type="Partial" Division="" AppCount="" CommonSize="1" RequestNum="" WithPlots="true">
     <Logs Type="LCONSOLE"></Logs>
     <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch1.spc</Flow>
+    <PlotDir>//home//cat//Documents//CACHE//Results//PlotData</PlotDir>
     <Applications/>
 </Simulate>
