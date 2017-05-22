@@ -20,17 +20,19 @@ set(SOURCE_FILES
                  Caches/Lru.cpp
 
                  Requests/Request.cpp
+                 Requests/RequestGenerator.cpp
+                 Requests/RequestParser.cpp
 
                  Generators/Pareto.cpp
                  Generators/TimeGen.cpp
-                 Generators/StackDistance.cpp
+                 Generators/SizeGen.cpp
+                 Generators/StackDistanceGen.cpp
                  Generators/LbaGen.cpp
                  Generators/RandomValue.cpp
                  Generators/UniformReal.cpp
                  Generators/UniformInt.cpp
                  Generators/Exponential.cpp
 
-                 Flows/Flow.cpp
                  Flows/StackDistFlow.cpp
                  Flows/TraceFileFlow.cpp
 
@@ -70,11 +72,14 @@ set(HEADER_FILES
                  Caches/Lru.h
 
                  Requests/Request.h
+                 Requests/RequestGenerator.h
+                 Requests/RequestParser.h
 
                  Generators/Pareto.h
                  Generators/TimeGen.h
+                 Generators/SizeGen.h
                  Generators/RandomValue.h
-                 Generators/StackDistance.h
+                 Generators/StackDistanceGen.h
                  Generators/LbaGen.h
                  Generators/UniformReal.h
                  Generators/UniformInt.h
@@ -107,6 +112,7 @@ set(HEADER_FILES
                  Loggers/ConsoleLogger.h
                  Loggers/FileLogger.h
                  Loggers/Logger.h
-                 )
+
+                 gsl)
 
 add_executable(Cache ${SOURCE_FILES})

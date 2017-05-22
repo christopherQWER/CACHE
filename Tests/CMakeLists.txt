@@ -12,7 +12,7 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Flows/TraceFileFlow.cpp
                  ../Cache/Flows/StackDistFlow.cpp
 
-                 ../Cache/Generators/StackDistance.cpp
+                 ../Cache/Generators/StackDistanceGen.cpp
                  ../Cache/Generators/RandomValue.cpp
 
                  ../Cache/Requests/Request.cpp
@@ -45,7 +45,7 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Caches/Lru.h
                  ../Cache/Caches/Cache.h
 
-                 ../Cache/Generators/StackDistance.h
+                 ../Cache/Generators/StackDistanceGen.h
                  ../Cache/Generators/RandomValue.h
 
                  ../Cache/Requests/Request.h

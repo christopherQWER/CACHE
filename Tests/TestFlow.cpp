@@ -57,15 +57,14 @@ void TestFlow::HalfPartSameRequests(int experiments_count, ByteSize cache_capasi
 
     double hit_rate = 0;
     StackDist stack_dist = experiments_count / 2 + 1;
-    Request *request;
+    Request request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow(<#initializer#>, <#initializer#>);
+    StackDistFlow flow = StackDistFlow(1, _READY_PDF);
 
     for (int i = 0; i < experiments_count; i++)
     {
-        flow.SetStackDistance(stack_dist);
         request = flow.GetRequest();
-        cache->AddToCache(*request);
+        cache->AddToCache(request);
         delete request;
     }
 
@@ -95,15 +94,14 @@ void TestFlow::DifferentRequests(int experiments_count, ByteSize cache_capasity)
 
     double hit_rate = 0;
     StackDist stack_dist = experiments_count;
-    Request *request;
+    Request request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow(<#initializer#>, <#initializer#>);
+    StackDistFlow flow = StackDistFlow(1, _READY_PDF);
 
     for (int i = 0; i < experiments_count; i++)
     {
-        flow.SetStackDistance(stack_dist);
         request = flow.GetRequest();
-        cache->AddToCache(*request);
+        cache->AddToCache(request);
         delete request;
     }
 
@@ -133,17 +131,15 @@ void TestFlow::GetPDFFlow(int experiments_count, ByteSize cache_capasity)
     double hit_rate = 0;
     StackDist stack_dist = 0;
     string pdf_path = Utils::PathCombine(string(_READY_PDF), string("pdf.txt"));
-    StackDistance pdf_generator = StackDistance(pdf_path);
-    Request *request;
+    StackDistanceGen pdf_generator = StackDistanceGen(pdf_path);
+    Request request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow(<#initializer#>, <#initializer#>);
+    StackDistFlow flow = StackDistFlow(1);
 
     for (int i = 0; i < experiments_count; i++)
     {
-        StackDist st_dst = pdf_generator.GetRandomValue();
-        flow.SetStackDistance(st_dst);
         request = flow.GetRequest();
-        cache->AddToCache(*request);
+        cache->AddToCache(request);
     }
 
     hit_rate = cache->CalculateHitRate();
@@ -169,7 +165,7 @@ void TestFlow::MainTester()
     GetPDFFlow(request_number, cache_capasity);
 }
 
-void TestFlow::FreeResources(Logger* &pLogger, Lru* &cache, Request* &request)
+void TestFlow::FreeResources(Logger* &pLogger, Lru* &cache, Request &request)
 {
 //    if(request != NULL)
 //    {

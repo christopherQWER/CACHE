@@ -5,7 +5,7 @@
 #pragma once
 #include "../Cache/Caches/Lru.h"
 #include "../Cache/Flows/Flow.h"
-#include "Generators/StackDistance.h"
+#include "Generators/StackDistanceGen.h"
 #include "../Cache/Flows/StackDistFlow.h"
 #include "../Cache/Utils/Paths.h"
 #include "../Cache/Loggers/Logger.h"
@@ -26,5 +26,5 @@ private:
     void HalfPartSameRequests(int experiments_count, ByteSize cache_capasity);
     void GetPDFFlow(int experiments_count, ByteSize cache_capasity);
 
-    void FreeResources(Logger* &pLogger, Lru* &cache, Request* &request);
+    void FreeResources(Logger* &pLogger, Lru* &cache, Request &request);
 };
