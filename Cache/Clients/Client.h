@@ -21,7 +21,7 @@ public:
     int request_counter;
 
     /// Counter of preparing histograms
-    int result_gist_counter;
+    int result_hist_counter;
 
     /// File with results, for example: "App_1.txt"
     std::string output_file_name;

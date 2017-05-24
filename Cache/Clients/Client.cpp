@@ -6,13 +6,17 @@
 using namespace std;
 
 
-void Client::Client(Asu asu, double qos)
+Client::Client(Asu asu, double qos)
 {
+    experimental_qos = 0;
+
+    request_counter = 0;
+    result_hist_counter = 0;
+
+    output_file_name = "";
+
     application_id = asu;
     required_qos = qos;
-    result_gist_counter = 0;
-    request_counter = 0;
-    output_file_name = "";
 }
 
 Client::~Client()
@@ -37,17 +41,17 @@ bool Client::IsInStorage(StackDist value)
     return !(_stack_dist_map.find(value) == _stack_dist_map.end());
 }
 
-void Client::SavePdfPlotDots(const std::string& file_path)
+void Client::SavePdfPlotDots(const string& file_path)
 {
     for (StackDistMap::iterator it = _stack_dist_map.begin(); it != _stack_dist_map.end(); ++it)
     {
         double value = static_cast<double>(it->second) / static_cast<double>(request_counter);
         Utils::AppendToFile(file_path, it->first, value);
     }
-    result_gist_counter++;
+    result_hist_counter++;
 }
 
-void Client::SaveCdfPlotDots(const std::string& file_path)
+void Client::SaveCdfPlotDots(const string& file_path)
 {
     double common_val = 0;
     for (StackDistMap::iterator it = _stack_dist_map.begin(); it != _stack_dist_map.end(); ++it)
@@ -56,7 +60,7 @@ void Client::SaveCdfPlotDots(const std::string& file_path)
         Utils::AppendToFile(file_path, it->first, common_val + curr_val);
         common_val += curr_val;
     }
-    result_gist_counter++;
+    result_hist_counter++;
 }
 
 StackDist Client::GetMinStackDistance()

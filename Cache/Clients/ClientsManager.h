@@ -2,12 +2,14 @@
 // Created by cat on 5/8/17.
 //
 #pragma once
+
+#include <list>
 #include "../Utils/Types.h"
 #include "../Utils/GnuPlot.h"
 #include "../Utils/Paths.h"
 #include "../Xml/XmlModes/XmlSimulateMode.h"
 #include "Client.h"
-typedef std::map<Asu, Client> ClientMap;
+typedef std::map<Asu, Client*> ClientMap;
 
 class ClientsManager {
 public:
@@ -19,7 +21,9 @@ public:
     int common_hist_counter;
 
     ClientMap clients_map;
-    ClientsManager(std::list<XmlClient>& list);
+    ClientsManager();
+    ~ClientsManager();
+    ClientsManager(const std::list<XmlClient>& list);
 
     void QosComparator(Logger*& logger);
     void DrawPDFPlot(const std::string &trace_name);

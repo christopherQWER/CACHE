@@ -5,16 +5,27 @@
 #include "ClientsManager.h"
 using namespace std;
 
-ClientsManager::ClientsManager(list<XmlClient>& xml_client_list)
+ClientsManager::ClientsManager(const list<XmlClient>& xml_client_list)
 {
     // Go through cache objects
-    for (auto &xml_client : xml_client_list)
+    for (list<XmlClient>::const_iterator it = xml_client_list.begin(); it != xml_client_list.end(); it++)
     {
-        Client client = Client(xml_client.asu, xml_client.qos);
-        clients_map.insert(pair<Asu, Client>(xml_client.asu, client));
+        Client *client = new Client(it->asu, it->qos);
+        clients_map.insert(pair<Asu, Client*>(it->asu, client));
     }
     pdf_dir = "";
     cdf_dir = "";
+}
+
+ClientsManager::~ClientsManager()
+{
+    for (auto client_pair : clients_map)
+    {
+        if (client_pair.second != nullptr)
+        {
+            delete client_pair.second;
+        }
+    }
 }
 
 bool ClientsManager::IsInMap(Asu asu)
@@ -27,8 +38,8 @@ void ClientsManager::QosComparator(Logger*& logger)
     for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
     {
         string text = string("Asu " + to_string(it->first) + ": ") +
-                        "required qos: " + to_string(it->second.required_qos) + ", " +
-                        "experimental qos: " + to_string(it->second.experimental_qos);
+                        "required qos: " + to_string(it->second->required_qos) + ", " +
+                        "experimental qos: " + to_string(it->second->experimental_qos);
         logger->ShowLogText(INFO, text);
     }
 }
@@ -137,19 +148,24 @@ void ClientsManager::FindLimitsByX(StackDist& min, StackDist& max)
 {
     // Get limits of first application
     ClientMap::iterator it = clients_map.begin();
-    min = it->second.GetMinStackDistance();
-    max = it->second.GetMaxStackDistance();
+    min = it->second->GetMinStackDistance();
+    max = it->second->GetMaxStackDistance();
     ++it;
 
     for (; it != clients_map.end(); ++it)
     {
-        if (min > it->second.GetMinStackDistance())
+        if (min > it->second->GetMinStackDistance())
         {
-            min = it->second.GetMinStackDistance();
+            min = it->second->GetMinStackDistance();
         }
-        if (max < it->second.GetMaxStackDistance())
+        if (max < it->second->GetMaxStackDistance())
         {
-            max = it->second.GetMaxStackDistance();
+            max = it->second->GetMaxStackDistance();
         }
     }
+}
+
+ClientsManager::ClientsManager()
+{
+
 }
