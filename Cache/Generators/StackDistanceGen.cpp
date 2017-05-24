@@ -6,7 +6,7 @@
 #include "UniformReal.h"
 #include "../Utils/Utils.h"
 using namespace std;
-UniformReal uniform_gen = UniformReal(0.0, 1.0);
+UniformReal uniform_real_gen = UniformReal(0.0, 1.0);
 
 StackDistanceGen::StackDistanceGen(const std::string& pdf_file_path)
         : _exp_counter(0)
@@ -40,7 +40,7 @@ StackDist StackDistanceGen::GetRandomValue()
     CreateCdfStorage();
 
     double uniform_number = 0;
-    uniform_number = uniform_gen.GetRandom();
+    uniform_number = uniform_real_gen.GetRandom();
 
     map<double, StackDist>::iterator it = _cdf_storage.lower_bound(uniform_number);
     if (it != _cdf_storage.end())
@@ -78,6 +78,7 @@ pair<StackDist, double> StackDistanceGen::ParsePairs(const std::string& line_to_
     }
     parsed.first = stackDist;
     parsed.second = pdf_value;
+    return  parsed;
 }
 
 void StackDistanceGen::CreateCdfStorage()

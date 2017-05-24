@@ -2,6 +2,8 @@
 // Created by cat on 5/18/17.
 //
 #include "TimeGen.h"
+Exponential exp_gen = Exponential(3.5);
+using namespace std;
 
 TimeGen::TimeGen()
 {

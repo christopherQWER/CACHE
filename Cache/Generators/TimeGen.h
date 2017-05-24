@@ -4,7 +4,6 @@
 #pragma once
 #include "Exponential.h"
 #include "../Utils/Types.h"
-Exponential exp_gen = Exponential(3.5);
 
 class TimeGen : public RandomValue {
 public:

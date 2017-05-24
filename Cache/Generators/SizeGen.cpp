@@ -3,6 +3,8 @@
 //
 
 #include "SizeGen.h"
+UniformInt uni_gen = UniformInt(1, 10);
+using namespace std;
 
 
 ByteSize SizeGen::GetRandomValue()
