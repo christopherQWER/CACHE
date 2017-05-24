@@ -4,10 +4,12 @@
 
 #pragma once
 #include "Cache.h"
+#include "../Utils/DefinedConstants.h"
 
 class Lru : public Cache
 {
 public:
+
     /// \brief
     /// \param capacity []
     Lru(ByteSize capacity);
