@@ -66,7 +66,7 @@ void MainConfig::DeserializeLogger(const pugi::xml_node& root_node, XmlLog& logg
 void MainConfig::SerializeFlow(const XmlFlow& flow, pugi::xml_node& root_node)
 {
     pugi::xml_node flow_node = root_node.append_child(sFlow.c_str());
-    flow_node.append_attribute(sType.c_str()).set_value(Flow::toString(flow.flow_type));
+    flow_node.append_attribute(sType.c_str()).set_value(Flow::toString(flow.flow_type).c_str());
     flow_node.append_attribute(sAppCount.c_str()).set_value(flow.app_count);
     if(flow.flow_type == FFILE)
     {
@@ -78,6 +78,6 @@ void MainConfig::DeserializeFlow(const pugi::xml_node& root_node, XmlFlow& flow)
 {
     pugi::xml_node flow_node = root_node.child(sFlow.c_str());
     flow.flow_type = Flow::toType(flow_node.attribute(sType.c_str()).as_string(""));
-    flow.app_count = flow_node.text().as_int(0);
+    flow.app_count = flow_node.attribute(sAppCount.c_str()).as_int(0);
     flow.path_to_flow = flow_node.text().as_string("");
 }

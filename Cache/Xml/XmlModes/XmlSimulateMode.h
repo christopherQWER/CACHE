@@ -4,7 +4,7 @@
 
 #pragma once
 #include "../MainConfig.h"
-#include "../../Storages/StaticPartial.h"
+#include "../../Utils/Enums.h"
 
 struct XmlClient {
     Asu asu;
@@ -34,13 +34,14 @@ struct XmlSimulate {
                     logger(XmlLog()),
                     flow(XmlFlow()),
                     plot_dir(""),
-                    app_list(std::list<XmlClient>()) {}
+                    app_list() {}
 };
 
 static const std::string sWithPlots = "WithPlots";
 static const std::string sApps = "Applications";
 static const std::string sCommonSize = "CommonSize";
 static const std::string sPlotDir = "PlotDir";
+static const std::string sDivision = "Division";
 
 class XmlSimulateMode : public MainConfig {
 public:

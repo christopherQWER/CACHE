@@ -3,6 +3,7 @@
 //
 
 #include "RequestParser.h"
+#include "../Generators/SizeGen.h"
 using namespace std;
 
 void RequestParser::ParseRequest(const string &request_string, deque<Request>& req_list)

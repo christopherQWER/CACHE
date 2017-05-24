@@ -17,8 +17,6 @@ public:
 
     static std::string GetStringFromRequest(const Request& request);
 
-private:
-
     /// \brief                  Function gets all required fields from string
     /// \param request_string
     /// \param req

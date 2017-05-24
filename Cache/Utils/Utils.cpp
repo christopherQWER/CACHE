@@ -140,7 +140,7 @@ double Utils::GetPointByTwoPoints(ByteSize x1, double y1, ByteSize x2, double y2
 std::string Utils::GetWorkingDirectory()
 {
     char buffer[FILENAME_MAX];
-    getcwd(buffer, FILENAME_MAX);
+    char *p = getcwd(buffer, FILENAME_MAX);
     string current_dir(buffer);
     return current_dir;
 }

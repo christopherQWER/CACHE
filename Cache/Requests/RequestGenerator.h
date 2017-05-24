@@ -10,9 +10,6 @@
 #include "../Generators/StackDistanceGen.h"
 #include "../Generators/SizeGen.h"
 
-LbaGen lba_gen = LbaGen();
-TimeGen time_gen = TimeGen();
-SizeGen size_gen = SizeGen();
 
 class RequestGenerator : public Request {
 public:

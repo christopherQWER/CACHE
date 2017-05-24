@@ -3,6 +3,7 @@
 //
 
 #include "TraceAnalyzer.h"
+#include "../Requests/RequestParser.h"
 using namespace std;
 
 TraceAnalyzer::TraceAnalyzer(const string &file_path, string &output_file)
@@ -33,7 +34,7 @@ void TraceAnalyzer::GetCommonStat()
     while (getline(_trace_stream, buffer))
     {
         Request req = Request();
-        if (!Request::GetRequestFromString(buffer, req))
+        if (!RequestParser::GetRequestFromString(buffer, req))
         {
             return;
         }
@@ -67,7 +68,7 @@ void TraceAnalyzer::GetDetailedStat()
     while (getline(_trace_stream, buffer))
     {
         Request req = Request();
-        if (!Request::GetRequestFromString(buffer, req))
+        if (!RequestParser::GetRequestFromString(buffer, req))
         {
             return;
         }
@@ -122,7 +123,7 @@ void TraceAnalyzer::GetDetailedStat()
     }
     pugi::xml_document doc;
     AnalyzeConfig::Serialize(trace_info, doc);
-    AnalyzeConfig::SaveToFile(doc, _output_file);
+    MainConfig::SaveToFile(doc, _output_file);
     app_map.clear();
 }
 
@@ -151,9 +152,4 @@ void TraceAnalyzer::AppendToFile(const string& output_path)
     density_file << "\n";
 
     density_file.close();
-}
-
-TraceAnalyzer::TraceAnalyzer()
-{
-
 }

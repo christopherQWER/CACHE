@@ -25,6 +25,7 @@ public:
 
     std::vector<std::string> m_config;
 
+    GnuPlot();
     GnuPlot(std::string pxHeight,
          std::string pxWidth,
          std::string title,

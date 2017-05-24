@@ -3,11 +3,14 @@
 //
 
 #include "XmlSimulateMode.h"
+//#include "../../Storages/Storage.h"
+#include "../../Storages/StaticPartial.h"
 
 void XmlSimulateMode::Serialize(const XmlSimulate& sim_cnf, pugi::xml_document& doc)
 {
     pugi::xml_node simulation_node = doc.append_child(sSimulate.c_str());
     simulation_node.append_attribute(sType.c_str()).set_value(Storage::toString(sim_cnf.stor_type));
+    simulation_node.append_attribute(sDivision.c_str()).set_value(StaticPartial::toString((sim_cnf.div_type)));
     simulation_node.append_attribute(sAppCount.c_str()).set_value(static_cast<unsigned long>(sim_cnf.app_count));
     simulation_node.append_attribute(sCommonSize.c_str()).set_value(static_cast<unsigned long>(sim_cnf.common_size));
     simulation_node.append_attribute(sRequestNum.c_str()).set_value(static_cast<unsigned long>(sim_cnf.request_num));
@@ -32,6 +35,7 @@ void XmlSimulateMode::Deserialize(const pugi::xml_document& doc, XmlSimulate& si
     pugi::xml_node simulation_node = doc.child(sSimulate.c_str());
     sim_cnf = XmlSimulate();
     sim_cnf.stor_type = Storage::toType(simulation_node.attribute(sType.c_str()).as_string(""));
+    sim_cnf.div_type = StaticPartial::toType(simulation_node.attribute(sDivision.c_str()).as_string(""));
     sim_cnf.app_count = simulation_node.attribute(sAppCount.c_str()).as_uint(0);
     sim_cnf.request_num = simulation_node.attribute(sRequestNum.c_str()).as_uint(1000000);
     sim_cnf.common_size = static_cast<ByteSize>(simulation_node.attribute(sCommonSize.c_str()).as_int(1));

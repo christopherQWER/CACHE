@@ -6,9 +6,10 @@
 #include <string>
 #include <cstring>
 #include "../Clients/ClientsManager.h"
+#include "../Utils/Enums.h"
 #include "../Caches/Lru.h"
 #define _1_GB_IN_BYTES_ 1073741824
-enum StorageType{SHARED=0, PARTIAL};
+
 
 class Storage {
 public:
@@ -19,8 +20,8 @@ public:
             int experiments_number);
     virtual ~Storage();
 
-    void PreparePDF(const ClientMap& clients_map, const std::string& pdf_dir_path);
-    void PrepareCDF(const ClientMap& clients_map, const std::string& cdf_dir_path);
+    void PreparePDF(ClientMap& clients_map, const std::string& pdf_dir_path);
+    void PrepareCDF(ClientMap& clients_map, const std::string& cdf_dir_path);
 
     void GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string& cdf_dir);
 

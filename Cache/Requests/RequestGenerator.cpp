@@ -5,8 +5,12 @@
 #include "RequestGenerator.h"
 using namespace std;
 
+LbaGen lba_gen = LbaGen();
+TimeGen time_gen = TimeGen();
+SizeGen size_gen = SizeGen();
 
-RequestGenerator::RequestGenerator()
+
+RequestGenerator::RequestGenerator() : Request()
 {
 }
 
@@ -22,6 +26,7 @@ Request RequestGenerator::GenerateRequest(Asu asu, StackDist stack_dist)
     rq._opcode = GetReadOpCode();
     rq._size = GenerateByteSize();
     rq._timestamp = GenerateTime();
+    rq._stack_distance = 0;
     return  rq;
 }
 

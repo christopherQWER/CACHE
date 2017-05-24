@@ -3,7 +3,6 @@
 //
 
 #pragma once
-
 #include "../MainConfig.h"
 
 struct XmlGenerate{

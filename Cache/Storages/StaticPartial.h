@@ -4,12 +4,8 @@
 #pragma once
 #include <iostream>
 #include "Storage.h"
-typedef std::map<Asu, Lru>StorageMap;
-
-enum DivisionType {
-    EQUAL = 0,
-    BY_QOS
-};
+#include "../Utils/Enums.h"
+typedef std::map<Asu, Lru*>StorageMap;
 
 class StaticPartial : public Storage {
 public:
@@ -20,6 +16,24 @@ public:
     ~StaticPartial();
     void CreateStorage(DivisionType type, ClientMap client_map);
     void Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots);
+
+    static inline const char* toString(DivisionType type)
+    {
+        switch (type)
+        {
+            case EQUAL:          return "EQUAL";
+            case BY_QOS:         return "BY_QOS";
+            default:             return "Unknown division type.";
+        }
+    }
+
+    static inline DivisionType toType(const char* str_repr)
+    {
+        if (strcmp(str_repr, "EQUAL") == 0)
+            return EQUAL;
+        else if (strcmp(str_repr, "BY_QOS") == 0)
+            return BY_QOS;
+    }
 
 private:
     StorageMap _inner_storage;

@@ -4,6 +4,9 @@
 
 #pragma once
 
-class DynamicPartialCache {
+#include "Storage.h"
+
+class DynamicPartialCache : public Storage
+{
 
 };

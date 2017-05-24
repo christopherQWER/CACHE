@@ -12,6 +12,7 @@ Request::Request()
     _size = 0;
     _opcode = ' ';
     _timestamp = time(0);
+    _stack_distance = 0;
 }
 
 Request::Request(Asu asu, Lba lba, ByteSize size, OpCode opcode, Timestamp timestamp)

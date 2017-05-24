@@ -16,7 +16,7 @@ SharedStorage::SharedStorage(ByteSize commonSize,
 
 SharedStorage::~SharedStorage()
 {
-    if (_cache != NULL)
+    if (_cache != nullptr)
     {
         delete _cache;
     }
@@ -37,12 +37,12 @@ void SharedStorage::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bo
     GetOutputDirs((const Flow*&) flow, pdf_dir, cdf_dir);
 
     // while we not reach the value of number experiment or trace_file not ended
-    while ( flow->GetRequest() != nullptr )
+    while ( !flow->IsEndOfFlow() )
     {
         // Add request to AddToCache cache
         _cache->AddToCache(request);
-        clients_map[request._asu].request_counter++;
-        clients_map[request._asu].AddStackDistToMap(request._stack_distance);
+        clients_map[request._asu]->request_counter++;
+        clients_map[request._asu]->AddStackDistToMap(request._stack_distance);
 
         // It's time for histogram
         if (with_plots)
@@ -54,10 +54,8 @@ void SharedStorage::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bo
                 _hist_counter++;
                 prev_time = request._timestamp;
             }
-            clients_map[request._asu].result_gist_counter++;
+            clients_map[request._asu]->result_hist_counter++;
         }
-
-        delete request;
         request = flow->GetRequest();
     }
 

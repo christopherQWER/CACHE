@@ -127,3 +127,8 @@ void GnuPlot::DoPlot()
     Utils::WriteLines(m_outPltPath, m_config);
     Utils::ExecuteCmd(string("gnuplot \"" + m_outPltPath + "\""));
 }
+
+GnuPlot::GnuPlot()
+{
+
+}

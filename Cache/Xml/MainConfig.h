@@ -34,10 +34,10 @@ struct Config {
                analyze_path(std::string("")){}
 };
 
-static const std::string Modes = "XmlModes";
+static const std::string Modes = "Modes";
 
 static const std::string sApplication = "App";
-static const std::string sAppCount = "sAppCount";
+static const std::string sAppCount = "AppCount";
 static const std::string sLogs = "Logs";
 static const std::string sFlow = "Flow";
 
@@ -46,7 +46,7 @@ static const std::string sType = "Type";
 static const std::string sRequestNum = "RequestNum";
 
 static const std::string sXmlAsu = "Asu";
-static const std::string sQoS = "required_qos";
+static const std::string sQoS = "QoS";
 
 static const std::string sSimulate = "Simulate";
 static const std::string sGenerate = "Generate";

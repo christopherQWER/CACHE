@@ -30,7 +30,8 @@ void AnalyzeConfig::Deserialize(const pugi::xml_document &doc, TraceInfo &trace_
     trace_info.output_file = root.attribute(sOutPath.c_str()).as_string("");
     trace_info.length = root.attribute(sLength.c_str()).as_uint(0);
 
-    for (pugi::xml_node child = root.child(sApp.c_str()); child; child = child.next_sibling(sApp.c_str()))
+    for (pugi::xml_node child = root.child(sApp.c_str()); child;
+         child = child.next_sibling(sApp.c_str()))
     {
         AppInfo app_inf = AppInfo();
         app_inf.unit = child.attribute(sUnit.c_str()).as_uint(0);

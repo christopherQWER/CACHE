@@ -1,5 +1,5 @@
 #include "../Modeling/TraceAnalyzer.h"
-#include "Modes/ModeRunner.h"
+#include "../Modes/ModeRunner.h"
 #define TYPE LCONSOLE
 using namespace std;
 
@@ -36,16 +36,16 @@ int main(int argc, char* argv[])
                 RunTraceAnalyseMode(my_config);
                 break;
             }
-            case SIMULATE:
-            {
-                pLogger->ShowLogText(DEBUG, "Start simulate cache mode...\n");
-                RunSimulateMode(my_config);
-                break;
-            }
             case GENERATE:
             {
                 pLogger->ShowLogText(DEBUG, "Start generate flow mode...\n");
                 RunGenerateMode(my_config);
+                break;
+            }
+            case SIMULATE:
+            {
+                pLogger->ShowLogText(DEBUG, "Start simulate cache mode...\n");
+                RunSimulateMode(my_config);
                 break;
             }
             case EXIT:
@@ -68,8 +68,8 @@ void ShowMenu(void)
 {
     cout << "Choose mode:\n" << endl;
     cout << to_string(TRACE_ANALYZE) + string(" --> ") + toString(TRACE_ANALYZE) << endl;
-    cout << to_string(SIMULATE) + string(" --> ") + toString(SIMULATE) << endl;
     cout << to_string(GENERATE) + string(" --> ") + toString(GENERATE) << endl;
+    cout << to_string(SIMULATE) + string(" --> ") + toString(SIMULATE) << endl;
     cout << to_string(EXIT) + string(" --> EXIT") << endl;
     cout << endl;
 }

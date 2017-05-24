@@ -31,9 +31,9 @@ public:
 
         density_file.close();
     }
-    static void AppendToFile(const std::string &output_path, const std::string &text);
-    static void WriteLines(const std::string &output_path, std::vector<std::string> &lines);
-    static void ExecuteCmd(const std::string &input);
+    static void AppendToFile(const std::string& output_path, const std::string &text);
+    static void WriteLines(const std::string& output_path, std::vector<std::string> &lines);
+    static void ExecuteCmd(const std::string& input);
     static int DoubleToInt(double d_input);
     //static std::string PathCombine(const char *fmt, const char* ...);
     template<typename T>

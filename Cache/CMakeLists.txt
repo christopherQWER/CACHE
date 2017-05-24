@@ -2,12 +2,14 @@ cmake_minimum_required(VERSION 3.6)
 project(Cache)
 
 set(CMAKE_CXX_STANDARD 11)
+include_directories(INCLUDE_DIR /usr/include/gsl)
+
 set(SOURCE_FILES
                  Main/Main.cpp
 
-                 Main/Modes/AnalyzeMode.cpp
-                 Main/Modes/GenerateMode.cpp
-                 Main/Modes/SimulateMode.cpp
+                 Modes/AnalyzeMode.cpp
+                 Modes/GenerateMode.cpp
+                 Modes/SimulateMode.cpp
 
                  Math/LeastSquareMethod.cpp
 
@@ -59,7 +61,7 @@ set(SOURCE_FILES
                  )
 
 set(HEADER_FILES
-                 Main/Modes/ModeRunner.h
+                 Modes/ModeRunner.h
 
                  Math/LeastSquareMethod.h
 
@@ -98,6 +100,8 @@ set(HEADER_FILES
                  Utils/Utils.h
                  Utils/GnuPlot.h
                  Utils/Paths.h
+                 Utils/Enums.h
+                 Utils/DefinedConstants.h
 
                  Libs/pugiconfig.hpp
                  Libs/pugixml.hpp

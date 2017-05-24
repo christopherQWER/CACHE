@@ -14,8 +14,16 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Generators/StackDistanceGen.cpp
                  ../Cache/Generators/RandomValue.cpp
+                 ../Cache/Generators/UniformReal.cpp
+                 ../Cache/Generators/UniformInt.cpp
+                 ../Cache/Generators/LbaGen.cpp
+                 ../Cache/Generators/TimeGen.cpp
+                 ../Cache/Generators/SizeGen.cpp
+                 ../Cache/Generators/Exponential.cpp
 
                  ../Cache/Requests/Request.cpp
+                 ../Cache/Requests/RequestParser.cpp
+                 ../Cache/Requests/RequestGenerator.cpp
 
                  ../Cache/Caches/Cache.cpp
                  ../Cache/Caches/Lru.cpp
@@ -47,8 +55,16 @@ set(HEADER_FILES TestFlow.h
 
                  ../Cache/Generators/StackDistanceGen.h
                  ../Cache/Generators/RandomValue.h
+                 ../Cache/Generators/UniformReal.h
+                 ../Cache/Generators/UniformInt.h
+                 ../Cache/Generators/LbaGen.h
+                 ../Cache/Generators/TimeGen.h
+                 ../Cache/Generators/SizeGen.h
+                 ../Cache/Generators/Exponential.h
 
                  ../Cache/Requests/Request.h
+                 ../Cache/Requests/RequestParser.h
+                 ../Cache/Requests/RequestGenerator.h
 
                  ../Cache/Loggers/Logger.h
                  ../Cache/Loggers/ConsoleLogger.h

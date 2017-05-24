@@ -11,12 +11,19 @@ StaticPartial::StaticPartial(ByteSize commonSize,
                                 int experiments_number) :
         Storage(commonSize, algorithm_dir, time_step, experiments_number)
 {
-    _algorithm_dir = Utils::PathCombine(algorithm_dir, "Partial");
+    _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Partial"));
     Utils::CreateDirectory(_algorithm_dir);
 }
 
 StaticPartial::~StaticPartial()
 {
+    for (auto storage : _inner_storage)
+    {
+        if (storage.second != nullptr)
+        {
+            delete storage.second;
+        }
+    }
     _inner_storage.clear();
 }
 
@@ -33,7 +40,8 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
                 {
                     // equal partitioning between application units
                     ByteSize part_size = _common_size / clients_num;
-                    _inner_storage.insert(pair<Asu, Lru>(client.first, Lru(part_size)));
+                    Lru* cache = new Lru(part_size);
+                    _inner_storage.insert(pair<Asu, Lru*>(client.first, cache));
                 }
                 break;
             }
@@ -41,8 +49,9 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
             {
                 for (const auto &client : client_map)
                 {
-                    ByteSize part_size = (_common_size * client.second.required_qos) / 100;
-                    _inner_storage.insert(pair<Asu, Lru>(client.first, Lru(part_size)));
+                    ByteSize part_size = (_common_size * client.second->required_qos) / 100;
+                    Lru* cache = new Lru(part_size);
+                    _inner_storage.insert(pair<Asu, Lru*>(client.first, cache));
                 }
                 break;
             }
@@ -60,12 +69,12 @@ void StaticPartial::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bo
     std::string pdf_dir = "", cdf_dir = "";
     GetOutputDirs((const Flow*&) flow, pdf_dir, cdf_dir);
 
-    while ( request != nullptr )
+    while ( !flow->IsEndOfFlow() )
     {
         // Add request to AddToCache cache
-        _inner_storage[request._asu].AddToCache(request);
-        _inner_storage[request._asu]._request_counter++;
-        clients_map[request._asu].AddStackDistToMap(request._stack_distance);
+        _inner_storage[request._asu]->AddToCache(request);
+        _inner_storage[request._asu]->_request_counter++;
+        clients_map[request._asu]->AddStackDistToMap(request._stack_distance);
 
         // It's time for histogram
         if (with_plots)
@@ -77,16 +86,14 @@ void StaticPartial::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bo
                 _hist_counter++;
                 prev_time = request._timestamp;
             }
-            clients_map[request._asu].result_gist_counter++;
+            clients_map[request._asu]->result_hist_counter++;
         }
-
-        delete request;
         request = flow->GetRequest();
     }
 
     for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
     {
-        it->second.experimental_qos = _inner_storage[it->first].CalculateHitRate();
+        it->second->experimental_qos = _inner_storage[it->first]->CalculateHitRate();
     }
     logger->EndLog();
 }

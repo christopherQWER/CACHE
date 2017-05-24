@@ -3,12 +3,16 @@
 //
 
 #include "ModeRunner.h"
+
 using namespace std;
+UniformReal uni_real_generator = UniformReal(0.1, 0.5);
+
 
 // Prototypes
 void GetModeConfig(const string& mode_config_path, XmlSimulate& xmlSimulator);
 Flow* CreateFlowInst(const XmlSimulate& xmlSimulator, const string& input_pdf);
-void CreateXmlAppList(const XmlSimulate& xmlSimulator, const string& analyze_conf_path);
+void CreateXmlAppList(XmlSimulate& xmlSimulator, const string& analyze_conf_path);
+double SetQoS();
 
 
 void RunSimulateMode(Config my_config)
@@ -27,10 +31,10 @@ void RunSimulateMode(Config my_config)
             SharedStorage sharedCache = SharedStorage(xmlSimulator.common_size,
                     xmlSimulator.plot_dir, 60, 0);
             CreateXmlAppList(xmlSimulator, my_config.analyze_path);
-            ClientsManager clientsManager = ClientsManager(xmlSimulator.app_list);
+            ClientsManager *clientsManager = new ClientsManager(xmlSimulator.app_list);
             sharedCache.CreateStorage();
-            sharedCache.Run(clientsManager.clients_map, logger, flow, xmlSimulator.with_plots);
-            clientsManager.QosComparator(logger);
+            sharedCache.Run(clientsManager->clients_map, logger, flow, xmlSimulator.with_plots);
+            clientsManager->QosComparator(logger);
             break;
         }
         case PARTIAL:
@@ -38,10 +42,10 @@ void RunSimulateMode(Config my_config)
             StaticPartial staticPartial = StaticPartial(xmlSimulator.common_size,
                     xmlSimulator.plot_dir, 60, 0);
             CreateXmlAppList(xmlSimulator, my_config.analyze_path);
-            ClientsManager clientsManager = ClientsManager(xmlSimulator.app_list);
-            staticPartial.CreateStorage(xmlSimulator.div_type, clientsManager.clients_map);
-            staticPartial.Run(clientsManager.clients_map, logger, flow, xmlSimulator.with_plots);
-            clientsManager.QosComparator(logger);
+            ClientsManager* clientsManager = new ClientsManager(xmlSimulator.app_list);
+            staticPartial.CreateStorage(xmlSimulator.div_type, clientsManager->clients_map);
+            staticPartial.Run(clientsManager->clients_map, logger, flow, xmlSimulator.with_plots);
+            clientsManager->QosComparator(logger);
             break;
         }
         default:
@@ -64,27 +68,28 @@ Flow* CreateFlowInst(const XmlSimulate& xmlSimulator, const string& input_pdf)
     Flow* flow;
     switch (xmlSimulator.flow.flow_type)
     {
-    case FFILE:
-    {
-        flow = new TraceFileFlow(xmlSimulator.flow.path_to_flow);
-        break;
-    }
-    case FGENERATOR:
-    {
-        flow = new StackDistFlow(xmlSimulator.flow.app_count, input_pdf);
-        break;
-    }
-    default:
-    {
-        break;
-    }
+        case FFILE:
+        {
+            flow = new TraceFileFlow(xmlSimulator.flow.path_to_flow);
+            break;
+        }
+        case FGENERATOR:
+        {
+            flow = new StackDistFlow(xmlSimulator.flow.app_count, input_pdf);
+            break;
+        }
+        default:
+        {
+            break;
+        }
     }
     return flow;
 }
 
-void CreateXmlAppList(const XmlSimulate& xmlSimulator, const string& analyze_conf_path)
+void CreateXmlAppList(XmlSimulate& xmlSimulator,
+                      const string& analyze_conf_path)
 {
-    if (xmlSimulator.app_count == 0)
+    if (xmlSimulator.app_list.size() == 0)
     {
         pugi::xml_document trace_config;
         XmlTraceAnalyze xmlTraceMode;
@@ -107,8 +112,14 @@ void CreateXmlAppList(const XmlSimulate& xmlSimulator, const string& analyze_con
             {
                 XmlClient xml_client = XmlClient();
                 xml_client.asu = app.unit;
+                xml_client.qos = SetQoS();
                 xmlSimulator.app_list.push_back(xml_client);
             }
         }
     }
+}
+
+double SetQoS()
+{
+    return uni_real_generator.GetRandom();
 }
