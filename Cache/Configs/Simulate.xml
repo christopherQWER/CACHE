@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
-<Simulate Type="Partial" Division="" AppCount="" CommonSize="1" RequestNum="" WithPlots="true">
+<Simulate Type="PARTIAL" Division="BY_QOS" AppCount="2" CommonSize="1" RequestNum="" WithPlots="false">
     <Logs Type="LCONSOLE"></Logs>
-    <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch1.spc</Flow>
+    <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//Traces//Generated//1495544526.spc</Flow>
     <PlotDir>//home//cat//Documents//CACHE//Results//PlotData</PlotDir>
-    <Applications/>
+    <Applications>
+        <App Asu="1" QoS="0.2"/>
+        <App Asu="2" QoS="0.1"/>
+    </Applications>
 </Simulate>

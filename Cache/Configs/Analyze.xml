@@ -1,8 +1,4 @@
 <?xml version="1.0"?>
 <Analyze Type="DETAILED">
-    <Trace Name="WebSearch1">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch1.spc</Trace>
-    <Trace Name="WebSearch2">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch2.spc</Trace>
-    <Trace Name="WebSearch3">//home//cat//Documents//CACHE//Tests//Traces//WebSearch//WebSearch3.spc</Trace>
-    <Trace Name="Financial1">//home//cat//Documents//CACHE//Tests//Traces//Financial//Financial1.spc</Trace>
-    <Trace Name="Financial2">//home//cat//Documents//CACHE//Tests//Traces//Financial//Financial2.spc</Trace>
+    <Trace Name="1495544526">//home//cat//Documents//CACHE//Tests//Traces//Generated//1495544526.spc</Trace>
 </Analyze>

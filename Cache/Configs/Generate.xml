@@ -2,6 +2,6 @@
 <Generate>
     <Flow Type="FGENERATOR" AppCount="2">//home//cat//Documents//CACHE//Tests//Traces//Generated</Flow>
     <Logs Type="LCONSOLE"></Logs>
-    <SystemTime>3600</SystemTime>
-    <InputPdf>//home//cat//Documents//CACHE//Tests//Pdf</InputPdf>
+    <SystemTime>1800</SystemTime>
+    <InputPdf>//home//cat//Documents//CACHE//Tests//Pdf//pdf.txt</InputPdf>
 </Generate>
