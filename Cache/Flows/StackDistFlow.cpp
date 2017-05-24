@@ -4,9 +4,13 @@
 
 #include "StackDistFlow.h"
 using namespace std;
+UniformInt *uni_int_asu;
+StackDistanceGen *stack_dist_gen;
 
 
-StackDistFlow::StackDistFlow(int client_count, const string& input_pdf_path, Timestamp time = 0)
+StackDistFlow::StackDistFlow(int client_count,
+                            const string& input_pdf_path,
+                            Timestamp time)
 {
     if (client_count > 0)
     {
@@ -35,6 +39,7 @@ StackDistFlow::~StackDistFlow()
 
 Request StackDistFlow::GetRequest()
 {
+    Request req;
     while (_curr_request_time < _common_time)
     {
         if ( _request_queue.empty() )
@@ -46,16 +51,17 @@ Request StackDistFlow::GetRequest()
                         GenerateStackDistance());
                 tmp.push_back(request);
             }
-            sort(tmp.begin(), tmp.end());
+            tmp.sort();
             for (auto request : tmp)
             {
                 _request_queue.push_back(request);
             }
         }
         _curr_request_time = _request_queue.front()._timestamp;
-        return _request_queue.front();
+        req = _request_queue.front();
+        _request_queue.pop_front();
+        return req;
     }
-    return nullptr;
 }
 
 Asu StackDistFlow::GenerateAsu()

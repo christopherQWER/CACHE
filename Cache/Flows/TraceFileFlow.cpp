@@ -11,7 +11,7 @@ TraceFileFlow::TraceFileFlow(const std::string& source_path)
     flow_dir_name = Utils::GetFileNameWithoutExt(source_path);
     trace_file.open(source_path.c_str());
     File = source_path;
-    _is_eof = trace_file.is_open();
+    _is_eof = !(trace_file.is_open());
 }
 
 TraceFileFlow::~TraceFileFlow()
@@ -33,7 +33,6 @@ Request TraceFileFlow::GetRequest()
         else
         {
             _is_eof = true;
-            return nullptr;
         }
     }
 

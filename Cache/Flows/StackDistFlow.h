@@ -8,8 +8,6 @@
 #include "../Requests/RequestGenerator.h"
 #include "../Utils/Types.h"
 #include "Flow.h"
-UniformInt *uni_int_asu;
-StackDistanceGen *stack_dist_gen;
 
 class StackDistFlow : public Flow
 {

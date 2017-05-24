@@ -8,8 +8,7 @@
 #include <cstring>
 #include "../Requests/Request.h"
 #include "../Utils/Utils.h"
-
-enum FlowType { FFILE = 0, FGENERATOR };
+#include "../Utils/Enums.h"
 
 class Flow
 {
@@ -20,14 +19,15 @@ public:
     //static Flow* CreateFlow(FlowType type);
     virtual ~Flow() {};
     virtual Request GetRequest() = 0;
+    virtual bool IsEndOfFlow() = 0;
 
-    static inline const char* toString(FlowType type)
+    static inline std::string toString(FlowType type)
     {
         switch (type)
         {
-            case FFILE:          return "FFILE";
-            case FGENERATOR:     return "FGENERATOR";
-            default:             return "Unknown flow stor_type";
+            case FFILE:          return std::string("FFILE");
+            case FGENERATOR:     return std::string("FGENERATOR");
+            default:             return std::string("Unknown flow stor_type");
         }
     }
     static inline FlowType toType(const char* str_repr)
