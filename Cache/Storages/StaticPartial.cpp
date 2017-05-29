@@ -47,11 +47,13 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
             }
             case BY_QOS:
             {
+                ByteSize tmp_size = _common_size;
                 for (const auto &client : client_map)
                 {
-                    ByteSize part_size = (_common_size * client.second->required_qos) / 100;
+                    ByteSize part_size = (tmp_size * client.second->required_qos) / 100;
                     Lru* cache = new Lru(part_size);
                     _inner_storage.insert(pair<Asu, Lru*>(client.first, cache));
+                    tmp_size -= part_size;
                 }
                 break;
             }
