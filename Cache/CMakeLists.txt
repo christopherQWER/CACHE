@@ -3,6 +3,7 @@ project(Cache)
 
 set(CMAKE_CXX_STANDARD 11)
 include_directories(INCLUDE_DIR /usr/include/gsl)
+set(CMAKE_SHARED_LINKER_FLAGS "-lgsl")
 
 set(SOURCE_FILES
                  Main/Main.cpp
