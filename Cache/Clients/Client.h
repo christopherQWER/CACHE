@@ -19,6 +19,8 @@ public:
 
     Asu application_id;
     int request_counter;
+    double avg_hit_rate;
+    double hits;
 
     /// Counter of preparing histograms
     int result_hist_counter;

@@ -1,8 +1,8 @@
 //
 // Created by cat on 5/8/17.
 //
-#pragma once
 
+#pragma once
 #include <list>
 #include "../Utils/Types.h"
 #include "../Utils/GnuPlot.h"

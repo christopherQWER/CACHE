@@ -9,6 +9,8 @@ using namespace std;
 Client::Client(Asu asu, double qos)
 {
     experimental_qos = 0;
+    avg_hit_rate = 0;
+    hits = 0;
 
     request_counter = 0;
     result_hist_counter = 0;

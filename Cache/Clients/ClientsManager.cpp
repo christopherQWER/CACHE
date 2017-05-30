@@ -128,9 +128,9 @@ void ClientsManager::CommonPlot(const string &flow_file_name)
 //    string flow_name = Utils::GetFileNameWithoutExt(flow_file_name);
 //    results_dir = Utils::PathCombine(results_dir, flow_name);
 //    string path_to_cur_pdf_gists = Utils::PathCombine(results_dir, string(_PDF_DIR_),
-//            to_string(_hist_counter));
+//            to_string(common_hist_counter));
 //    string path_to_cur_cdf_gists = Utils::PathCombine(results_dir, string(_CDF_DIR_),
-//            to_string(_hist_counter));
+//            to_string(common_hist_counter));
 //
 //    for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
 //    {
@@ -139,8 +139,8 @@ void ClientsManager::CommonPlot(const string &flow_file_name)
 //        // Txt file for current ASU with cdf
 //        string cdf_txt = Utils::PathCombine(path_to_cur_cdf_gists, to_string(it->first) + ".txt");
 //
-//        it->second.SavePdfPlotDots(pdf_txt);
-//        it->second.SaveCdfPlotDots(cdf_txt);
+//        it->second->SavePdfPlotDots(pdf_txt);
+//        it->second->SaveCdfPlotDots(cdf_txt);
 //    }
 }
 
