@@ -27,6 +27,7 @@ void Lru::AddToCache(Request& newRequest)
         stack_dist = distance(_list_store.begin(), it->second) + 1;
         ReorganizeCache(newRequest);
         _hit++;
+        newRequest._is_Hit = true;
         pLogger->ShowLogText(LEVEL, "Hit to cache. Time: " +
                 to_string(newRequest._timestamp) + "\n" );
     }

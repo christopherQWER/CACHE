@@ -29,6 +29,9 @@ public:
      /// Characteristic of request connected with cache
     StackDist _stack_distance;
 
+    /// Is it request hits to cache
+    bool _is_Hit;
+
      /// Default constructor
     Request();
 
