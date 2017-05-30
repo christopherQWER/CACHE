@@ -9,6 +9,7 @@ using namespace std;
 
 ByteSize SizeGen::GetRandomValue()
 {
-    int rand_degree = uni_gen.GetRandomValue();
-    return _CELL_SIZE_ * pow(2, rand_degree);
+    //int rand_degree = uni_gen.GetRandomValue();
+    //return _CELL_SIZE_ * pow(2, rand_degree);
+    return uni_gen.GetRandomValue();
 }
