@@ -3,10 +3,17 @@
 //
 
 #pragma once
+#include "StaticPartial.h"
 
-#include "Storage.h"
 
-class DynamicPartialCache : public Storage
+class DynamicPartialCache : public StaticPartial
 {
+public:
 
+    DynamicPartialCache(ByteSize commonSize,
+                        const std::string &algorithm_dir,
+                        double time_step,
+                        int experiments_number);
+    ~DynamicPartialCache();
+    void Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots);
 };

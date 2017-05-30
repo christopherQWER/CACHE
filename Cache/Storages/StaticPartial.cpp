@@ -47,13 +47,18 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
             }
             case BY_QOS:
             {
-                ByteSize tmp_size = _common_size;
+                double sum = 0;
                 for (const auto &client : client_map)
                 {
-                    ByteSize part_size = (tmp_size * client.second->required_qos) / 100;
+                    sum += client.second->required_qos;
+                }
+
+                double x = _common_size / sum;
+                for (const auto &client : client_map)
+                {
+                    ByteSize part_size = x * client.second->required_qos;
                     Lru* cache = new Lru(part_size);
                     _inner_storage.insert(pair<Asu, Lru*>(client.first, cache));
-                    tmp_size -= part_size;
                 }
                 break;
             }
@@ -76,6 +81,9 @@ void StaticPartial::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bo
         // Add request to AddToCache cache
         _inner_storage[request._asu]->AddToCache(request);
         _inner_storage[request._asu]->_request_counter++;
+
+        clients_map[request._asu]->avg_hit_rate = _inner_storage[request._asu]->CalculateHitRate();
+        logger->ShowHitRate(DEBUG, clients_map[request._asu]->avg_hit_rate);
         clients_map[request._asu]->AddStackDistToMap(request._stack_distance);
 
         // It's time for histogram

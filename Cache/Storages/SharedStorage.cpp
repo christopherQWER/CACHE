@@ -43,6 +43,9 @@ void SharedStorage::Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bo
         _cache->AddToCache(request);
         clients_map[request._asu]->request_counter++;
         clients_map[request._asu]->AddStackDistToMap(request._stack_distance);
+        clients_map[request._asu]->hits++;
+        clients_map[request._asu]->avg_hit_rate =
+                clients_map[request._asu]->hits / clients_map[request._asu]->request_counter;
 
         // It's time for histogram
         if (with_plots)
