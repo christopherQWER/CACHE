@@ -46,6 +46,7 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
         clients_manager.clients_map[request->_asu]->request_counter++;
         clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
         clients_manager.clients_map[request->_asu]->hits++;
+
         clients_manager.clients_map[request->_asu]->avg_hit_rate =
                 clients_manager.clients_map[request->_asu]->hits /
                         clients_manager.clients_map[request->_asu]->request_counter;
@@ -64,6 +65,15 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
             clients_manager.clients_map[request->_asu]->result_hist_counter++;
         }
         request = flow->GetRequest();
+    }
+
+    Utils::CreateDirectory(path_to_hr_vs_size);
+    for (ClientMap::iterator it = clients_manager.clients_map.begin(); it != clients_manager.clients_map.end(); ++it)
+    {
+        it->second->experimental_qos = clients_manager.clients_map[request->_asu]->avg_hit_rate;
+        string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
+                to_string(it->first) + string(".txt"));
+        Utils::AppendToFile(path_for_file, _common_size, it->second->experimental_qos);
     }
 
     logger->EndLog();
