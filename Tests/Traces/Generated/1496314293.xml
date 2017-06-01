@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<TraceFile TracePath="//home//cat//Documents//CACHE//Tests//Traces//Generated//1496314293.spc" Length="4479" OutputPath="//home//cat//Documents//CACHE//Tests//Traces//Generated//1496314293.xml">
+	<App Unit="1" Reads="4479" Writes="0" RequestNumber="4479" AvgBytes="5" />
+</TraceFile>

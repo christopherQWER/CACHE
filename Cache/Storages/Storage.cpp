@@ -79,3 +79,8 @@ void Storage::GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string
         path_to_hr_vs_size = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name, string(_HR_VS_SIZE));
     }
 }
+
+double Storage::BytesToGb(ByteSize byteSize)
+{
+    return byteSize / static_cast<double>(_1_GB_IN_BYTES_);
+}

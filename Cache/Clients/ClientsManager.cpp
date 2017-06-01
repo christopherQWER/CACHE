@@ -139,9 +139,9 @@ void ClientsManager::DrawHrVSCacheSizePlot(const std::string algorithm_name)
     GnuPlot hr_vs_size_plot = GnuPlot("512", "512",
                                 algorithm_name,
                                 hr_png, hr_plt,
-                                "Cache size", pair<string, string>(to_string(107374182), to_string(536870912)),
+                                "Cache size", pair<string, string>(to_string(0), to_string(1)),
                                 "Hit rate", pair<string, string>(to_string(0), to_string(1)),
-                                "107374182", false
+                                "0.1", false
     );
 
     string command = "plot ";

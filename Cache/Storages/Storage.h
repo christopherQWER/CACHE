@@ -22,8 +22,9 @@ public:
 
     void PreparePDF(ClientMap& clients_map, const std::string& pdf_dir_path);
     void PrepareCDF(ClientMap& clients_map, const std::string& cdf_dir_path);
-
     void GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string& cdf_dir);
+
+    double BytesToGb(ByteSize byteSize);
 
     static inline const char* toString(StorageType type)
     {

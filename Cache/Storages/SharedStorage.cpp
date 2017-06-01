@@ -76,7 +76,7 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
         it->second->experimental_qos = clients_manager.clients_map[it->first]->avg_hit_rate;
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
                 to_string(it->first) + string(".txt"));
-        Utils::AppendToFile(path_for_file, _common_size, it->second->experimental_qos);
+        Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->experimental_qos);
     }
     logger->EndLog();
 }
