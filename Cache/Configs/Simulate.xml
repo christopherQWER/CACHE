@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Simulate Type="PARTIAL" Division="BY_QOS" AppCount="2" CommonSize="1" RequestNum="" WithPlots="true">
+<Simulate Type="SHARED" Division="BY_QOS" AppCount="2" CommonSize="1" RequestNum="" WithPlots="true">
     <Logs Type="LCONSOLE"></Logs>
     <Flow Type="FFILE">//home//cat//Documents//CACHE//Tests//Traces//Generated//1495544526.spc</Flow>
     <PlotDir>//home//cat//Documents//CACHE//Results//PlotData</PlotDir>
