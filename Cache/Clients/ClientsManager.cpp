@@ -129,6 +129,29 @@ void ClientsManager::DrawCDFPlot(const string &trace_name)
     }
 }
 
+void ClientsManager::DrawHrVSCacheSizePlot(const std::string& dir_with_files)
+{
+    string hr_plt = Utils::PathCombine(dir_with_files, string("cdf.plt"));
+    string hr_png = Utils::PathCombine(dir_with_files, string("cdf.png"));
+
+    int client_counter = 0;
+    StackDist min = 0, max = 0;
+    FindLimitsByX(min, max);
+
+    GnuPlot cdf_plot = GnuPlot("512", "512",
+            " CDF",
+            hr_png, hr_plt,
+            "Stack distance", pair<string, string>(to_string(min), to_string(max)),
+            "Cdf", pair<string, string>(to_string(0), to_string(1)),
+            "10000", false
+    );
+
+    for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
+    {
+        string file_txt = Utils::PathCombine(dir_with_files, "App_" + to_string(it->first) + ".txt");
+    }
+}
+
 void ClientsManager::CommonPlot(const string &flow_file_name)
 {
 //    for (int i = 0; i < common_hist_counter; ++i)
