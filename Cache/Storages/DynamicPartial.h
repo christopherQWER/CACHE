@@ -15,5 +15,5 @@ public:
                         double time_step,
                         int experiments_number);
     ~DynamicPartialCache();
-    void Run(ClientMap& clients_map, Logger*& logger, Flow*& flow, bool with_plots);
+    void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots);
 };

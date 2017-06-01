@@ -35,6 +35,6 @@ public:
             return BY_QOS;
     }
 
-private:
+protected:
     StorageMap _inner_storage;
 };

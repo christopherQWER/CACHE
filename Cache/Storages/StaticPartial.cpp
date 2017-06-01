@@ -11,7 +11,7 @@ StaticPartial::StaticPartial(double commonSize,
                                 int experiments_number) :
         Storage(commonSize, algorithm_dir, time_step, experiments_number)
 {
-    _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Partial"));
+    _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Static partial"));
     Utils::CreateDirectory(_algorithm_dir);
 }
 
@@ -66,17 +66,16 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
     }
 }
 
-void StaticPartial::Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots)
+void StaticPartial::Run(ClientsManager& clients_manager,
+                        Logger*& logger,
+                        Flow*& flow,
+                        bool with_plots)
 {
     logger->StartLog();
 
     double prev_time = 0;
     Request *request = flow->GetRequest();
-
-    std::string pdf_dir = "", cdf_dir = "";
-    GetOutputDirs((const Flow*&) flow, pdf_dir, cdf_dir);
-    clients_manager.pdf_dir = pdf_dir;
-    clients_manager.cdf_dir = cdf_dir;
+    GetOutputDirs((const Flow*&) flow, clients_manager.pdf_dir, clients_manager.cdf_dir);
 
     while ( !flow->IsEndOfFlow() )
     {
@@ -94,8 +93,8 @@ void StaticPartial::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
         {
             if ( request->_timestamp - prev_time >= _time_step )
             {
-                PreparePDF(clients_manager.clients_map, pdf_dir);
-                PrepareCDF(clients_manager.clients_map, cdf_dir);
+                PreparePDF(clients_manager.clients_map, clients_manager.pdf_dir);
+                PrepareCDF(clients_manager.clients_map, clients_manager.cdf_dir);
                 _hist_counter++;
                 clients_manager.common_hist_counter++;
                 prev_time = request->_timestamp;
@@ -106,7 +105,8 @@ void StaticPartial::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
     }
 
     Utils::CreateDirectory(path_to_hr_vs_size);
-    for (ClientMap::iterator it = clients_manager.clients_map.begin(); it != clients_manager.clients_map.end(); ++it)
+    for (ClientMap::iterator it = clients_manager.clients_map.begin();
+         it != clients_manager.clients_map.end(); ++it)
     {
         it->second->experimental_qos = _inner_storage[it->first]->CalculateHitRate();
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +

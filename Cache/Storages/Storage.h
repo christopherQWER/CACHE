@@ -46,7 +46,7 @@ protected:
     ///
     int             _experiments_number;
 
-    /// Counter of created
+    /// Counter of created histograms
     int             _hist_counter;
 
     /// Time distance between histogram's values saving (per 60 sec, per 10 minutes, etc.)
@@ -62,5 +62,6 @@ protected:
     /// //
     std::string     _algorithm_dir;
 
+    /// directory for histograms relation hit rate from cache size
     std::string path_to_hr_vs_size;
 };
