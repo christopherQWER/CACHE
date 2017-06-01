@@ -45,8 +45,10 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
         _cache->AddToCache(*request);
         clients_manager.clients_map[request->_asu]->request_counter++;
         clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
-        clients_manager.clients_map[request->_asu]->hits++;
-
+        if (request->_is_Hit)
+        {
+            clients_manager.clients_map[request->_asu]->hits++;
+        }
         clients_manager.clients_map[request->_asu]->avg_hit_rate =
                 clients_manager.clients_map[request->_asu]->hits /
                         clients_manager.clients_map[request->_asu]->request_counter;

@@ -43,6 +43,7 @@ set(SOURCE_FILES
                  Clients/ClientsManager.cpp
 
                  Modeling/TraceAnalyzer.cpp
+                 Modeling/PlotManager.cpp
 
                  Loggers/ConsoleLogger.cpp
                  Loggers/FileLogger.cpp
@@ -96,6 +97,7 @@ set(HEADER_FILES
                  Clients/ClientsManager.h
 
                  Modeling/TraceAnalyzer.h
+                 Modeling/PlotManager.h
 
                  Utils/Types.h
                  Utils/Utils.h

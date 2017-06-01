@@ -15,7 +15,7 @@ void RunTraceAnalyseMode(Config my_config)
 
     for (auto &trace : xmlTraceInfo.trace_list)
     {
-        string stat_dir = Utils::SplitFilename(trace.path.c_str());
+        string stat_dir = Utils::GetDirectoryNameFromPath(trace.path.c_str());
 
         string file_name_xml = trace.name + string(".xml");
         string detailed_result = Utils::PathCombine(stat_dir, file_name_xml);

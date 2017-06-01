@@ -52,6 +52,6 @@ public:
     static std::string GetFileName(const std::string &path);
     static std::string GetFileNameWithoutExt(const std::string &path);
     static bool CreateDirectory(const std::string &dir_path);
-    static std::string SplitFilename (const std::string& file_path);
+    static std::string GetDirectoryNameFromPath(const std::string &file_path);
     static double GetPointByTwoPoints(ByteSize x1, double y1, ByteSize x2, double y2, ByteSize x3);
 };

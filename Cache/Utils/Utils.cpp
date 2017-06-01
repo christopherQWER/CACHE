@@ -123,7 +123,7 @@ void Utils::ExecuteCmd(const string &input)
     int errorCode = system(input.c_str());
 }
 
-string Utils::SplitFilename(const string& file_path)
+string Utils::GetDirectoryNameFromPath(const string &file_path)
 {
     string dir = "";
     size_t found = file_path.find_last_of("/\\");

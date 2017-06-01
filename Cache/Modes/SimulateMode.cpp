@@ -23,30 +23,35 @@ void RunSimulateMode(Config my_config)
     Logger *logger = Logger::CreateLogger(xmlSimulator.logger.logger_type);
     CreateXmlAppList(xmlSimulator, my_config.analyze_path);
 
-    for (double i = 0.2; i < 1.0; i = i + 0.2)
+    switch (xmlSimulator.stor_type)
     {
-        switch (xmlSimulator.stor_type)
+        case SHARED:
         {
-            case SHARED:
+            ClientsManager *clientsManager = nullptr;
+            for (double i = 0.1; i < 0.5; i += 0.1)
             {
                 SharedStorage sharedCache = SharedStorage(i, xmlSimulator.plot_dir, 60, 0);
-                Flow* flow = CreateFlowInst(xmlSimulator, "");
-                ClientsManager* clientsManager = new ClientsManager(xmlSimulator.app_list);
+                Flow *flow = CreateFlowInst(xmlSimulator, "");
+                clientsManager = new ClientsManager(xmlSimulator.app_list);
                 sharedCache.CreateStorage();
                 sharedCache.Run(*clientsManager, logger, flow, xmlSimulator.with_plots);
                 clientsManager->QosComparator(logger);
-                if (xmlSimulator.with_plots)
-                {
+                if (xmlSimulator.with_plots) {
                     clientsManager->DrawPDFPlot(flow->flow_dir_name);
                     clientsManager->DrawCDFPlot(flow->flow_dir_name);
                 }
-                break;
             }
-            case PARTIAL:
+            clientsManager->DrawHrVSCacheSizePlot("Shared");
+            break;
+        }
+        case PARTIAL:
+        {
+            ClientsManager* clientsManager = nullptr;
+            for (double i = 0.1; i < 0.5; i += 0.1)
             {
                 StaticPartial staticPartial = StaticPartial(i, xmlSimulator.plot_dir, 60, 0);
                 Flow *flow = CreateFlowInst(xmlSimulator, "");
-                ClientsManager* clientsManager = new ClientsManager(xmlSimulator.app_list);
+                clientsManager = new ClientsManager(xmlSimulator.app_list);
                 staticPartial.CreateStorage(xmlSimulator.div_type, clientsManager->clients_map);
                 staticPartial.Run(*clientsManager, logger, flow, xmlSimulator.with_plots);
                 clientsManager->QosComparator(logger);
@@ -55,12 +60,13 @@ void RunSimulateMode(Config my_config)
                     clientsManager->DrawPDFPlot(flow->flow_dir_name);
                     clientsManager->DrawCDFPlot(flow->flow_dir_name);
                 }
-                break;
             }
-            default:
-            {
-                break;
-            }
+            clientsManager->DrawHrVSCacheSizePlot("Static Partial");
+            break;
+        }
+        default:
+        {
+            break;
         }
     }
 }
@@ -109,7 +115,7 @@ void CreateXmlAppList(XmlSimulate& xmlSimulator,
         // Get from app units from xml-statistics
         if (xmlTraceMode.type == DETAILED)
         {
-            string trace_file_dir = Utils::SplitFilename(xmlSimulator.flow.path_to_flow);
+            string trace_file_dir = Utils::GetDirectoryNameFromPath(xmlSimulator.flow.path_to_flow);
             string source_file = Utils::PathCombine(trace_file_dir,
                     Utils::GetFileNameWithoutExt(xmlSimulator.flow.path_to_flow) + ".xml");
 
