@@ -10,7 +10,6 @@
 #include "../Flows/Flow.h"
 #include "../Requests/Request.h"
 typedef std::map<StackDist, int> StackDistMap;
-typedef std::map<double, StackDist> ProportionalMap;
 
 class Client {
 public:

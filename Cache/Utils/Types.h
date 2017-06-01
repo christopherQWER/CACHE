@@ -16,3 +16,4 @@ typedef char OpCode;
 typedef double Timestamp;
 typedef long double StackDist;
 typedef double HitRate;
+typedef std::map<double, StackDist> ProportionalMap;

@@ -3,6 +3,7 @@
 //
 
 #include "ClientsManager.h"
+
 using namespace std;
 
 ClientsManager::ClientsManager(const list<XmlClient>& xml_client_list)
@@ -129,27 +130,40 @@ void ClientsManager::DrawCDFPlot(const string &trace_name)
     }
 }
 
-void ClientsManager::DrawHrVSCacheSizePlot(const std::string& dir_with_files)
+void ClientsManager::DrawHrVSCacheSizePlot(const std::string algorithm_name)
 {
-    string hr_plt = Utils::PathCombine(dir_with_files, string("cdf.plt"));
-    string hr_png = Utils::PathCombine(dir_with_files, string("cdf.png"));
+    string dir_with_files = Utils::PathCombine(Utils::GetDirectoryNameFromPath(pdf_dir), string(_HR_VS_SIZE));
+    string hr_plt = Utils::PathCombine(dir_with_files, string("size_vs_hr.plt"));
+    string hr_png = Utils::PathCombine(dir_with_files, string("size_vs_hr.png"));
 
-    int client_counter = 0;
-    StackDist min = 0, max = 0;
-    FindLimitsByX(min, max);
-
-    GnuPlot cdf_plot = GnuPlot("512", "512",
-            " CDF",
-            hr_png, hr_plt,
-            "Stack distance", pair<string, string>(to_string(min), to_string(max)),
-            "Cdf", pair<string, string>(to_string(0), to_string(1)),
-            "10000", false
+    GnuPlot hr_vs_size_plot = GnuPlot("512", "512",
+                                algorithm_name,
+                                hr_png, hr_plt,
+                                "Cache size", pair<string, string>(to_string(107374182), to_string(536870912)),
+                                "Hit rate", pair<string, string>(to_string(0), to_string(1)),
+                                "107374182", false
     );
 
+    string command = "plot ";
+    ByteSize map_size = clients_map.size();
+    int client_counter = 0;
     for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
     {
         string file_txt = Utils::PathCombine(dir_with_files, "App_" + to_string(it->first) + ".txt");
+
+        command += "'" + file_txt + "'" +
+                       " using 1:2 with lines title 'Ap_" +
+                       to_string(it->first) + "'";
+        if (client_counter < map_size - 1)
+        {
+            command += ",\\";
+        }
+        hr_vs_size_plot.m_command_lines.push_back(command);
+        command.clear();
+        client_counter++;
     }
+    //hr_vs_size_plot.m_xRange = pair<string, string>(to_string(0.2), to_string(1));
+    hr_vs_size_plot.DoPlot();
 }
 
 void ClientsManager::CommonPlot(const string &flow_file_name)

@@ -28,7 +28,7 @@ public:
     void QosComparator(Logger*& logger);
     void DrawPDFPlot(const std::string &trace_name);
     void DrawCDFPlot(const std::string &trace_name);
-    void DrawHrVSCacheSizePlot(const std::string& dir_with_files);
+    void DrawHrVSCacheSizePlot(const std::string algorithm_name);
     void CommonPlot(const std::string &flow_file_name);
 
 private:
