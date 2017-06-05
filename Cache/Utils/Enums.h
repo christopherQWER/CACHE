@@ -11,7 +11,8 @@ enum DivisionType {
 
 enum StorageType {
     SHARED = 0,
-    PARTIAL
+    PARTIAL,
+    DYNAMIC
 };
 
 enum FlowType {

@@ -33,8 +33,6 @@ void DynamicPartialCache::Run(ClientsManager& clients_manager,
                                 Flow*& flow,
                                 bool with_plots)
 {
-    logger->StartLog();
-
     double prev_time = 0;
     Request *request = flow->GetRequest();
     GetOutputDirs((const Flow*&) flow, clients_manager.pdf_dir, clients_manager.cdf_dir);
@@ -75,6 +73,4 @@ void DynamicPartialCache::Run(ClientsManager& clients_manager,
                 to_string(it->first) + string(".txt"));
         Utils::AppendToFile(path_for_file, _common_size, it->second->experimental_qos);
     }
-
-    logger->EndLog();
 }

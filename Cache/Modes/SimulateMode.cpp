@@ -78,6 +78,8 @@ void RunSimulateMode(Config my_config)
 
                 logger->ShowLogText(LEVEL, "Comon cache size: " + to_string(i) + " Gb");
                 logger->ShowLogText(LEVEL, "Time step for histograms: " + to_string(time_step) + " sec");
+                logger->ShowLogText(LEVEL, string("First partitioning way: ") +
+                                           StaticPartial::toString(xmlSimulator.div_type));
 
                 Flow *flow = CreateFlowInst(xmlSimulator, "");
                 logger->ShowLogText(LEVEL, "Flow type: " + Flow::toString(xmlSimulator.flow.flow_type));
@@ -97,6 +99,10 @@ void RunSimulateMode(Config my_config)
             }
             clientsManager->DrawHrVSCacheSizePlot("Static Partial");
             break;
+        }
+        case DYNAMIC:
+        {
+
         }
         default:
         {

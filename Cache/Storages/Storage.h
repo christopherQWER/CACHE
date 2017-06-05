@@ -32,6 +32,7 @@ public:
         {
             case SHARED:          return "SHARED";
             case PARTIAL:         return "PARTIAL";
+            case DYNAMIC:         return "DYNAMIC";
             default:              return "Unknown storage stor_type";
         }
     }
@@ -41,6 +42,8 @@ public:
             return SHARED;
         else if (strcmp(str_repr, "PARTIAL") == 0)
             return PARTIAL;
+        else if (strcmp(str_repr, "DYNAMIC") == 0)
+            return DYNAMIC;
     }
 
 protected:
