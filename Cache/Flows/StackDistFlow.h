@@ -12,11 +12,13 @@
 class StackDistFlow : public Flow
 {
 public:
+    StackDistFlow();
     StackDistFlow(int clients_count,
                   const std::string& input_pdf_path,
                   Timestamp time = 0);
     ~StackDistFlow();
     Request* GetRequest();
+    Request* GetArtificialRequest(Asu asu, StackDist stack_dist);
 
 private:
     int _common_request_num;

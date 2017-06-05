@@ -6,7 +6,7 @@
 #include "ConsoleLogger.h"
 #include "FileLogger.h"
 
-Logger* Logger::CreateLogger(LoggerType type)
+Logger* Logger::CreateLogger(LoggerType type, std::string path)
 {
     Logger *p = nullptr;
     switch (type)
@@ -16,7 +16,7 @@ Logger* Logger::CreateLogger(LoggerType type)
             break;
 
         case LFILE:
-            p = new FileLogger();
+            p = new FileLogger(path);
             break;
 
         default:

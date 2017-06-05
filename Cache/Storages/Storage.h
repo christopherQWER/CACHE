@@ -17,7 +17,7 @@ public:
     Storage(double commonSize,
             const std::string &algorithm_dir,
             double _time_step,
-            int experiments_number);
+            ByteSize experiments_number);
     virtual ~Storage();
 
     void PreparePDF(ClientMap& clients_map, const std::string& pdf_dir_path);
@@ -45,7 +45,7 @@ public:
 
 protected:
     ///
-    int             _experiments_number;
+    ByteSize        _experiments_number;
 
     /// Counter of created histograms
     int             _hist_counter;

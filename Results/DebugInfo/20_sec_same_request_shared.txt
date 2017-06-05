@@ -1,0 +1,84 @@
+I'm started at: 21:12
+[DEBUG]: Storage type: SHARED
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.100000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.200000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.300000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.400000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.500000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.600000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.700000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.800000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 0.900000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+[DEBUG]: Comon cache size: 1.000000 Gb
+[DEBUG]: Time step for histograms: 60.000000 sec
+[DEBUG]: Flow type: FFILE
+[DEBUG]: Cache simulation ran.
+Hitrate: 0.984375
+Stack distance: 1.01587
+[DEBUG]: Asu 1: required qos: 0.984375, experimental qos: 0.984375
+[DEBUG]: ===============================================================
+I'm ended at: 21:12

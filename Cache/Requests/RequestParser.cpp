@@ -15,14 +15,14 @@ void RequestParser::ParseRequest(const string &request_string, deque<Request>& r
     }
 
     unsigned int numberOfRequests = (unsigned int) (req._size / _CELL_SIZE_);
-    for (int i = 0; i < numberOfRequests + 1; i++)
+    for (int i = 0; i < numberOfRequests; i++)
     {
         if (tolower(req._opcode) != 'r')
         {
             return;
         }
         Request rq = Request(req._asu,
-                            req._lba + _CELL_SIZE_ * i,
+                            req._lba,
                             _CELL_SIZE_,
                             req._opcode,
                             req._timestamp);

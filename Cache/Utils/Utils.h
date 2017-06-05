@@ -47,6 +47,12 @@ public:
     {
         return first + "//" + PathCombine(args...);
     }
+    template<class T> std::string convert(T _input)
+    {
+        std::stringstream blah;
+        blah << _input;
+        return blah.str();
+    }
     static std::string GetCurrentStringUnixTime();
     static std::string GetWorkingDirectory();
     static std::string GetFileName(const std::string &path);

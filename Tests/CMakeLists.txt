@@ -8,11 +8,14 @@ set(SOURCE_FILES Main.cpp
 
                  XmlTest/TestConfig.cpp
 
-                 TestFlows/TestFlow.cpp
+                 TestStorages/TestStaticPartial.cpp
                  TestGenerators/TestDistribution.cpp
 
                  ../Cache/Flows/TraceFileFlow.cpp
                  ../Cache/Flows/StackDistFlow.cpp
+
+                 ../Cache/Clients/Client.cpp
+                 ../Cache/Clients/ClientsManager.cpp
 
                  ../Cache/Generators/StackDistanceGen.cpp
                  ../Cache/Generators/RandomValue.cpp
@@ -31,6 +34,9 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Caches/Cache.cpp
                  ../Cache/Caches/Lru.cpp
 
+                 ../Cache/Storages/Storage.cpp
+                 ../Cache/Storages/StaticPartial.cpp
+
                  ../Cache/Loggers/Logger.cpp
                  ../Cache/Loggers/ConsoleLogger.cpp
                  ../Cache/Loggers/FileLogger.cpp
@@ -43,19 +49,25 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Xml/MainConfig.cpp
                  ../Cache/Xml/AnalyzeConfig.cpp
 
-                 ../Cache/Libs/pugixml.cpp)
+                 ../Cache/Libs/pugixml.cpp TestStorages/TestShared.cpp TestStorages/TestShared.h)
 
 set(HEADER_FILES XmlTest/TestConfig.h
 
-                 TestFlows/TestFlow.h
+                 TestStorages/TestStaticPartial.h
                  TestGenerators/TestDistribution.h
 
                  ../Cache/Flows/Flow.h
                  ../Cache/Flows/TraceFileFlow.h
                  ../Cache/Flows/StackDistFlow.h
 
+                 ../Cache/Clients/Client.h
+                 ../Cache/Clients/ClientsManager.h
+
                  ../Cache/Caches/Lru.h
                  ../Cache/Caches/Cache.h
+
+                 ../Cache/Storages/Storage.h
+                 ../Cache/Storages/StaticPartial.h
 
                  ../Cache/Generators/StackDistanceGen.h
                  ../Cache/Generators/RandomValue.h

@@ -12,7 +12,7 @@ public:
     StaticPartial(double commonSize,
                     const std::string &algorithm_dir,
                     double time_step,
-                    int experiments_number);
+                    ByteSize experiments_number);
     ~StaticPartial();
     void CreateStorage(DivisionType type, ClientMap client_map);
     void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots);

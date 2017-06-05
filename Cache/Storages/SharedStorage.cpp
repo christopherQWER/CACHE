@@ -1,13 +1,13 @@
 #include "../Utils/GnuPlot.h"
 #include "SharedStorage.h"
-#define LEVEL INFO
+#define LEVEL DEBUG
 using namespace std;
 
 
 SharedStorage::SharedStorage(double commonSize,
                                 const std::string &algorithm_dir,
                                 double time_step,
-                                int experiments_number) :
+                                ByteSize experiments_number) :
         Storage(commonSize, algorithm_dir, time_step, experiments_number)
 {
     _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Shared"));
@@ -29,7 +29,7 @@ void SharedStorage::CreateStorage()
 
 void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots)
 {
-    logger->StartLog();
+    logger->ShowLogText(LEVEL, "Cache simulation ran.");
     double prev_time = 0;
     Request *request = flow->GetRequest();
 
@@ -39,10 +39,12 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
     clients_manager.cdf_dir = cdf_dir;
 
     // while we not reach the value of number experiment or trace_file not ended
-    while ( !flow->IsEndOfFlow() )
+    while ( (!flow->IsEndOfFlow()) || (request != nullptr))
     {
         // Add request to AddToCache cache
         _cache->AddToCache(*request);
+
+        // All that need for client's map
         clients_manager.clients_map[request->_asu]->request_counter++;
         clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
         if (request->_is_Hit)
@@ -60,9 +62,14 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
             {
                 PreparePDF(clients_manager.clients_map, pdf_dir);
                 PrepareCDF(clients_manager.clients_map, cdf_dir);
+                logger->ShowLogText(LEVEL, "Saving histograms...");
+
                 _hist_counter++;
+                logger->ShowLogText(LEVEL, "Histograms: " + to_string(_hist_counter));
+
                 clients_manager.common_hist_counter++;
                 prev_time = request->_timestamp;
+                logger->ShowLogText(LEVEL, "Current time pasted: " + to_string(prev_time));
             }
             clients_manager.clients_map[request->_asu]->result_hist_counter++;
         }
@@ -74,9 +81,13 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
          it != clients_manager.clients_map.end(); ++it)
     {
         it->second->experimental_qos = clients_manager.clients_map[it->first]->avg_hit_rate;
+        StackDist avg_stack_dist = _cache->CalculateAvgStackDistance();
+
+        logger->ShowHitRate(LEVEL, it->second->experimental_qos);
+        logger->ShowStackDistance(LEVEL, avg_stack_dist);
+
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
                 to_string(it->first) + string(".txt"));
         Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->experimental_qos);
     }
-    logger->EndLog();
 }

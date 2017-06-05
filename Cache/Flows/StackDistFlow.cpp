@@ -8,6 +8,7 @@ UniformInt *uni_int_asu;
 StackDistanceGen *stack_dist_gen;
 
 
+
 StackDistFlow::StackDistFlow(int client_count,
                             const string& input_pdf_path,
                             Timestamp time)
@@ -47,8 +48,37 @@ Request* StackDistFlow::GetRequest()
             list<Request> tmp;
             for (int i = 0; i < _app_count; i++)
             {
-                Request request = RequestGenerator::GenerateRequest(GenerateAsu(),
-                        GenerateStackDistance());
+                Request request = RequestGenerator::GenerateRequest(GenerateAsu(), GenerateStackDistance());
+                tmp.push_back(request);
+            }
+            tmp.sort();
+            for (auto request : tmp)
+            {
+                _request_queue.push_back(request);
+            }
+        }
+        _curr_request_time = _request_queue.front()._timestamp;
+        *req = _request_queue.front();
+        _request_queue.pop_front();
+        return req;
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
+Request* StackDistFlow::GetArtificialRequest(Asu asu, StackDist stack_dist)
+{
+    Request* req = new Request();
+    if (_curr_request_time < _common_time)
+    {
+        if ( _request_queue.empty() )
+        {
+            list<Request> tmp;
+            for (int i = 0; i < _app_count; i++)
+            {
+                Request request = RequestGenerator::GenerateRequest(asu, stack_dist);
                 tmp.push_back(request);
             }
             tmp.sort();
@@ -81,4 +111,9 @@ StackDist StackDistFlow::GenerateStackDistance()
 bool StackDistFlow::IsEndOfFlow()
 {
     return _curr_request_time > _common_time;
+}
+
+StackDistFlow::StackDistFlow()
+{
+
 }

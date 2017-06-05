@@ -13,7 +13,7 @@ public:
     DynamicPartialCache(double commonSize,
                         const std::string &algorithm_dir,
                         double time_step,
-                        int experiments_number);
+                        ByteSize experiments_number);
     ~DynamicPartialCache();
     void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots);
 };

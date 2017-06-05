@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Generate>
+    <Flow Type="FGENERATOR" AppCount="1">//home//cat//Documents//CACHE//Inputs//Traces//Generated</Flow>
+    <Logs Type="LCONSOLE"></Logs>
+    <SystemTime>20</SystemTime>
+    <InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Half_Part_Requests.txt</InputPdf>
+</Generate>

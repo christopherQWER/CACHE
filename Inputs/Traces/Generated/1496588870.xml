@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<TraceFile TracePath="//home//cat//Documents//CACHE//Inputs//Traces//Generated//1496588870.spc" Length="6950" OutputPath="//home//cat//Documents//CACHE//Inputs//Traces//Generated//1496588870.xml">
-	<App Unit="1" Reads="3471" Writes="0" RequestNumber="3471" AvgBytes="512" />
-	<App Unit="2" Reads="3479" Writes="0" RequestNumber="3479" AvgBytes="512" />
-</TraceFile>

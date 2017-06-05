@@ -1,63 +1,62 @@
 //
 // Created by cat on 10/4/16.
 //
-
+#include <cstdio>
 #include "FileLogger.h"
+#include "../Utils/Paths.h"
+#include "../Utils/Utils.h"
 using namespace std;
 
-FILE * file;
+ofstream log_file;
 
-FileLogger::FileLogger()
+FileLogger::FileLogger(string log_file_path)
 {
+    if (log_file_path == "")
+    {
+        log_file_path = Utils::GetCurrentStringUnixTime() + ".txt";
+    }
+    current_log_path = Utils::PathCombine(string(_LOG_DIR_), log_file_path);
     _start_time = 0;
     _end_time = 0;
-    file = fopen(LOG_PATH, "a");
-    if (file)
-    {
-        fclose(file);
-    }
+    log_file.open(current_log_path, fstream::out | fstream::app);
 }
 
 FileLogger::~FileLogger()
 {
+    log_file.close();
     delete this;
 }
 
 void FileLogger::StartLog()
 {
-    file = fopen(LOG_PATH, "a");
     struct tm *ptm;
     time(&_start_time);
     ptm = gmtime(&_start_time);
-    fprintf(file, "I'm started at: %2d:%02d\n", (ptm->tm_hour + UTC) % 24, ptm->tm_min);
-    fprintf(file, "\n");
-    fclose(file);
+    log_file << "I'm started at: " << ((ptm->tm_hour + UTC) % 24) << ":" <<
+             ptm->tm_min << endl;
 }
 
 void FileLogger::ShowRequestInfo(Level log_Lvl, int req_number, Asu asu, Lba lba, Timestamp time)
 {
     if (log_Lvl == DEBUG)
     {
-        file = fopen(LOG_PATH, "a");
-        fprintf(file, "Request %d: asu - %u, lba - %u, timestamp - %f. ", req_number, asu, lba, time);
-        fclose(file);
+        log_file << "Request " << req_number << ": " <<
+                    "asu - " << asu << ", " <<
+                    "lba - " << lba << ", " <<
+                    "timestamp - " << time << ". " << endl;
     }
 }
 
 void FileLogger::ShowLogText(Level log_Lvl, const std::string &text)
 {
-    file = fopen(LOG_PATH, "a");
-    fprintf(file, "%s: %s", toString(log_Lvl), text.c_str());
-    fclose(file);
+    log_file << toString(log_Lvl)<< ": " << text.c_str() << endl;
 }
 
 void FileLogger::ShowHitRate(Level log_Lvl, HitRate hit_rate)
 {
     if (log_Lvl == DEBUG)
     {
-        file = fopen(LOG_PATH, "a");
-        fprintf(file, "Hitrate: %f\n", hit_rate);
-        fclose(file);
+        log_file << "Hitrate: " << hit_rate << endl;
     }
 }
 
@@ -65,19 +64,14 @@ void FileLogger::ShowStackDistance(Level log_Lvl, StackDist stack_dist)
 {
     if (log_Lvl == DEBUG)
     {
-        file = fopen(LOG_PATH, "a");
-        fprintf(file, "Stack distance: %Lfll", stack_dist);
-        fclose(file);
+        log_file << "Stack distance: " << stack_dist << endl;
     }
 }
 
 void FileLogger::EndLog()
 {
-    file = fopen(LOG_PATH, "a");
     struct tm *ptm;
     time(&_end_time);
     ptm = gmtime(&_end_time);
-    fprintf(file, "\nI'm ended at: %2d:%02d\n", (ptm->tm_hour + UTC) % 24, ptm->tm_min);
-    fprintf(file, "\n");
-    fclose(file);
+    log_file << "I'm ended at: " << ((ptm->tm_hour + UTC) % 24) << ":" << ptm->tm_min << endl;
 }

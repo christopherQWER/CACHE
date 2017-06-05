@@ -3,7 +3,7 @@
 //
 
 #include "ClientsManager.h"
-
+#define LEVEL DEBUG
 using namespace std;
 
 ClientsManager::ClientsManager(const list<XmlClient>& xml_client_list)
@@ -42,7 +42,7 @@ void ClientsManager::QosComparator(Logger*& logger)
         string text = string("Asu " + to_string(it->first) + ": ") +
                         "required qos: " + to_string(it->second->required_qos) + ", " +
                         "experimental qos: " + to_string(it->second->experimental_qos);
-        logger->ShowLogText(DEBUG, text);
+        logger->ShowLogText(LEVEL, text);
     }
 }
 

@@ -3,12 +3,13 @@
 //
 
 #include "StaticPartial.h"
+#define LEVEL DEBUG
 using namespace std;
 
 StaticPartial::StaticPartial(double commonSize,
                                 const string &algorithm_dir,
                                 double time_step,
-                                int experiments_number) :
+                                ByteSize experiments_number) :
         Storage(commonSize, algorithm_dir, time_step, experiments_number)
 {
     _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Static partial"));
@@ -36,6 +37,7 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
         {
             case EQUAL:
             {
+                _algorithm_dir = Utils::PathCombine(_algorithm_dir, string("EQUAL"));
                 for (const auto &client : client_map)
                 {
                     // equal partitioning between application units
@@ -47,6 +49,7 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
             }
             case BY_QOS:
             {
+                _algorithm_dir = Utils::PathCombine(_algorithm_dir, string("BY_QOS"));
                 double sum = 0;
                 for (const auto &client : client_map)
                 {
@@ -71,23 +74,27 @@ void StaticPartial::Run(ClientsManager& clients_manager,
                         Flow*& flow,
                         bool with_plots)
 {
-    logger->StartLog();
+    logger->ShowLogText(LEVEL, "Cache simulation ran.");
 
     double prev_time = 0;
     Request *request = flow->GetRequest();
     GetOutputDirs((const Flow*&) flow, clients_manager.pdf_dir, clients_manager.cdf_dir);
 
-    while ( !flow->IsEndOfFlow() )
+    while ( (!flow->IsEndOfFlow()) || (request != nullptr ))
     {
         // Add request to AddToCache cache
         _inner_storage[request->_asu]->AddToCache(*request);
-        _inner_storage[request->_asu]->_request_counter++;
 
+        // All that need to client's map
         clients_manager.clients_map[request->_asu]->request_counter++;
-        clients_manager.clients_map[request->_asu]->avg_hit_rate =
-                _inner_storage[request->_asu]->CalculateHitRate();
-        logger->ShowHitRate(INFO, clients_manager.clients_map[request->_asu]->avg_hit_rate);
         clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
+        if (request->_is_Hit)
+        {
+            clients_manager.clients_map[request->_asu]->hits++;
+        }
+        clients_manager.clients_map[request->_asu]->avg_hit_rate =
+                clients_manager.clients_map[request->_asu]->hits /
+                clients_manager.clients_map[request->_asu]->request_counter;
 
         // It's time for histogram
         if (with_plots)
@@ -96,9 +103,14 @@ void StaticPartial::Run(ClientsManager& clients_manager,
             {
                 PreparePDF(clients_manager.clients_map, clients_manager.pdf_dir);
                 PrepareCDF(clients_manager.clients_map, clients_manager.cdf_dir);
+                logger->ShowLogText(LEVEL, "Saving histograms...");
+
                 _hist_counter++;
+                logger->ShowLogText(LEVEL, "Histograms: " + to_string(_hist_counter));
+
                 clients_manager.common_hist_counter++;
                 prev_time = request->_timestamp;
+                logger->ShowLogText(LEVEL, "Current time pasted: " + to_string(prev_time));
             }
             clients_manager.clients_map[request->_asu]->result_hist_counter++;
         }
@@ -110,9 +122,13 @@ void StaticPartial::Run(ClientsManager& clients_manager,
          it != clients_manager.clients_map.end(); ++it)
     {
         it->second->experimental_qos = _inner_storage[it->first]->CalculateHitRate();
+        StackDist avg_stack_dist = _inner_storage[it->first]->CalculateAvgStackDistance();
+
+        logger->ShowHitRate(LEVEL, it->second->experimental_qos);
+        logger->ShowStackDistance(LEVEL, avg_stack_dist);
+
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
                 to_string(it->first) + string(".txt"));
         Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->experimental_qos);
     }
-    logger->EndLog();
 }

@@ -3,16 +3,16 @@
 //
 
 #pragma once
-#define LOG_PATH "logs/log.txt"
-
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Logger.h"
 
 class FileLogger : public Logger
 {
 public:
-    FileLogger();
+    std::string current_log_path;
+    FileLogger(std::string log_file = "");
     ~FileLogger();
 
     void StartLog();

@@ -26,7 +26,7 @@ public:
     virtual void ShowStackDistance(Level log_Lvl, StackDist stack_dist) = 0;
     virtual void EndLog() = 0;
 
-    static Logger* CreateLogger(LoggerType type);
+    static Logger* CreateLogger(LoggerType type, std::string path = "");
     static inline const char* toString(Level lvl)
     {
         switch (lvl)

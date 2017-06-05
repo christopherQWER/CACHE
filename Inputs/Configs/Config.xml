@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Modes>
+    <Simulate>//home//cat//Documents//CACHE//Inputs//Configs//Simulate.xml</Simulate>
+    <Generate>//home//cat//Documents//CACHE//Inputs//Configs//Generate.xml</Generate>
+    <Analyze>//home//cat//Documents//CACHE//Inputs//Configs//Analyze.xml</Analyze>
+</Modes>

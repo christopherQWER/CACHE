@@ -9,7 +9,7 @@ using namespace std;
 DynamicPartialCache::DynamicPartialCache(double commonSize,
                                         const string& algorithm_dir,
                                         double time_step,
-                                        int experiments_number) :
+                                        ByteSize experiments_number) :
         StaticPartial(commonSize, algorithm_dir, time_step, experiments_number)
 {
     _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Dynamic partial"));

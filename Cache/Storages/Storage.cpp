@@ -8,7 +8,7 @@ using namespace std;
 Storage::Storage(double commonSize,
                     const string &algorithm_dir,
                     double time_step,
-                    int experiments_number) :
+                    ByteSize experiments_number) :
         _common_size(commonSize * _1_GB_IN_BYTES_),
         _experiments_number(experiments_number),
         _algorithm_dir(algorithm_dir),

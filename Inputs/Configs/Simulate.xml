@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Simulate Type="SHARED" Division="BY_QOS" AppCount="1" CommonSize="0" RequestNum="0" WithPlots="false">
+    <Logs Type="LFILE">20_sec_half_part_requests_shared.txt</Logs>
+    <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//Generated//20_sec_half_part_requests.spc</Flow>
+    <PlotDir>//home//cat//Documents//CACHE//Results//PlotData</PlotDir>
+    <Applications>
+        <App Asu="1" QoS="0.48999"/>
+    </Applications>
+</Simulate>
