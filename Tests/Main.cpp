@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "TestConfig.h"
-#include "TestFlow.h"
-#include "TestDistribution.h"
+#include "XmlTest/TestConfig.h"
+#include "TestFlows/TestFlow.h"
+#include "TestGenerators/TestDistribution.h"
 using namespace std;
 
 int main (void)
@@ -14,8 +14,8 @@ int main (void)
     TestDistribution distr_tester = TestDistribution();
     TestConfig cnf_tester = TestConfig();
 
-    flow_tester.MainTester();
-//    distr_tester.MainTester();
+    //flow_tester.MainTester();
+    distr_tester.MainTester();
 //    cnf_tester.MainTester();
 
     cin.get();

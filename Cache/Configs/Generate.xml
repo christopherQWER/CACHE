@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Generate>
-    <Flow Type="FGENERATOR" AppCount="1">//home//cat//Documents//CACHE//Tests//Traces//Generated</Flow>
+    <Flow Type="FGENERATOR" AppCount="2">//home//cat//Documents//CACHE//Inputs//Traces//Generated</Flow>
     <Logs Type="LCONSOLE"></Logs>
-    <SystemTime>1800</SystemTime>
-    <InputPdf>//home//cat//Documents//CACHE//Tests//Pdf//pdf.txt</InputPdf>
+    <SystemTime>2000</SystemTime>
+    <InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Chi_Square_PDF.txt</InputPdf>
 </Generate>

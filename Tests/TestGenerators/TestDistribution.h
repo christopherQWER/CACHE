@@ -5,7 +5,7 @@
 #pragma once
 #include <vector>
 #include <algorithm>
-#include "../Cache/Utils/Utils.h"
+#include "Utils/Utils.h"
 
 
 class TestDistribution
@@ -17,6 +17,7 @@ public:
     int MainTester();
 
 private:
+    void GetCDFTest();
     void GetPDFTest();
     void GetRandByPDFTest();
 };

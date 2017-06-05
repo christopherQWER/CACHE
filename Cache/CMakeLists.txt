@@ -27,6 +27,7 @@ set(SOURCE_FILES
                  Requests/RequestParser.cpp
 
                  Generators/Pareto.cpp
+                 Generators/ChiSquare.cpp
                  Generators/TimeGen.cpp
                  Generators/SizeGen.cpp
                  Generators/StackDistanceGen.cpp
@@ -80,6 +81,7 @@ set(HEADER_FILES
                  Requests/RequestParser.h
 
                  Generators/Pareto.h
+                 Generators/ChiSquare.h
                  Generators/TimeGen.h
                  Generators/SizeGen.h
                  Generators/RandomValue.h

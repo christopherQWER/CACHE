@@ -40,7 +40,7 @@ void Client::AddStackDistToMap(StackDist stack_dist)
 
 bool Client::IsInStorage(StackDist value)
 {
-    return !(_stack_dist_map.find(value) == _stack_dist_map.end());
+    return _stack_dist_map.find(value) != _stack_dist_map.end();
 }
 
 void Client::SavePdfPlotDots(const string& file_path)

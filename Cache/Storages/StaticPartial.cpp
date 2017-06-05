@@ -84,7 +84,8 @@ void StaticPartial::Run(ClientsManager& clients_manager,
         _inner_storage[request->_asu]->_request_counter++;
 
         clients_manager.clients_map[request->_asu]->request_counter++;
-        clients_manager.clients_map[request->_asu]->avg_hit_rate = _inner_storage[request->_asu]->CalculateHitRate();
+        clients_manager.clients_map[request->_asu]->avg_hit_rate =
+                _inner_storage[request->_asu]->CalculateHitRate();
         logger->ShowHitRate(INFO, clients_manager.clients_map[request->_asu]->avg_hit_rate);
         clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
 

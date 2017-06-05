@@ -132,9 +132,12 @@ void ClientsManager::DrawCDFPlot(const string &trace_name)
 
 void ClientsManager::DrawHrVSCacheSizePlot(const std::string algorithm_name)
 {
-    string dir_with_files = Utils::PathCombine(Utils::GetDirectoryNameFromPath(pdf_dir), string(_HR_VS_SIZE));
-    string hr_plt = Utils::PathCombine(dir_with_files, string("size_vs_hr.plt"));
-    string hr_png = Utils::PathCombine(dir_with_files, string("size_vs_hr.png"));
+    string dir_with_files = Utils::GetDirectoryNameFromPath(pdf_dir);
+    string algorithm_dir = Utils::PathCombine(Utils::GetDirectoryNameFromPath(dir_with_files),
+            string(_HR_VS_SIZE));
+
+    string hr_plt = Utils::PathCombine(algorithm_dir, string("size_vs_hr.plt"));
+    string hr_png = Utils::PathCombine(algorithm_dir, string("size_vs_hr.png"));
 
     GnuPlot hr_vs_size_plot = GnuPlot("512", "512",
                                 algorithm_name,
@@ -149,7 +152,7 @@ void ClientsManager::DrawHrVSCacheSizePlot(const std::string algorithm_name)
     int client_counter = 0;
     for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
     {
-        string file_txt = Utils::PathCombine(dir_with_files, "App_" + to_string(it->first) + ".txt");
+        string file_txt = Utils::PathCombine(algorithm_dir, "App_" + to_string(it->first) + ".txt");
 
         command += "'" + file_txt + "'" +
                        " using 1:2 with lines title 'Ap_" +

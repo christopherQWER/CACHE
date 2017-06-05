@@ -3,13 +3,13 @@
 //
 
 #pragma once
-#include "../Cache/Caches/Lru.h"
-#include "../Cache/Flows/Flow.h"
+#include "Caches/Lru.h"
+#include "Flows/Flow.h"
 //#include "Generators/StackDistanceGen.h"
-#include "../Cache/Flows/StackDistFlow.h"
-#include "../Cache/Utils/Paths.h"
-#include "../Cache/Loggers/Logger.h"
-#include "../Cache/Utils/Utils.h"
+#include "Flows/StackDistFlow.h"
+#include "Utils/Paths.h"
+#include "Loggers/Logger.h"
+#include "Utils/Utils.h"
 
 class TestFlow
 {

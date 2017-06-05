@@ -1,29 +1,24 @@
 //
-// Created by cat on 5/15/17.
+// Created by cat on 6/2/17.
 //
-#include <map>
-#include "UniformReal.h"
+
+#include "ChiSquare.h"
 #include "../Utils/Utils.h"
 using namespace std;
 
-UniformReal::UniformReal(double min, double max)
+ChiSquare::ChiSquare(double parameter)
 {
-    random_device rd;
-    mt19937 gen(rd());
-    distribution = uniform_real_distribution<double>(min, max);
+//    random_device rd;
+//    mt19937 gen(rd());
+    distribution = chi_squared_distribution<double>(parameter);
 }
 
-double UniformReal::GetRandom()
+double ChiSquare::GetRandom()
 {
-    double uniform_number = 0;
-    while (uniform_number == 0)
-    {
-        uniform_number = distribution(generator);
-    }
-    return uniform_number;
+    return distribution(generator_1);
 }
 
-double UniformReal::GetPDF(int exp_number, const string& output_file)
+double ChiSquare::GetPDF(int exp_number, const string& output_file)
 {
     map<int, int> number_probability;
     map<int, int>::iterator it;
@@ -50,7 +45,7 @@ double UniformReal::GetPDF(int exp_number, const string& output_file)
     }
 }
 
-double UniformReal::GetCDF(int exp_number, const string& output_file)
+double ChiSquare::GetCDF(int exp_number, const string& output_file)
 {
     map<int, int> number_probability;
     map<int, int>::iterator it;

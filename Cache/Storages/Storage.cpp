@@ -55,27 +55,25 @@ void Storage::GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string
 {
     if (flow->current_type == FGENERATOR)
     {
-        string time_string = Utils::GetCurrentStringUnixTime();
         pdf_dir = Utils::PathCombine(_algorithm_dir,
                                     Flow::toString(FGENERATOR),
-                                    time_string,
-                                     to_string(_common_size),
+                                    to_string(_common_size) + string("_Byte"),
                                     string(_PDF_DIR_));
 
         cdf_dir = Utils::PathCombine(_algorithm_dir,
                                     Flow::toString(FGENERATOR),
-                                    time_string,
-                                     to_string(_common_size),
+                                    to_string(_common_size) + string("_Byte"),
                                     string(_CDF_DIR_));
         path_to_hr_vs_size = Utils::PathCombine(_algorithm_dir,
                                                 Flow::toString(FGENERATOR),
-                                                time_string,
                                                 string(_HR_VS_SIZE));
     }
     else
     {
-        pdf_dir = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name, string(_PDF_DIR_));
-        cdf_dir = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name, string(_CDF_DIR_));
+        pdf_dir = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name,
+                to_string(_common_size) + string("_Byte"), string(_PDF_DIR_));
+        cdf_dir = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name,
+                to_string(_common_size) + string("_Byte"), string(_CDF_DIR_));
         path_to_hr_vs_size = Utils::PathCombine(_algorithm_dir, flow->flow_dir_name, string(_HR_VS_SIZE));
     }
 }

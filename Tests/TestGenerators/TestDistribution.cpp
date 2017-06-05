@@ -2,6 +2,7 @@
 // Created by cat on 10/9/16.
 //
 
+#include <Generators/UniformReal.h>
 #include "TestDistribution.h"
 
 using namespace std;
@@ -61,6 +62,17 @@ void TestDistribution::GetRandByPDFTest()
     }
 }
 
+void TestDistribution::GetCDFTest()
+{
+//    ChiSquare gen = ChiSquare(10.0);
+//    gen.GetPDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Chi_Square_PDF.txt");
+//    gen.GetCDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Chi_Square_CDF.txt");
+
+    UniformReal uni_gen = UniformReal(1.0, 1000.0);
+    uni_gen.GetPDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Uniform_PDF.txt");
+    uni_gen.GetCDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Uniform_CDF.txt");
+}
+
 void TestDistribution::GetPDFTest()
 {
 //    int rand_int_value = 0;
@@ -105,7 +117,8 @@ void TestDistribution::GetPDFTest()
 
 int TestDistribution::MainTester()
 {
-    GetPDFTest();
+    //GetPDFTest();
     //GetRandByPDFTest();
+    GetCDFTest();
     return 0;
 }

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 #include "Libs/pugixml.hpp"
-#include "../Cache/Xml/MainConfig.h"
-#include "../Cache/Utils/Paths.h"
+#include "Xml/MainConfig.h"
+#include "Utils/Paths.h"
 
 class TestConfig {
 public:

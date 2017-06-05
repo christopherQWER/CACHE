@@ -5,9 +5,11 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(INCLUDE_DIR ../Cache)
 
 set(SOURCE_FILES Main.cpp
-                 TestFlow.cpp
-                 TestConfig.cpp
-                 TestDistribution.cpp
+
+                 XmlTest/TestConfig.cpp
+
+                 TestFlows/TestFlow.cpp
+                 TestGenerators/TestDistribution.cpp
 
                  ../Cache/Flows/TraceFileFlow.cpp
                  ../Cache/Flows/StackDistFlow.cpp
@@ -20,6 +22,7 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Generators/TimeGen.cpp
                  ../Cache/Generators/SizeGen.cpp
                  ../Cache/Generators/Exponential.cpp
+                 ../Cache/Generators/ChiSquare.cpp
 
                  ../Cache/Requests/Request.cpp
                  ../Cache/Requests/RequestParser.cpp
@@ -42,9 +45,10 @@ set(SOURCE_FILES Main.cpp
 
                  ../Cache/Libs/pugixml.cpp)
 
-set(HEADER_FILES TestFlow.h
-                 TestConfig.h
-                 TestDistribution.h
+set(HEADER_FILES XmlTest/TestConfig.h
+
+                 TestFlows/TestFlow.h
+                 TestGenerators/TestDistribution.h
 
                  ../Cache/Flows/Flow.h
                  ../Cache/Flows/TraceFileFlow.h
@@ -61,6 +65,7 @@ set(HEADER_FILES TestFlow.h
                  ../Cache/Generators/TimeGen.h
                  ../Cache/Generators/SizeGen.h
                  ../Cache/Generators/Exponential.h
+                 ../Cache/Generators/ChiSquare.h
 
                  ../Cache/Requests/Request.h
                  ../Cache/Requests/RequestParser.h

@@ -28,7 +28,7 @@ void RunSimulateMode(Config my_config)
         case SHARED:
         {
             ClientsManager *clientsManager = nullptr;
-            for (double i = 0.1; i < 0.5; i += 0.1)
+            for (double i = 0.1; i < 1.0; i += 0.1)
             {
                 SharedStorage sharedCache = SharedStorage(i, xmlSimulator.plot_dir, 60, 0);
                 Flow *flow = CreateFlowInst(xmlSimulator, "");
@@ -47,7 +47,7 @@ void RunSimulateMode(Config my_config)
         case PARTIAL:
         {
             ClientsManager* clientsManager = nullptr;
-            for (double i = 0.1; i < 0.5; i += 0.1)
+            for (double i = 0.1; i < 1.0; i += 0.1)
             {
                 StaticPartial staticPartial = StaticPartial(i, xmlSimulator.plot_dir, 60, 0);
                 Flow *flow = CreateFlowInst(xmlSimulator, "");

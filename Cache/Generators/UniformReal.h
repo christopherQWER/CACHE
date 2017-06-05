@@ -13,4 +13,6 @@ private:
 public:
     UniformReal(double min, double max);
     double GetRandom();
+    double GetPDF(int exp_number, const std::string& output_file);
+    double GetCDF(int exp_number, const std::string& output_file);
 };
