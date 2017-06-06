@@ -31,6 +31,7 @@ public:
     void DrawHrVSCacheSizePlot(const std::string algorithm_name);
     void CommonPlot(const std::string &flow_file_name);
 
+
 private:
 
     bool IsInMap(Asu asu);

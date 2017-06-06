@@ -24,7 +24,7 @@ void Lru::AddToCache(Request& newRequest)
     unordered_map<Lba, StorType::iterator>::iterator it = _map_store.begin();
     if (IsInCache(newRequest._lba, it))
     {
-        stack_dist = distance(_list_store.begin(), it->second) + 1;
+        stack_dist = distance(_list_store.begin(), it->second);
         ReorganizeCache(newRequest);
         _hit++;
         newRequest._is_Hit = true;
@@ -51,7 +51,7 @@ void Lru::AddToCache(Request& newRequest)
     }
     _request_counter++;
     newRequest._stack_distance = stack_dist;
-    _avg_stack_dist += stack_dist;
+    //_avg_stack_dist += stack_dist;
 }
 
 

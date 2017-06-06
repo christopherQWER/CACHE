@@ -8,8 +8,8 @@ using namespace std;
 
 Client::Client(Asu asu, double qos)
 {
-    experimental_qos = 0;
     avg_hit_rate = 0;
+    avg_stack_dist = 0;
     hits = 0;
 
     request_counter = 0;
@@ -24,6 +24,26 @@ Client::Client(Asu asu, double qos)
 Client::~Client()
 {
     _stack_dist_map.clear();
+}
+
+HitRate Client::CalculateHitRate()
+{
+    if (request_counter == 0)
+    {
+        return -1;
+    }
+    avg_hit_rate = hits / request_counter;
+    return avg_hit_rate;
+}
+
+StackDist Client::CalculateAvgStackDistance()
+{
+    if (request_counter == 0)
+    {
+        return -1;
+    }
+    avg_stack_dist = avg_stack_dist / request_counter;
+    return avg_stack_dist;
 }
 
 void Client::AddStackDistToMap(StackDist stack_dist)

@@ -15,11 +15,13 @@ class Client {
 public:
 
     double required_qos;
-    double experimental_qos;
 
     Asu application_id;
     int request_counter;
+
     double avg_hit_rate;
+    StackDist avg_stack_dist;
+
     double hits;
 
     /// Counter of preparing histograms
@@ -30,6 +32,9 @@ public:
 
     Client(Asu asu, double qos);
     ~Client();
+
+    HitRate CalculateHitRate();
+    StackDist CalculateAvgStackDistance();
 
     void AddStackDistToMap(StackDist stack_dist);
 

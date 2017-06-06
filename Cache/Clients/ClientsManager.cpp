@@ -41,7 +41,7 @@ void ClientsManager::QosComparator(Logger*& logger)
     {
         string text = string("Asu " + to_string(it->first) + ": ") +
                         "required qos: " + to_string(it->second->required_qos) + ", " +
-                        "experimental qos: " + to_string(it->second->experimental_qos);
+                        "experimental qos: " + to_string(it->second->avg_hit_rate);
         logger->ShowLogText(LEVEL, text);
     }
 }
