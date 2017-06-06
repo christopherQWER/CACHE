@@ -5,25 +5,29 @@
 #include "StackDistFlow.h"
 using namespace std;
 UniformInt *uni_int_asu;
-StackDistanceGen *stack_dist_gen;
-
+deque<StackDistanceGen*> stack_dist_gen_queue;
 
 
 StackDistFlow::StackDistFlow(int client_count,
-                            const string& input_pdf_path,
+                            const list<std::string>& input_pdf_paths,
+                            double switcher,
                             Timestamp time)
 {
     if (client_count > 0)
     {
         _app_count = client_count;
-        _input_pdf = input_pdf_path;
         _common_time = time;
+        _switcher = switcher;
         _curr_request_time = 0;
         _common_request_num = 0;
         _curr_request_num = 0;
         uni_int_asu = new UniformInt(1, client_count);
     }
-    stack_dist_gen = new StackDistanceGen(input_pdf_path);
+
+    for (auto pdf_source : input_pdf_paths)
+    {
+        stack_dist_gen_queue.push_back(new StackDistanceGen(pdf_source));
+    }
 }
 
 StackDistFlow::~StackDistFlow()
@@ -32,9 +36,14 @@ StackDistFlow::~StackDistFlow()
     {
         delete uni_int_asu;
     }
-    if (stack_dist_gen != nullptr)
+    for (std::deque<StackDistanceGen*>::iterator it = stack_dist_gen_queue.begin();
+         it != stack_dist_gen_queue.end(); ++it)
     {
-        delete stack_dist_gen;
+        delete *it;
+    }
+    if (!stack_dist_gen_queue.empty())
+    {
+        stack_dist_gen_queue.clear();
     }
 }
 
@@ -48,7 +57,8 @@ Request* StackDistFlow::GetRequest()
             list<Request> tmp;
             for (int i = 0; i < _app_count; i++)
             {
-                Request request = RequestGenerator::GenerateRequest(GenerateAsu(), GenerateStackDistance());
+                Request request = RequestGenerator::GenerateRequest(GenerateAsu(),
+                        GenerateStackDistance());
                 tmp.push_back(request);
             }
             tmp.sort();
@@ -105,7 +115,16 @@ Asu StackDistFlow::GenerateAsu()
 
 StackDist StackDistFlow::GenerateStackDistance()
 {
-    return static_cast<StackDist>(stack_dist_gen->GetRandomValue());
+    if (_switcher != 0)
+    {
+        if (_curr_request_time >= _switcher)
+        {
+            StackDistanceGen* st_dst_gen = stack_dist_gen_queue.front();
+            stack_dist_gen_queue.pop_front();
+            stack_dist_gen_queue.push_back(st_dst_gen);
+        }
+    }
+    return static_cast<StackDist>(stack_dist_gen_queue.front()->GetRandomValue());
 }
 
 bool StackDistFlow::IsEndOfFlow()

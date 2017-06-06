@@ -1,7 +1,13 @@
 <?xml version="1.0"?>
 <Generate>
-    <Flow Type="FGENERATOR" AppCount="1">//home//cat//Documents//CACHE//Inputs//Traces//Generated</Flow>
+    <Flow Type="FGENERATOR" AppCount="2">//home//cat//Documents//CACHE//Inputs//Traces//Generated</Flow>
     <Logs Type="LCONSOLE"></Logs>
     <SystemTime>20</SystemTime>
-    <InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Half_Part_Requests.txt</InputPdf>
+    <InputPdfs Switch="10" Asu="1">
+    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Chi_Square_CDF.txt</InputPdf>
+    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Uniform_CDF.txt</InputPdf>
+    </InputPdfs>
+    <InputPdfs Switch="0" Asu="2">
+    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Chi_Square_CDF.txt</InputPdf>
+    </InputPdfs>
 </Generate>
