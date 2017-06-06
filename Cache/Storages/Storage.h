@@ -20,6 +20,10 @@ public:
             ByteSize experiments_number);
     virtual ~Storage();
 
+    virtual void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots) = 0;
+
+    void CreateStorage();
+    void CreateStorage(DivisionType type, ClientMap client_map);
     void PreparePDF(ClientMap& clients_map, const std::string& pdf_dir_path);
     void PrepareCDF(ClientMap& clients_map, const std::string& cdf_dir_path);
     void GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string& cdf_dir);

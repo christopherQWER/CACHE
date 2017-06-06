@@ -82,3 +82,13 @@ double Storage::BytesToGb(ByteSize byteSize)
 {
     return byteSize / static_cast<double>(_1_GB_IN_BYTES_);
 }
+
+void Storage::CreateStorage()
+{
+
+}
+
+void Storage::CreateStorage(DivisionType type, ClientMap client_map)
+{
+
+}

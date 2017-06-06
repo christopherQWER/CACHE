@@ -11,8 +11,9 @@ UniformReal uni_real_generator = UniformReal(0.1, 0.5);
 
 // Prototypes
 void GetModeConfig(const string& mode_config_path, XmlSimulate& xmlSimulator);
-Flow* CreateFlowInst(const XmlSimulate& xmlSimulator, const string& input_pdf);
+Flow* CreateFlowInst(const XmlSimulate& xmlSimulator, const list<string>& input_pdf);
 void CreateXmlAppList(XmlSimulate& xmlSimulator, const string& analyze_conf_path);
+void MemoryCleaner(Flow* flow, ClientsManager *clientsManager);
 double SetQoS();
 
 
@@ -22,96 +23,85 @@ void RunSimulateMode(Config my_config)
     XmlSimulate xmlSimulator;
     GetModeConfig(my_config.simulate_path, xmlSimulator);
     CreateXmlAppList(xmlSimulator, my_config.analyze_path);
-
     Logger *logger = Logger::CreateLogger(xmlSimulator.logger.logger_type,
-                                          xmlSimulator.logger.path_to_log);
+                    xmlSimulator.logger.path_to_log);
     logger->StartLog();
+    ClientsManager *clientsManager = new ClientsManager(xmlSimulator.app_list);
+    Storage *storage;
 
-
-    switch (xmlSimulator.stor_type)
+    for (double i = 0.1; i < 1.0; i += 0.1)
     {
-        case SHARED:
+        logger->ShowLogText(LEVEL, string("Storage type: ") + Storage::toString(xmlSimulator.stor_type));
+        logger->ShowLogText(LEVEL, "===============================================================");
+        switch (xmlSimulator.stor_type)
         {
-            logger->ShowLogText(LEVEL, "Storage type: SHARED");
-            logger->ShowLogText(LEVEL, "===============================================================");
-            ClientsManager *clientsManager = nullptr;
-            for (double i = 0.1; i < 1.0; i += 0.1)
+            case SHARED:
             {
-                SharedStorage sharedCache = SharedStorage(i,
-                                                          xmlSimulator.plot_dir,
-                                                          time_step,
-                                                          xmlSimulator.request_num);
+                storage = new SharedStorage(i, xmlSimulator.plot_dir,
+                                            time_step,
+                                            xmlSimulator.request_num);
 
                 logger->ShowLogText(LEVEL, "Comon cache size: " + to_string(i) + " Gb");
                 logger->ShowLogText(LEVEL, "Time step for histograms: " + to_string(time_step) + " sec");
-
-                Flow *flow = CreateFlowInst(xmlSimulator, "");
-                logger->ShowLogText(LEVEL, "Flow type: " + Flow::toString(xmlSimulator.flow.flow_type));
-
-                clientsManager = new ClientsManager(xmlSimulator.app_list);
-                sharedCache.CreateStorage();
-
-                sharedCache.Run(*clientsManager, logger, flow, xmlSimulator.with_plots);
-
-                clientsManager->QosComparator(logger);
-                if (xmlSimulator.with_plots)
-                {
-                    clientsManager->DrawPDFPlot(flow->flow_dir_name);
-                    clientsManager->DrawCDFPlot(flow->flow_dir_name);
-                }
-                logger->ShowLogText(LEVEL, "===============================================================");
+                storage->CreateStorage();
+                break;
             }
-            clientsManager->DrawHrVSCacheSizePlot("Shared");
-            break;
-        }
-        case PARTIAL:
-        {
-            logger->ShowLogText(LEVEL, "Storage type: PARTIAL");
-            logger->ShowLogText(LEVEL, "===============================================================");
-            ClientsManager* clientsManager = nullptr;
-            for (double i = 0.1; i < 1.0; i += 0.1)
+            case PARTIAL:
             {
-                StaticPartial staticPartial = StaticPartial(i,
-                                                            xmlSimulator.plot_dir,
-                                                            time_step,
-                                                            xmlSimulator.request_num);
+                storage = new StaticPartial(i, xmlSimulator.plot_dir,
+                                            time_step,
+                                            xmlSimulator.request_num);
 
                 logger->ShowLogText(LEVEL, "Comon cache size: " + to_string(i) + " Gb");
                 logger->ShowLogText(LEVEL, "Time step for histograms: " + to_string(time_step) + " sec");
                 logger->ShowLogText(LEVEL, string("First partitioning way: ") +
-                                           StaticPartial::toString(xmlSimulator.div_type));
-
-                Flow *flow = CreateFlowInst(xmlSimulator, "");
-                logger->ShowLogText(LEVEL, "Flow type: " + Flow::toString(xmlSimulator.flow.flow_type));
-
-                clientsManager = new ClientsManager(xmlSimulator.app_list);
-                staticPartial.CreateStorage(xmlSimulator.div_type, clientsManager->clients_map);
-
-                staticPartial.Run(*clientsManager, logger, flow, false);
-
-                clientsManager->QosComparator(logger);
-                if (xmlSimulator.with_plots)
-                {
-                    clientsManager->DrawPDFPlot(flow->flow_dir_name);
-                    clientsManager->DrawCDFPlot(flow->flow_dir_name);
-                }
-                logger->ShowLogText(LEVEL, "===============================================================");
+                        StaticPartial::toString(xmlSimulator.div_type));
+                storage->CreateStorage(xmlSimulator.div_type, clientsManager->clients_map);
+                break;
             }
-            clientsManager->DrawHrVSCacheSizePlot("Static Partial");
-            break;
+            case DYNAMIC:
+            {
+            }
+            default:
+            {
+                logger->ShowLogText(LEVEL, "Unknown storage type.");
+                return;
+            }
         }
-        case DYNAMIC:
-        {
 
-        }
-        default:
+        Flow *flow = CreateFlowInst(xmlSimulator, list<string>());
+        logger->ShowLogText(LEVEL, "Flow type: " + Flow::toString(xmlSimulator.flow.flow_type));
+
+        storage->Run(*clientsManager, logger, flow, xmlSimulator.with_plots);
+
+        clientsManager->QosComparator(logger);
+        if (xmlSimulator.with_plots)
         {
-            break;
+            clientsManager->DrawPDFPlot(flow->flow_dir_name);
+            clientsManager->DrawCDFPlot(flow->flow_dir_name);
         }
+        logger->ShowLogText(LEVEL, "===============================================================");
+
+        if (storage != nullptr)
+            delete storage;
+
+        if (flow != nullptr)
+            delete flow;
     }
+    clientsManager->DrawHrVSCacheSizePlot("Shared");
     logger->EndLog();
+
+    if (clientsManager != nullptr)
+        delete clientsManager;
+
+    if (logger != nullptr)
+        delete logger;
 }
 
+void MemoryCleaner(Flow* flow, ClientsManager *clientsManager)
+{
+
+}
 
 void GetModeConfig(const string& mode_config_path, XmlSimulate& xmlSimulator)
 {
@@ -120,7 +110,7 @@ void GetModeConfig(const string& mode_config_path, XmlSimulate& xmlSimulator)
     XmlSimulateMode::Deserialize(local_config, xmlSimulator);
 }
 
-Flow* CreateFlowInst(const XmlSimulate& xmlSimulator, const string& input_pdf)
+Flow* CreateFlowInst(const XmlSimulate& xmlSimulator, const list<string>& input_pdf)
 {
     Flow* flow;
     switch (xmlSimulator.flow.flow_type)

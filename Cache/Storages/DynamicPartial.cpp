@@ -4,6 +4,7 @@
 
 #include "../Utils/Types.h"
 #include "DynamicPartial.h"
+#define LEVEL DEBUG
 using namespace std;
 
 DynamicPartialCache::DynamicPartialCache(double commonSize,
@@ -44,8 +45,8 @@ void DynamicPartialCache::Run(ClientsManager& clients_manager,
         _inner_storage[request->_asu]->_request_counter++;
 
         clients_manager.clients_map[request->_asu]->request_counter++;
-        clients_manager.clients_map[request->_asu]->avg_hit_rate = _inner_storage[request->_asu]->CalculateHitRate();
-        logger->ShowHitRate(INFO, clients_manager.clients_map[request->_asu]->avg_hit_rate);
+        clients_manager.clients_map[request->_asu]->CalculateHitRate();
+        logger->ShowHitRate(LEVEL, clients_manager.clients_map[request->_asu]->avg_hit_rate);
         clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
 
         // It's time for histogram
@@ -68,9 +69,9 @@ void DynamicPartialCache::Run(ClientsManager& clients_manager,
     for (ClientMap::iterator it = clients_manager.clients_map.begin();
          it != clients_manager.clients_map.end(); ++it)
     {
-        it->second->experimental_qos = _inner_storage[it->first]->CalculateHitRate();
+        it->second->avg_hit_rate = it->second->CalculateHitRate();
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
                 to_string(it->first) + string(".txt"));
-        Utils::AppendToFile(path_for_file, _common_size, it->second->experimental_qos);
+        Utils::AppendToFile(path_for_file, _common_size, it->second->avg_hit_rate);
     }
 }

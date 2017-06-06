@@ -51,9 +51,8 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
         {
             clients_manager.clients_map[request->_asu]->hits++;
         }
-        clients_manager.clients_map[request->_asu]->avg_hit_rate =
-                clients_manager.clients_map[request->_asu]->hits /
-                        clients_manager.clients_map[request->_asu]->request_counter;
+        clients_manager.clients_map[request->_asu]->avg_stack_dist += request->_stack_distance;
+        clients_manager.clients_map[request->_asu]->CalculateHitRate();
 
         // It's time for histogram
         if (with_plots)
@@ -80,14 +79,14 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
     for (ClientMap::iterator it = clients_manager.clients_map.begin();
          it != clients_manager.clients_map.end(); ++it)
     {
-        it->second->experimental_qos = clients_manager.clients_map[it->first]->avg_hit_rate;
-        StackDist avg_stack_dist = _cache->CalculateAvgStackDistance();
+        it->second->avg_hit_rate = clients_manager.clients_map[it->first]->CalculateHitRate();
+        it->second->avg_stack_dist = clients_manager.clients_map[it->first]->CalculateAvgStackDistance();
 
-        logger->ShowHitRate(LEVEL, it->second->experimental_qos);
-        logger->ShowStackDistance(LEVEL, avg_stack_dist);
+        logger->ShowHitRate(LEVEL, it->second->avg_hit_rate);
+        logger->ShowStackDistance(LEVEL, it->second->avg_stack_dist);
 
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
                 to_string(it->first) + string(".txt"));
-        Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->experimental_qos);
+        Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->avg_hit_rate);
     }
 }
