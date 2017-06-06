@@ -1,0 +1,5 @@
+//home//cat//Documents//CACHE//Tests//TraceLogs//WebSearch//WebSearch3.txt
+Reads: 4260449
+Writes: 1260
+All: 4261709
+Average bytes IO: 15777
