@@ -13,7 +13,7 @@ public:
     /// \brief
     /// \param traceLog
     /// \param reqList
-    static void ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
+    static bool ParseRequest(const std::string &traceLog, std::deque<Request>& reqList);
 
     static std::string GetStringFromRequest(const Request& request);
 

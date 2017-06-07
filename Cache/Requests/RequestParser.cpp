@@ -6,12 +6,12 @@
 #include "../Generators/SizeGen.h"
 using namespace std;
 
-void RequestParser::ParseRequest(const string &request_string, deque<Request>& req_list)
+bool RequestParser::ParseRequest(const string &request_string, deque<Request>& req_list)
 {
     Request req = Request();
     if (!GetRequestFromString(request_string, req))
     {
-        return;
+        return false;
     }
 
     unsigned int numberOfRequests = (unsigned int) (req._size / _CELL_SIZE_);
@@ -19,7 +19,7 @@ void RequestParser::ParseRequest(const string &request_string, deque<Request>& r
     {
         if (tolower(req._opcode) != 'r')
         {
-            return;
+            return false;
         }
         Request rq = Request(req._asu,
                             req._lba,

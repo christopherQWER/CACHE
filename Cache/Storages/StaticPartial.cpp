@@ -12,7 +12,7 @@ StaticPartial::StaticPartial(double commonSize,
                                 ByteSize experiments_number) :
         Storage(commonSize, algorithm_dir, time_step, experiments_number)
 {
-    _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Static partial"));
+    _algorithm_dir = Utils::PathCombine(algorithm_dir, string("Static_Partial"));
     Utils::CreateDirectory(_algorithm_dir);
 }
 
@@ -83,35 +83,39 @@ void StaticPartial::Run(ClientsManager& clients_manager,
     while ( (!flow->IsEndOfFlow()) || (request != nullptr ))
     {
         // Add request to AddToCache cache
-        _inner_storage[request->_asu]->AddToCache(*request);
-
-        // All that need to client's map
-        clients_manager.clients_map[request->_asu]->request_counter++;
-        clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
-        if (request->_is_Hit)
+        if (! (_inner_storage.find(request->_asu) == _inner_storage.end()) )
         {
-            clients_manager.clients_map[request->_asu]->hits++;
-        }
-        clients_manager.clients_map[request->_asu]->avg_stack_dist += request->_stack_distance;
-        clients_manager.clients_map[request->_asu]->CalculateHitRate();
+            _inner_storage[request->_asu]->AddToCache(*request);
 
-        // It's time for histogram
-        if (with_plots)
-        {
-            if ( request->_timestamp - prev_time >= _time_step )
+            // All that need to client's map
+            clients_manager.clients_map[request->_asu]->request_counter++;
+            clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
+            if (request->_is_Hit)
             {
-                PreparePDF(clients_manager.clients_map, clients_manager.pdf_dir);
-                PrepareCDF(clients_manager.clients_map, clients_manager.cdf_dir);
-                logger->ShowLogText(LEVEL, "Saving histograms...");
-
-                _hist_counter++;
-                logger->ShowLogText(LEVEL, "Histograms: " + to_string(_hist_counter));
-
-                clients_manager.common_hist_counter++;
-                prev_time = request->_timestamp;
-                logger->ShowLogText(LEVEL, "Current time pasted: " + to_string(prev_time));
+                clients_manager.clients_map[request->_asu]->hits++;
             }
-            clients_manager.clients_map[request->_asu]->result_hist_counter++;
+            clients_manager.clients_map[request->_asu]->avg_stack_dist += request->_stack_distance;
+            clients_manager.clients_map[request->_asu]->CalculateHitRate();
+
+            // It's time for histogram
+            if (with_plots)
+            {
+                if ( request->_timestamp - prev_time >= _time_step )
+                {
+                    PreparePDF(clients_manager.clients_map, clients_manager.pdf_dir);
+                    PrepareCDF(clients_manager.clients_map, clients_manager.cdf_dir);
+                    //PrepareQoS(clients_manager.clients_map, clients_manager.pdf_dir);
+                    logger->ShowLogText(LEVEL, "Saving histograms...");
+
+                    _hist_counter++;
+                    logger->ShowLogText(LEVEL, "Histograms: " + to_string(_hist_counter));
+
+                    clients_manager.common_hist_counter++;
+                    prev_time = request->_timestamp;
+                    logger->ShowLogText(LEVEL, "Current time pasted: " + to_string(prev_time));
+                }
+                clients_manager.clients_map[request->_asu]->result_hist_counter++;
+            }
         }
         request = flow->GetRequest();
     }
@@ -128,6 +132,10 @@ void StaticPartial::Run(ClientsManager& clients_manager,
 
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
                 to_string(it->first) + string(".txt"));
+        string path_for_qos = Utils::PathCombine(path_to_hr_vs_size, string("QoS_") +
+                to_string(it->first) + string(".txt"));
+
         Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->avg_hit_rate);
+        Utils::AppendToFile(path_for_qos, BytesToGb(_common_size), it->second->required_qos);
     }
 }

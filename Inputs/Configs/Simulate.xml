@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
-<Simulate Type="PARTIAL" Division="BY_QOS" AppCount="2" CommonSize="0" RequestNum="0" WithPlots="false">
-    <Logs Type="LFILE">mix_chi_sqiared+uniform.txt</Logs>
-    <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//Generated//mix_chi_sqiared+uniform.spc</Flow>
+<Simulate Type="PARTIAL" Division="BY_QOS" AppCount="2" CommonSize="0" RequestNum="0" WithPlots="true">
+    <Logs Type="LFILE">WebSearch1.txt</Logs>
+    <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//WebSearch//WebSearch1.spc</Flow>
+    <Limit Type="REQUEST_NUMBER">1200</Limit>
     <PlotDir>//home//cat//Documents//CACHE//Results//PlotData</PlotDir>
     <Applications>
-        <App Asu="1" QoS="0.1"/>
-        <App Asu="2" QoS="0.2"/>
+        <App Asu="0" QoS="0.8"/>
+        <App Asu="1" QoS="0.5"/>
+        <App Asu="2" QoS="0.4"/>
     </Applications>
 </Simulate>

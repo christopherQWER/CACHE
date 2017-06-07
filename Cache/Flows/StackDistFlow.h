@@ -17,16 +17,18 @@ public:
     StackDistFlow();
     StackDistFlow(int clients_count,
                   const std::list<std::string>& input_pdf_paths,
-                  double switcher = 0,
-                  Timestamp time = 0);
+                  Limit type,
+                  ByteSize limit_value,
+                  double switcher = 0);
 
     ~StackDistFlow();
     Request* GetRequest();
-    Request* GetArtificialRequest(Asu asu, StackDist stack_dist);
 
 private:
-    int _common_request_num;
-    int _curr_request_num;
+    ByteSize _common_request_num;
+    ByteSize _curr_request_num;
+
+    Limit _specified_limit;
 
     Timestamp _common_time;
     Timestamp _curr_request_time;
@@ -41,5 +43,9 @@ private:
 
     Asu GenerateAsu();
     StackDist GenerateStackDistance();
+
+    Request* TimeBasedGeneration();
+    Request* ReqNumberBasedGeneration();
+
     bool IsEndOfFlow();
 };

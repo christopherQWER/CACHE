@@ -24,7 +24,6 @@ FileLogger::FileLogger(string log_file_path)
 FileLogger::~FileLogger()
 {
     log_file.close();
-    delete this;
 }
 
 void FileLogger::StartLog()

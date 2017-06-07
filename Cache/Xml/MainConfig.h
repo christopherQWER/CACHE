@@ -9,6 +9,15 @@
 #include "../Loggers/Logger.h"
 #include "../Flows/Flow.h"
 #include "../Utils/Types.h"
+#include "../Utils/Enums.h"
+
+struct XmlLimit{
+    Limit limit_type;
+    ByteSize limit_value;
+    XmlLimit() : limit_type(),
+                 limit_value()
+    {}
+};
 
 struct XmlLog {
     LoggerType logger_type;
@@ -40,6 +49,7 @@ static const std::string sApplication = "App";
 static const std::string sAppCount = "AppCount";
 static const std::string sLogs = "Logs";
 static const std::string sFlow = "Flow";
+static const std::string sLimit = "Limit";
 
 static const std::string sName = "Name";
 static const std::string sType = "Type";
@@ -66,4 +76,21 @@ public:
 
     static void LoadFromFile(const std::string &file_name, pugi::xml_document &doc);
     static void SaveToFile(const pugi::xml_document &doc, const std::string &file_name);
+
+    static inline std::string toString(Limit type)
+    {
+        switch (type)
+        {
+        case TIME:                  return std::string("TIME");
+        case REQUEST_NUMBER:        return std::string("REQUEST_NUMBER");
+        default:                    return std::string("Unknown limit");
+        }
+    }
+    static inline Limit toType(const char* str_repr)
+    {
+        if (strcmp(str_repr, "TIME") == 0)
+            return TIME;
+        else if (strcmp(str_repr, "REQUEST_NUMBER") == 0)
+            return REQUEST_NUMBER;
+    }
 };

@@ -19,3 +19,8 @@ enum FlowType {
     FFILE = 0,
     FGENERATOR
 };
+
+enum Limit{
+    TIME = 0,
+    REQUEST_NUMBER
+};

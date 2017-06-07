@@ -5,11 +5,11 @@
 #pragma once
 #include "../MainConfig.h"
 
-struct XmlInputPdfs{
+struct Sources{
     Asu asu;
     double switcher;
     std::list<std::string> input_pdf_dirs;
-    XmlInputPdfs() : asu(0),
+    Sources() : asu(0),
                   switcher(0),
                   input_pdf_dirs()
                   {}
@@ -18,17 +18,16 @@ struct XmlInputPdfs{
 struct XmlGenerate{
     XmlLog logger;
     XmlFlow flow;
-    double system_time;
-    std::list<XmlInputPdfs> source_for_apps;
+    XmlLimit limit;
+    std::list<Sources> source_for_apps;
     XmlGenerate() : logger(XmlLog()),
                     flow(XmlFlow()),
-                    system_time(0),
+                    limit(XmlLimit()),
                     source_for_apps()
                     {}
 };
 
-const std::string sSystemTime = "SystemTime";
-const std::string sInputPdfs = "InputPdfs";
+const std::string sSources = "Sources";
 const std::string sInputPdf = "InputPdf";
 const std::string sSwitch = "Switch";
 

@@ -3,7 +3,6 @@
 //
 
 #include "XmlSimulateMode.h"
-//#include "../../Storages/Storage.h"
 #include "../../Storages/StaticPartial.h"
 
 void XmlSimulateMode::Serialize(const XmlSimulate& sim_cnf, pugi::xml_document& doc)
@@ -18,6 +17,11 @@ void XmlSimulateMode::Serialize(const XmlSimulate& sim_cnf, pugi::xml_document& 
 
     SerializeLogger(sim_cnf.logger, simulation_node);
     SerializeFlow(sim_cnf.flow, simulation_node);
+
+    pugi::xml_node limit_node = doc.append_child(sLimit.c_str());
+    limit_node.append_attribute(sType.c_str()).set_value(toString(sim_cnf.limit.limit_type).c_str());
+    limit_node.set_value(Utils::convert(sim_cnf.limit.limit_value).c_str());
+
     pugi::xml_node plot_dir_node = simulation_node.append_child(sPlotDir.c_str());
     plot_dir_node.set_value(sim_cnf.plot_dir.c_str());
 
@@ -43,6 +47,11 @@ void XmlSimulateMode::Deserialize(const pugi::xml_document& doc, XmlSimulate& si
 
     DeserializeLogger(simulation_node, sim_cnf.logger);
     DeserializeFlow(simulation_node, sim_cnf.flow);
+
+    pugi::xml_node limit_node = simulation_node.child(sLimit.c_str());
+    sim_cnf.limit.limit_type = toType(limit_node.attribute(sType.c_str()).as_string(""));
+    sim_cnf.limit.limit_value = limit_node.text().as_uint(0);
+
     sim_cnf.plot_dir = simulation_node.child(sPlotDir.c_str()).text().as_string("");
 
     pugi::xml_node caches_node = simulation_node.child(sApps.c_str());

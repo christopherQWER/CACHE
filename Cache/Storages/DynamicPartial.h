@@ -6,14 +6,18 @@
 #include "StaticPartial.h"
 
 
-class DynamicPartialCache : public StaticPartial
+class DynamicPartial : public StaticPartial
 {
 public:
 
-    DynamicPartialCache(double commonSize,
+    DynamicPartial(double commonSize,
                         const std::string &algorithm_dir,
                         double time_step,
                         ByteSize experiments_number);
-    ~DynamicPartialCache();
+    ~DynamicPartial();
     void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots);
+
+private:
+    bool IsAllSatisfied(ClientsManager& clients_manager, ClientMap::iterator &itr);
+    bool IsSitisfied(const Client& client);
 };

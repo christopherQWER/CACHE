@@ -45,15 +45,15 @@ StackDist StackDistanceGen::GetRandomValue()
     map<double, StackDist>::iterator it = _cdf_storage.lower_bound(uniform_number);
     if (it != _cdf_storage.end())
     {
-        if (_experimental_pdf.find(it->second) != _experimental_pdf.end())
-        {
-            _experimental_pdf[it->second]++;
-        }
-        else
-        {
-            _experimental_pdf.insert(pair<StackDist, double>(it->second, 1));
-        }
-        _exp_counter++;
+//        if (_cdf_storage.find(it->second) != _cdf_storage.end())
+//        {
+//            _cdf_storage[it->second]++;
+//        }
+//        else
+//        {
+//            _experimental_pdf.insert(pair<StackDist, double>(it->second, 1));
+//        }
+//        _exp_counter++;
         return it->second;
     }
     return 0;

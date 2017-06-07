@@ -72,15 +72,32 @@ void ClientsManager::DrawPDFPlot(const string &trace_name)
         for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
         {
             string pdf_txt = Utils::PathCombine(working_dir, "App_" + to_string(it->first) + ".txt");
+            //string qos_txt = Utils::PathCombine(working_dir, "QoS_" + to_string(it->first) + ".txt");
+
+            // Add line for pdf =====================================================================
             pdf_command += "'" + pdf_txt + "'" +
                            " using 1:2 with lines title 'Ap_" +
                            to_string(it->first) + "'";
+
             if (client_counter < map_size - 1)
             {
                 pdf_command += ",\\";
             }
             pdf_plot.m_command_lines.push_back(pdf_command);
             pdf_command.clear();
+            //=======================================================================================
+
+            // Add line for qos =====================================================================
+//            pdf_command += "'" + qos_txt + "'" +
+//                    " using 1:2 with lines title 'QoS_" +
+//                    to_string(it->first) + "'";
+
+
+
+//            pdf_plot.m_command_lines.push_back(pdf_command);
+//            pdf_command.clear();
+            //======================================================================================
+
             client_counter++;
         }
         pdf_plot.m_xRange = pair<string, string>(to_string(min), to_string(max));
@@ -153,16 +170,26 @@ void ClientsManager::DrawHrVSCacheSizePlot(const std::string algorithm_name)
     for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
     {
         string file_txt = Utils::PathCombine(algorithm_dir, "App_" + to_string(it->first) + ".txt");
+        string qos_file = Utils::PathCombine(algorithm_dir, "QoS_" + to_string(it->first) + ".txt");
 
         command += "'" + file_txt + "'" +
                        " using 1:2 with lines title 'Ap_" +
                        to_string(it->first) + "'";
+
+        command += ",\\";
+        hr_vs_size_plot.m_command_lines.push_back(command);
+        command.clear();
+
+        command += "'" + qos_file + "'" +
+                " using 1:2 with lines title 'QoS_" +
+                to_string(it->first) + "'";
         if (client_counter < map_size - 1)
         {
             command += ",\\";
         }
         hr_vs_size_plot.m_command_lines.push_back(command);
         command.clear();
+
         client_counter++;
     }
     //hr_vs_size_plot.m_xRange = pair<string, string>(to_string(0.2), to_string(1));

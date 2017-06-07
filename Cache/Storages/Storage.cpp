@@ -37,6 +37,20 @@ void Storage::PreparePDF(ClientMap& clients_map, const string& pdf_dir_path)
     }
 }
 
+void Storage::PrepareQoS(ClientMap& clients_map, const string& pdf_dir_path)
+{
+    for (ClientMap::iterator it = clients_map.begin(); it != clients_map.end(); ++it)
+    {
+        // Create output directory
+        string current_dir = Utils::PathCombine(pdf_dir_path, to_string(_hist_counter));
+        Utils::CreateDirectory(current_dir);
+
+        it->second->qos_file_name = string ("QoS_") + to_string(it->first) + string(".txt");
+        string qos_txt = Utils::PathCombine(current_dir, it->second->qos_file_name);
+        it->second->SaveQoSPlotDots(qos_txt);
+    }
+}
+
 void Storage::PrepareCDF(ClientMap& clients_map, const string& cdf_dir_path)
 {
     // Write "stack_dist/hit_rate" files for every application unit

@@ -61,6 +61,7 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
             {
                 PreparePDF(clients_manager.clients_map, pdf_dir);
                 PrepareCDF(clients_manager.clients_map, cdf_dir);
+                //PrepareQoS(clients_manager.clients_map, pdf_dir);
                 logger->ShowLogText(LEVEL, "Saving histograms...");
 
                 _hist_counter++;
@@ -87,6 +88,10 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
 
         string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
                 to_string(it->first) + string(".txt"));
+        string path_for_qos = Utils::PathCombine(path_to_hr_vs_size, string("QoS_") +
+                to_string(it->first) + string(".txt"));
+
         Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->avg_hit_rate);
+        Utils::AppendToFile(path_for_qos, BytesToGb(_common_size), it->second->required_qos);
     }
 }

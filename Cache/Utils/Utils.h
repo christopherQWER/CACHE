@@ -47,7 +47,8 @@ public:
     {
         return first + "//" + PathCombine(args...);
     }
-    template<class T> std::string convert(T _input)
+    template<typename T>
+    static std::string convert(T _input)
     {
         std::stringstream blah;
         blah << _input;

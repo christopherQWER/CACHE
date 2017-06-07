@@ -38,8 +38,8 @@ void RunSimulateMode(Config my_config)
             case SHARED:
             {
                 storage = new SharedStorage(i, xmlSimulator.plot_dir,
-                                            time_step,
-                                            xmlSimulator.request_num);
+                                                                time_step,
+                                                                xmlSimulator.request_num);
 
                 logger->ShowLogText(LEVEL, "Comon cache size: " + to_string(i) + " Gb");
                 logger->ShowLogText(LEVEL, "Time step for histograms: " + to_string(time_step) + " sec");
@@ -49,8 +49,8 @@ void RunSimulateMode(Config my_config)
             case PARTIAL:
             {
                 storage = new StaticPartial(i, xmlSimulator.plot_dir,
-                                            time_step,
-                                            xmlSimulator.request_num);
+                                                            time_step,
+                                                            xmlSimulator.request_num);
 
                 logger->ShowLogText(LEVEL, "Comon cache size: " + to_string(i) + " Gb");
                 logger->ShowLogText(LEVEL, "Time step for histograms: " + to_string(time_step) + " sec");
@@ -82,13 +82,14 @@ void RunSimulateMode(Config my_config)
         }
         logger->ShowLogText(LEVEL, "===============================================================");
 
+        clientsManager->common_hist_counter = 0;
         if (storage != nullptr)
             delete storage;
 
         if (flow != nullptr)
             delete flow;
     }
-    clientsManager->DrawHrVSCacheSizePlot("Shared");
+    clientsManager->DrawHrVSCacheSizePlot(Storage::toString(xmlSimulator.stor_type));
     logger->EndLog();
 
     if (clientsManager != nullptr)
@@ -117,12 +118,14 @@ Flow* CreateFlowInst(const XmlSimulate& xmlSimulator, const list<string>& input_
     {
         case FFILE:
         {
-            flow = new TraceFileFlow(xmlSimulator.flow.path_to_flow);
+            flow = new TraceFileFlow(xmlSimulator.flow.path_to_flow,
+                    xmlSimulator.limit.limit_type, xmlSimulator.limit.limit_value);
             break;
         }
         case FGENERATOR:
         {
-            flow = new StackDistFlow(xmlSimulator.flow.app_count, input_pdf);
+            flow = new StackDistFlow(xmlSimulator.flow.app_count, input_pdf,
+                    xmlSimulator.limit.limit_type, xmlSimulator.limit.limit_value);
             break;
         }
         default:

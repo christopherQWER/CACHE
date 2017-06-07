@@ -11,6 +11,7 @@
 #define _1_GB_IN_BYTES_ 1073741824
 
 
+
 class Storage {
 public:
 
@@ -18,14 +19,15 @@ public:
             const std::string &algorithm_dir,
             double _time_step,
             ByteSize experiments_number);
+
     virtual ~Storage();
-
     virtual void Run(ClientsManager& clients_manager, Logger*& logger, Flow*& flow, bool with_plots) = 0;
+    virtual void CreateStorage();
+    virtual void CreateStorage(DivisionType type, ClientMap client_map);
 
-    void CreateStorage();
-    void CreateStorage(DivisionType type, ClientMap client_map);
     void PreparePDF(ClientMap& clients_map, const std::string& pdf_dir_path);
     void PrepareCDF(ClientMap& clients_map, const std::string& cdf_dir_path);
+    void PrepareQoS(ClientMap& clients_map, const std::string& pdf_dir_path);
     void GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string& cdf_dir);
 
     double BytesToGb(ByteSize byteSize);

@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <Analyze Type="DETAILED">
-    <Trace Name="20_sec_different_requests">//home//cat//Documents//CACHE//Inputs//Traces//Generated//mix_chi_sqiared+uniform.spc</Trace>
+    <Trace Name="2_app_default_mixed">//home//cat//Documents//CACHE//Inputs//Traces//Generated//2_app_default_and_mixed.spc</Trace>
 </Analyze>

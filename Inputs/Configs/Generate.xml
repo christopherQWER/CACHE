@@ -2,12 +2,12 @@
 <Generate>
     <Flow Type="FGENERATOR" AppCount="2">//home//cat//Documents//CACHE//Inputs//Traces//Generated</Flow>
     <Logs Type="LCONSOLE"></Logs>
-    <SystemTime>20</SystemTime>
-    <InputPdfs Switch="10" Asu="1">
-    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Chi_Square_CDF.txt</InputPdf>
-    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Uniform_CDF.txt</InputPdf>
-    </InputPdfs>
-    <InputPdfs Switch="0" Asu="2">
-    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Chi_Square_CDF.txt</InputPdf>
-    </InputPdfs>
+    <Limit Type="REQUEST_NUMBER">1200</Limit>
+    <Sources Switch="0" Asu="1">
+    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Chi_Square_PDF.txt</InputPdf>
+    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Uniform_PDF.txt</InputPdf>
+    </Sources>
+    <Sources Switch="0" Asu="2">
+    	<InputPdf>//home//cat//Documents//CACHE//Inputs//Flows//Chi_Square_PDF.txt</InputPdf>
+    </Sources>
 </Generate>

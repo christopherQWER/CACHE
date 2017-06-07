@@ -30,6 +30,8 @@ public:
     /// File with results, for example: "App_1.txt"
     std::string output_file_name;
 
+    std::string qos_file_name;
+
     Client(Asu asu, double qos);
     ~Client();
 
@@ -40,6 +42,7 @@ public:
 
     void SavePdfPlotDots(const std::string& file_path);
     void SaveCdfPlotDots(const std::string& file_path);
+    void SaveQoSPlotDots(const std::string& file_path);
 
     void LoadPdfPlotDots(const std::string& file_path, ProportionalMap &pdf_map);
     void LoadCdfPlotDots(const std::string& file_path);
@@ -48,6 +51,7 @@ public:
     StackDist GetMaxStackDistance();
 
 private:
+
     StackDistMap _stack_dist_map;
     bool IsInStorage(StackDist value);
     bool GetPairFromString(const std::string& pdf_string, std::pair<double, StackDist> &new_pair);

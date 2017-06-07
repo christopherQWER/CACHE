@@ -16,6 +16,7 @@ Client::Client(Asu asu, double qos)
     result_hist_counter = 0;
 
     output_file_name = "";
+    qos_file_name = "";
 
     application_id = asu;
     required_qos = qos;
@@ -71,6 +72,14 @@ void Client::SavePdfPlotDots(const string& file_path)
         Utils::AppendToFile(file_path, it->first, value);
     }
     result_hist_counter++;
+}
+
+void Client::SaveQoSPlotDots(const std::string& file_path)
+{
+    for (StackDistMap::iterator it = _stack_dist_map.begin(); it != _stack_dist_map.end(); ++it)
+    {
+        Utils::AppendToFile(file_path, it->first, required_qos);
+    }
 }
 
 void Client::SaveCdfPlotDots(const string& file_path)

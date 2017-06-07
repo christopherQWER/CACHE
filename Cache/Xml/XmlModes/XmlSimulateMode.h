@@ -22,6 +22,7 @@ struct XmlSimulate {
     bool with_plots;
     XmlLog logger;
     XmlFlow flow;
+    XmlLimit limit;
     std::string plot_dir;
     std::list<XmlClient> app_list;
 
@@ -33,6 +34,7 @@ struct XmlSimulate {
                     with_plots(false),
                     logger(XmlLog()),
                     flow(XmlFlow()),
+                    limit(XmlLimit()),
                     plot_dir(""),
                     app_list() {}
 };
