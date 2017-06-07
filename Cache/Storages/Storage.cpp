@@ -9,7 +9,7 @@ Storage::Storage(double commonSize,
                     const string &algorithm_dir,
                     double time_step,
                     ByteSize experiments_number) :
-        _common_size(commonSize * _1_GB_IN_BYTES_),
+        _common_size(commonSize * 100000),
         _experiments_number(experiments_number),
         _algorithm_dir(algorithm_dir),
         _time_step(time_step)
@@ -95,6 +95,7 @@ void Storage::GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string
 double Storage::BytesToGb(ByteSize byteSize)
 {
     return byteSize / static_cast<double>(_1_GB_IN_BYTES_);
+    //return byteSize;
 }
 
 void Storage::CreateStorage()

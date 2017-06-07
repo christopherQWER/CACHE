@@ -80,7 +80,7 @@ void StaticPartial::Run(ClientsManager& clients_manager,
     Request *request = flow->GetRequest();
     GetOutputDirs((const Flow*&) flow, clients_manager.pdf_dir, clients_manager.cdf_dir);
 
-    while ( (!flow->IsEndOfFlow()) || (request != nullptr ))
+    while ((request != NULL ) && (!flow->IsEndOfFlow()) )
     {
         // Add request to AddToCache cache
         if (! (_inner_storage.find(request->_asu) == _inner_storage.end()) )
@@ -135,7 +135,7 @@ void StaticPartial::Run(ClientsManager& clients_manager,
         string path_for_qos = Utils::PathCombine(path_to_hr_vs_size, string("QoS_") +
                 to_string(it->first) + string(".txt"));
 
-        Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->avg_hit_rate);
-        Utils::AppendToFile(path_for_qos, BytesToGb(_common_size), it->second->required_qos);
+        Utils::AppendToFile(path_for_file, _common_size, it->second->avg_hit_rate);
+        Utils::AppendToFile(path_for_qos, _common_size, it->second->required_qos);
     }
 }

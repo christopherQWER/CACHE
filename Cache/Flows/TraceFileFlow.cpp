@@ -35,10 +35,7 @@ Request* TraceFileFlow::GetRequest()
     {
         if (getline(trace_file, buffer))
         {
-            if (!RequestParser::ParseRequest(buffer, _request_queue))
-            {
-                return nullptr;
-            }
+            RequestParser::ParseRequest(buffer, _request_queue);
         }
         else
         {
@@ -62,6 +59,6 @@ bool TraceFileFlow::IsEndOfFlow()
     }
     if (_specified_limit == REQUEST_NUMBER)
     {
-        return ((_current_request_num > _limit_value) && _is_eof );
+        return ((_current_request_num > _limit_value) || _is_eof );
     }
 }

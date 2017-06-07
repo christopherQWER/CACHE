@@ -3,6 +3,7 @@
 //
 
 #include <Generators/UniformReal.h>
+#include <Generators/Pareto.h>
 #include "TestDistribution.h"
 
 using namespace std;
@@ -68,9 +69,13 @@ void TestDistribution::GetCDFTest()
 //    gen.GetPDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Chi_Square_PDF.txt");
 //    gen.GetCDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Chi_Square_CDF.txt");
 
-    UniformReal uni_gen = UniformReal(1.0, 1000.0);
-    uni_gen.GetPDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Uniform_PDF.txt");
-    uni_gen.GetCDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Uniform_CDF.txt");
+//    UniformReal uni_gen = UniformReal(1.0, 1000.0);
+//    uni_gen.GetPDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Uniform_PDF.txt");
+//    uni_gen.GetCDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Uniform_CDF.txt");
+
+    Pareto pareto_gen = Pareto(2, 0.3);
+    pareto_gen.GetCDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Pareto_CDF.txt");
+    pareto_gen.GetPDF(1000000, "/home/cat/Documents/CACHE/Inputs/Flows/Pareto_PDF.txt");
 }
 
 void TestDistribution::GetPDFTest()

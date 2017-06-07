@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<TraceFile TracePath="//home//cat//Documents//CACHE//Inputs//Traces//Generated//2_app_default_and_mixed.spc" Length="1200" OutputPath="//home//cat//Documents//CACHE//Inputs//Traces//Generated//2_app_default_mixed.xml">
+	<App Unit="1" Reads="606" Writes="0" RequestNumber="606" AvgBytes="512" />
+	<App Unit="2" Reads="594" Writes="0" RequestNumber="594" AvgBytes="512" />
+</TraceFile>

@@ -38,8 +38,8 @@ void RunSimulateMode(Config my_config)
             case SHARED:
             {
                 storage = new SharedStorage(i, xmlSimulator.plot_dir,
-                                                                time_step,
-                                                                xmlSimulator.request_num);
+                                            time_step,
+                                            xmlSimulator.request_num);
 
                 logger->ShowLogText(LEVEL, "Comon cache size: " + to_string(i) + " Gb");
                 logger->ShowLogText(LEVEL, "Time step for histograms: " + to_string(time_step) + " sec");

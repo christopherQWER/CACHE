@@ -26,13 +26,12 @@ public:
     /// \brief              [Calculates probability of density function theoretically]
     /// \param random_value [random value Pareto distributed]
     /// \return             [pdf value]
-    double GetPDF(double random_value);
-
+    void GetPDF(int exp_number, const std::string& output_file);
 
     /// \brief                  [Calculates cumulative distribution function]
     /// \param random_value     [random value Pareto distributed]
     /// \return                 [cdf value]
-    double GetCDF(double random_value);
+    void GetCDF(int exp_number, const std::string& output_file);
 
 private:
      /// [parameter for indentation of distribution]

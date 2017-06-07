@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
-<Simulate Type="PARTIAL" Division="BY_QOS" AppCount="2" CommonSize="0" RequestNum="0" WithPlots="true">
-    <Logs Type="LFILE">WebSearch1.txt</Logs>
-    <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//WebSearch//WebSearch1.spc</Flow>
-    <Limit Type="REQUEST_NUMBER">1200</Limit>
+<Simulate Type="SHARED" Division="EQUAL" AppCount="2" CommonSize="0" RequestNum="0" WithPlots="true">
+    <Logs Type="LFILE">1496844671.txt</Logs>
+    <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//Generated//1496844671.spc</Flow>
+    <Limit Type="REQUEST_NUMBER">499</Limit>
     <PlotDir>//home//cat//Documents//CACHE//Results//PlotData</PlotDir>
     <Applications>
-        <App Asu="0" QoS="0.8"/>
-        <App Asu="1" QoS="0.5"/>
-        <App Asu="2" QoS="0.4"/>
+        <App Asu="1" QoS="0.85"/>
+        <App Asu="2" QoS="0.8"/>
     </Applications>
 </Simulate>

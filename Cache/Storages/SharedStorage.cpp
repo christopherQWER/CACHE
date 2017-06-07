@@ -91,7 +91,7 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
         string path_for_qos = Utils::PathCombine(path_to_hr_vs_size, string("QoS_") +
                 to_string(it->first) + string(".txt"));
 
-        Utils::AppendToFile(path_for_file, BytesToGb(_common_size), it->second->avg_hit_rate);
-        Utils::AppendToFile(path_for_qos, BytesToGb(_common_size), it->second->required_qos);
+        Utils::AppendToFile(path_for_file, _common_size, it->second->avg_hit_rate);
+        Utils::AppendToFile(path_for_qos, _common_size, it->second->required_qos);
     }
 }

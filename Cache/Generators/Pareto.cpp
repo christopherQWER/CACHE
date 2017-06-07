@@ -37,20 +37,58 @@ double Pareto::GetRandom()
     return pareto_value;
 }
 
-double Pareto::GetPDF(double random_value)
+void Pareto::GetPDF(int exp_number, const string& output_file)
 {
-    if (random_value < _location_param)
+    map<int, int> number_probability;
+    map<int, int>::iterator it;
+
+    for (int i = 0; i < exp_number; ++i)
     {
-        return 0.0;
+        double rand = GetRandom();
+        it = number_probability.find(static_cast<int>(rand));
+        if (it == number_probability.end())
+        {
+            number_probability.insert(pair<int, int>(rand, 1));
+        }
+        else
+        {
+            it->second++;
+        }
     }
-    double probably = _shape_param * pow(_location_param, _shape_param) / pow(random_value, _shape_param + 1);
-    return probably;
+
+    for (map<int, int>::iterator it = number_probability.begin();
+         it != number_probability.end(); ++it)
+    {
+        double probably = static_cast<float>(it->second) / static_cast<float>(exp_number);
+        Utils::AppendToFile(output_file, it->first, probably);
+    }
 }
 
-double Pareto::GetCDF(double random_value)
+void Pareto::GetCDF(int exp_number, const string& output_file)
 {
-    if (random_value < _location_param)
-        return 0;
-    double cdf = 1 - pow((_location_param / random_value), _shape_param);
-    return cdf;
+    map<int, int> number_probability;
+    map<int, int>::iterator it;
+
+    for (int i = 0; i < exp_number; ++i)
+    {
+        double rand = GetRandom();
+        it = number_probability.find(static_cast<int>(rand));
+        if (it == number_probability.end())
+        {
+            number_probability.insert(pair<int, int>(rand, 1));
+        }
+        else
+        {
+            it->second++;
+        }
+    }
+
+    double common_val = 0;
+    for (map<int, int>::iterator it = number_probability.begin();
+         it != number_probability.end(); ++it)
+    {
+        double probably = static_cast<float>(it->second) / static_cast<float>(exp_number);
+        common_val += probably;
+        Utils::AppendToFile(output_file, it->first, common_val);
+    }
 }
