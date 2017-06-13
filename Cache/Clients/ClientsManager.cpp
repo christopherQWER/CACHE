@@ -76,7 +76,7 @@ void ClientsManager::DrawPDFPlot(const string &trace_name)
 
             // Add line for pdf =====================================================================
             pdf_command += "'" + pdf_txt + "'" +
-                           " using 1:2 with lines title 'Ap_" +
+                           " using 1:2 with lines title 'App_" +
                            to_string(it->first) + "'";
 
             if (client_counter < map_size - 1)
@@ -159,7 +159,7 @@ void ClientsManager::DrawHrVSCacheSizePlot(const std::string algorithm_name)
     GnuPlot hr_vs_size_plot = GnuPlot("512", "512",
                                 algorithm_name,
                                 hr_png, hr_plt,
-                                "Cache size", pair<string, string>(to_string(0), to_string(50000)),
+                                "Cache size", pair<string, string>(to_string(10000), to_string(100000)),
                                 "Hit rate", pair<string, string>(to_string(0), to_string(1)),
                                 "0.1", false
     );
@@ -173,7 +173,7 @@ void ClientsManager::DrawHrVSCacheSizePlot(const std::string algorithm_name)
         string qos_file = Utils::PathCombine(algorithm_dir, "QoS_" + to_string(it->first) + ".txt");
 
         command += "'" + file_txt + "'" +
-                       " using 1:2 with lines title 'Ap_" +
+                       " using 1:2 with lines title 'App_" +
                        to_string(it->first) + "'";
 
         command += ",\\";

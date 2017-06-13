@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Simulate Type="SHARED" Division="EQUAL" AppCount="2" CommonSize="0" RequestNum="0" WithPlots="true">
+<Simulate Type="SHARED" Division="BY_QOS" AppCount="2" CommonSize="0" RequestNum="0" WithPlots="true">
     <Logs Type="LFILE">1496844671.txt</Logs>
     <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//Generated//1496844671.spc</Flow>
     <Limit Type="REQUEST_NUMBER">499</Limit>

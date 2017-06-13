@@ -27,6 +27,8 @@ public:
     /// Counter of preparing histograms
     int result_hist_counter;
 
+    ByteSize required_cache_size;
+
     /// File with results, for example: "App_1.txt"
     std::string output_file_name;
 
