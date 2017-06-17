@@ -12,7 +12,6 @@
 #include <sys/stat.h>
 #include "Types.h"
 
-
 class Utils
 {
 public:
@@ -24,9 +23,9 @@ public:
         std::ofstream density_file;
         density_file.open(output_path.c_str(), std::fstream::out | std::fstream::app);
 
-        density_file << i_var;
+        density_file << std::to_string(i_var);
         density_file << "\t";
-        density_file << d_var;
+        density_file << std::to_string(d_var);
         density_file << "\n";
 
         density_file.close();

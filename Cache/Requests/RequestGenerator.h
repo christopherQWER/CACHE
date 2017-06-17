@@ -21,12 +21,16 @@ public:
     /// \param asu
     /// \param stack_dist
     /// \return
-    static Request GenerateRequest(Asu asu, StackDist stack_dist);
+    Request GenerateRequest(Asu asu, StackDist stack_dist, Lba low_address_bound);
 
 private:
-    static Lba GenerateLba(StackDist stack_dist);
-    static OpCode GetReadOpCode();
-    static Timestamp GenerateTime();
-    static OpCode GetWriteOpCode();
-    static ByteSize GenerateByteSize();
+    Lba GenerateLba(StackDist stack_dist, Lba low_address_bound);
+    OpCode GetReadOpCode();
+    Timestamp GenerateTime();
+    OpCode GetWriteOpCode();
+    ByteSize GenerateByteSize();
+
+    LbaGen *lba_gen;
+    TimeGen *time_gen;
+    SizeGen *size_gen;
 };

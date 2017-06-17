@@ -26,6 +26,7 @@ set(SOURCE_FILES Main.cpp
                  ../Cache/Generators/SizeGen.cpp
                  ../Cache/Generators/Exponential.cpp
                  ../Cache/Generators/ChiSquare.cpp
+        ../Cache/Generators/Pareto.cpp
 
                  ../Cache/Requests/Request.cpp
                  ../Cache/Requests/RequestParser.cpp
@@ -78,6 +79,7 @@ set(HEADER_FILES XmlTest/TestConfig.h
                  ../Cache/Generators/SizeGen.h
                  ../Cache/Generators/Exponential.h
                  ../Cache/Generators/ChiSquare.h
+        ../Cache/Generators/Pareto.h
 
                  ../Cache/Requests/Request.h
                  ../Cache/Requests/RequestParser.h

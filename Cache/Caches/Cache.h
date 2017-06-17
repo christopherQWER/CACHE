@@ -38,25 +38,10 @@ public:
     /// iterator pointed to corresponding request body as value
     MapStorage _map_store;
 
-    /// \brief
-    /// \param capacity [Specifies the common cache size (_max_capaсity)]
     Cache(ByteSize capacity);
 
     ///
     virtual ~Cache(){};
-
-     /// \brief                 [Checks, if request has already been in cache.]
-     /// \param cell_address
-     /// \param it
-     /// \return                [true if request is already existed in cache and false otherwise]
     bool IsInCache(Lba cell_address, std::unordered_map<Lba, StorType::iterator>::iterator &it);
-
-    ///
-    /// \param request_size
-    /// \return
     bool IsCacheFull(ByteSize request_size) const;
-
-    ///
-    /// \param new_capasity
-    void ChangeCacheCapasity(ByteSize new_capasity);
 };

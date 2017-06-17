@@ -8,7 +8,8 @@
 #include <map>
 #include "../Utils/Types.h"
 #include "RandomValue.h"
-typedef std::map<StackDist, double> PairStorage;
+#include "UniformReal.h"
+
 
 class StackDistanceGen : public RandomValue {
 public:
@@ -30,8 +31,10 @@ public:
     double WritePairsToFile(const std::string& output_path);
 
 private:
+    UniformReal* uniform_real_gen;
+
     PairStorage _pdf_storage;
-    std::map<double, StackDist> _cdf_storage;
+    ProportionalMap _cdf_storage;
 
     PairStorage _experimental_pdf;
     ByteSize _exp_counter;
@@ -44,4 +47,6 @@ private:
     /// \brief              Function creates cdf storage from values in
     ///                     pdf storage
     void CreateCdfStorage();
+
+    std::map<double, long double>::iterator CustomLowerBound(double uniformNumber);
 };

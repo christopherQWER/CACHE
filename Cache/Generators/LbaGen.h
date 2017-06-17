@@ -13,7 +13,7 @@ typedef std::list<Lba> AddressList;
 class LbaGen : RandomValue{
 public:
     LbaGen();
-    Lba GetRandomValue(StackDist stack_dist);
+    Lba GetRandomValue(StackDist stack_dist, Lba low_address_bound);
 
 private:
     /// Current size of using addresses

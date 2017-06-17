@@ -7,11 +7,15 @@
 
 struct Sources{
     Asu asu;
+    Lba low_address;
     double switcher;
     std::list<std::string> input_pdf_dirs;
+    ByteSize request_num;
     Sources() : asu(0),
+                low_address(400000),
                   switcher(0),
-                  input_pdf_dirs()
+                  input_pdf_dirs(),
+                  request_num(0)
                   {}
 };
 
@@ -30,6 +34,7 @@ struct XmlGenerate{
 const std::string sSources = "Sources";
 const std::string sInputPdf = "InputPdf";
 const std::string sSwitch = "Switch";
+const std::string sLowAddressBound = "LowAddressBound";
 
 class XmlGenerateMode : public MainConfig {
 public:

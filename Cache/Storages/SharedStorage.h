@@ -15,7 +15,7 @@
 class SharedStorage : public Storage {
 public:
 
-    SharedStorage(double commonSize,
+    SharedStorage(ByteSize commonSize,
                     const std::string &algorithm_dir,
                     double time_step,
                     ByteSize experiments_number);

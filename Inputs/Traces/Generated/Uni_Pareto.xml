@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<TraceFile TracePath="//home//cat//Documents//CACHE//Inputs//Traces//Generated//Uni_Pareto.spc" Length="200" OutputPath="//home//cat//Documents//CACHE//Inputs//Traces//Generated//Uni_Pareto.xml">
+	<App Unit="1" Reads="70" Writes="0" RequestNumber="70" AvgBytes="512" />
+	<App Unit="2" Reads="130" Writes="0" RequestNumber="130" AvgBytes="512" />
+</TraceFile>

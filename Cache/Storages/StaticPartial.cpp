@@ -6,7 +6,7 @@
 #define LEVEL DEBUG
 using namespace std;
 
-StaticPartial::StaticPartial(double commonSize,
+StaticPartial::StaticPartial(ByteSize commonSize,
                                 const string &algorithm_dir,
                                 double time_step,
                                 ByteSize experiments_number) :
@@ -31,13 +31,13 @@ StaticPartial::~StaticPartial()
 void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
 {
     size_t clients_num = client_map.size();
+    _algorithm_dir = Utils::PathCombine(_algorithm_dir, toString(type));
     if (clients_num > 0)
     {
         switch (type)
         {
             case EQUAL:
             {
-                _algorithm_dir = Utils::PathCombine(_algorithm_dir, string("EQUAL"));
                 for (const auto &client : client_map)
                 {
                     // equal partitioning between application units
@@ -49,7 +49,6 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
             }
             case BY_QOS:
             {
-                _algorithm_dir = Utils::PathCombine(_algorithm_dir, string("BY_QOS"));
                 double sum = 0;
                 for (const auto &client : client_map)
                 {
@@ -65,6 +64,32 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
                 }
                 break;
             }
+            case STATISTICAL:
+            {
+                ByteSize sum = 0;
+                for (const auto &client : client_map)
+                {
+                    sum += client.second->required_cache_size;
+                }
+                double x = _common_size / static_cast<double>(sum);
+//                if (sum > _common_size)
+//                {
+                    for (const auto &client : client_map)
+                    {
+                        ByteSize part_size = x * client.second->required_cache_size;
+                        Lru *cache = new Lru(part_size);
+                        _inner_storage.insert(pair<Asu, Lru *>(client.first, cache));
+                    }
+//                }
+//                else
+//                {
+//                    for (const auto &client : client_map)
+//                    {
+//                        Lru *cache = new Lru(client.second->required_cache_size);
+//                        _inner_storage.insert(pair<Asu, Lru *>(client.first, cache));
+//                    }
+//                }
+            }
         }
     }
 }
@@ -78,6 +103,7 @@ void StaticPartial::Run(ClientsManager& clients_manager,
 
     double prev_time = 0;
     Request *request = flow->GetRequest();
+
     GetOutputDirs((const Flow*&) flow, clients_manager.pdf_dir, clients_manager.cdf_dir);
 
     while ((request != NULL ) && (!flow->IsEndOfFlow()) )
@@ -88,54 +114,14 @@ void StaticPartial::Run(ClientsManager& clients_manager,
             _inner_storage[request->_asu]->AddToCache(*request);
 
             // All that need to client's map
-            clients_manager.clients_map[request->_asu]->request_counter++;
-            clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
-            if (request->_is_Hit)
-            {
-                clients_manager.clients_map[request->_asu]->hits++;
-            }
-            clients_manager.clients_map[request->_asu]->avg_stack_dist += request->_stack_distance;
-            clients_manager.clients_map[request->_asu]->CalculateHitRate();
-
-            // It's time for histogram
-            if (with_plots)
-            {
-                if ( request->_timestamp - prev_time >= _time_step )
-                {
-                    PreparePDF(clients_manager.clients_map, clients_manager.pdf_dir);
-                    PrepareCDF(clients_manager.clients_map, clients_manager.cdf_dir);
-                    //PrepareQoS(clients_manager.clients_map, clients_manager.pdf_dir);
-                    logger->ShowLogText(LEVEL, "Saving histograms...");
-
-                    _hist_counter++;
-                    logger->ShowLogText(LEVEL, "Histograms: " + to_string(_hist_counter));
-
-                    clients_manager.common_hist_counter++;
-                    prev_time = request->_timestamp;
-                    logger->ShowLogText(LEVEL, "Current time pasted: " + to_string(prev_time));
-                }
-                clients_manager.clients_map[request->_asu]->result_hist_counter++;
-            }
+            clients_manager.InitAllRequiredFields(request);
         }
         request = flow->GetRequest();
     }
-
-    Utils::CreateDirectory(path_to_hr_vs_size);
-    for (ClientMap::iterator it = clients_manager.clients_map.begin();
-         it != clients_manager.clients_map.end(); ++it)
+    // It's time for histogram
+    if (with_plots)
     {
-        it->second->avg_hit_rate = it->second->CalculateHitRate();
-        it->second->avg_stack_dist = it->second->CalculateAvgStackDistance();
-
-        logger->ShowHitRate(LEVEL, it->second->avg_hit_rate);
-        logger->ShowStackDistance(LEVEL, it->second->avg_stack_dist);
-
-        string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
-                to_string(it->first) + string(".txt"));
-        string path_for_qos = Utils::PathCombine(path_to_hr_vs_size, string("QoS_") +
-                to_string(it->first) + string(".txt"));
-
-        Utils::AppendToFile(path_for_file, _common_size, it->second->avg_hit_rate);
-        Utils::AppendToFile(path_for_qos, _common_size, it->second->required_qos);
+        SaveForPlots(clients_manager, logger);
     }
+    PrepareHrVSSize(clients_manager.clients_map, logger);
 }

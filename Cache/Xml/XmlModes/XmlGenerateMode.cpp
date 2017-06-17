@@ -20,6 +20,9 @@ void XmlGenerateMode::Serialize(const XmlGenerate& gen_cnf, pugi::xml_document& 
     {
         pdfs_node.append_attribute(sSwitch.c_str()).set_value(pdf_sources.switcher);
         pdfs_node.append_attribute(sXmlAsu.c_str()).set_value(pdf_sources.asu);
+        pdfs_node.append_attribute(sLowAddressBound.c_str()).set_value(pdf_sources.low_address);
+        pdfs_node.append_attribute(sRequestNum.c_str()).
+                set_value(static_cast<unsigned long>(pdf_sources.request_num));
         for(string one_source : pdf_sources.input_pdf_dirs)
         {
             pdfs_node.append_child(sInputPdf.c_str()).set_value(one_source.c_str());
@@ -43,7 +46,9 @@ void XmlGenerateMode::Deserialize(const pugi::xml_document& doc, XmlGenerate& ge
         Sources new_input = Sources();
 
         new_input.asu = app_sources.attribute(sXmlAsu.c_str()).as_uint(0);
+        new_input.low_address = app_sources.attribute(sLowAddressBound.c_str()).as_uint(400000);
         new_input.switcher = app_sources.attribute(sSwitch.c_str()).as_double(0);
+        new_input.request_num = app_sources.attribute(sRequestNum.c_str()).as_uint(100000);
 
         for (pugi::xml_node input_pdf = app_sources.child(sInputPdf.c_str()); input_pdf;
              input_pdf = input_pdf.next_sibling(sInputPdf.c_str()))

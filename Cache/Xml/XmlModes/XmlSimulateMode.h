@@ -9,7 +9,17 @@
 struct XmlClient {
     Asu asu;
     double qos;
-    XmlClient() : asu(0), qos(0) {}
+    ByteSize required_size;
+    XmlClient(const Asu i, bool b) : asu(0), qos(0) {}
+    bool operator < (XmlClient x)
+    {
+        return asu < x.asu;
+    }
+
+    friend bool operator== ( const XmlClient &n1, const XmlClient &n2)
+    {
+        return n1.asu == n2.asu;
+    };
 };
 
 
@@ -44,6 +54,7 @@ static const std::string sApps = "Applications";
 static const std::string sCommonSize = "CommonSize";
 static const std::string sPlotDir = "PlotDir";
 static const std::string sDivision = "Division";
+static const std::string sRequiredSize = "RequiredSize";
 
 class XmlSimulateMode : public MainConfig {
 public:

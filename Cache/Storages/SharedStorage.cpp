@@ -4,7 +4,7 @@
 using namespace std;
 
 
-SharedStorage::SharedStorage(double commonSize,
+SharedStorage::SharedStorage(ByteSize commonSize,
                                 const std::string &algorithm_dir,
                                 double time_step,
                                 ByteSize experiments_number) :
@@ -37,61 +37,26 @@ void SharedStorage::Run(ClientsManager& clients_manager, Logger*& logger, Flow*&
     GetOutputDirs((const Flow*&) flow, pdf_dir, cdf_dir);
     clients_manager.pdf_dir = pdf_dir;
     clients_manager.cdf_dir = cdf_dir;
-
     // while we not reach the value of number experiment or trace_file not ended
-    while ( (!flow->IsEndOfFlow()) || (request != nullptr))
+    while ( (request != NULL) && (!flow->IsEndOfFlow()) )
     {
-        // Add request to AddToCache cache
-        _cache->AddToCache(*request);
-
-        // All that need for client's map
-        clients_manager.clients_map[request->_asu]->request_counter++;
-        clients_manager.clients_map[request->_asu]->AddStackDistToMap(request->_stack_distance);
-        if (request->_is_Hit)
+        if ( clients_manager.clients_map.find(request->_asu) != clients_manager.clients_map.end())
         {
-            clients_manager.clients_map[request->_asu]->hits++;
-        }
-        clients_manager.clients_map[request->_asu]->avg_stack_dist += request->_stack_distance;
-        clients_manager.clients_map[request->_asu]->CalculateHitRate();
+            // Add request to AddToCache cache
+            _cache->AddToCache(*request);
+            logger->ShowLogText(LEVEL, "Request stack distance: " +
+                    to_string(request->_stack_distance));
 
-        // It's time for histogram
-        if (with_plots)
-        {
-            if ( request->_timestamp - prev_time >= _time_step )
-            {
-                PreparePDF(clients_manager.clients_map, pdf_dir);
-                PrepareCDF(clients_manager.clients_map, cdf_dir);
-                //PrepareQoS(clients_manager.clients_map, pdf_dir);
-                logger->ShowLogText(LEVEL, "Saving histograms...");
-
-                _hist_counter++;
-                logger->ShowLogText(LEVEL, "Histograms: " + to_string(_hist_counter));
-
-                clients_manager.common_hist_counter++;
-                prev_time = request->_timestamp;
-                logger->ShowLogText(LEVEL, "Current time pasted: " + to_string(prev_time));
-            }
-            clients_manager.clients_map[request->_asu]->result_hist_counter++;
+            // All that need for client's map
+            clients_manager.InitAllRequiredFields(request);
         }
         request = flow->GetRequest();
     }
 
-    Utils::CreateDirectory(path_to_hr_vs_size);
-    for (ClientMap::iterator it = clients_manager.clients_map.begin();
-         it != clients_manager.clients_map.end(); ++it)
+    // It's time for histogram
+    if (with_plots)
     {
-        it->second->avg_hit_rate = clients_manager.clients_map[it->first]->CalculateHitRate();
-        it->second->avg_stack_dist = clients_manager.clients_map[it->first]->CalculateAvgStackDistance();
-
-        logger->ShowHitRate(LEVEL, it->second->avg_hit_rate);
-        logger->ShowStackDistance(LEVEL, it->second->avg_stack_dist);
-
-        string path_for_file = Utils::PathCombine(path_to_hr_vs_size, string("App_") +
-                to_string(it->first) + string(".txt"));
-        string path_for_qos = Utils::PathCombine(path_to_hr_vs_size, string("QoS_") +
-                to_string(it->first) + string(".txt"));
-
-        Utils::AppendToFile(path_for_file, _common_size, it->second->avg_hit_rate);
-        Utils::AppendToFile(path_for_qos, _common_size, it->second->required_qos);
+        SaveForPlots( clients_manager, logger);
     }
+    PrepareHrVSSize(clients_manager.clients_map, logger);
 }

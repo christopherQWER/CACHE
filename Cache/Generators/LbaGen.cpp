@@ -10,7 +10,7 @@ LbaGen::LbaGen()
     curr_buffer_size = 0;
 }
 
-Lba LbaGen::GetRandomValue(StackDist stack_dist)
+Lba LbaGen::GetRandomValue(StackDist stack_dist, Lba low_address_bound)
 {
     Lba lba = 0;
     if ( (stack_dist < curr_buffer_size) && (curr_buffer_size != 0))
@@ -20,7 +20,7 @@ Lba LbaGen::GetRandomValue(StackDist stack_dist)
     }
     else
     {
-        lba = (Lba) (LOW_ADDRESS_BOUND + stack_dist);
+        lba = (Lba) (low_address_bound + stack_dist);
         while ( IsInBuffer(lba) )
         {
             lba++;

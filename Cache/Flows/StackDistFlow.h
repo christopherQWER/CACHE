@@ -14,19 +14,29 @@
 class StackDistFlow : public Flow
 {
 public:
+    ByteSize _common_request_num;
     StackDistFlow();
-    StackDistFlow(int clients_count,
+    StackDistFlow(Asu asu,
+                  Lba low_address,
                   const std::list<std::string>& input_pdf_paths,
-                  Limit type,
                   ByteSize limit_value,
                   double switcher = 0);
 
     ~StackDistFlow();
     Request* GetRequest();
+    void SaveTestPdf();
 
 private:
-    ByteSize _common_request_num;
+
     ByteSize _curr_request_num;
+
+    StackDistanceGen *dist_gen;
+    UniformInt *uni_int_asu;
+    RequestGenerator* gen;
+
+    int counter;
+    Asu _client_asu;
+    Lba _low_address_bound;
 
     Limit _specified_limit;
 
@@ -41,10 +51,9 @@ private:
 
     int _app_count;
 
-    Asu GenerateAsu();
+    //Asu GenerateAsu();
     StackDist GenerateStackDistance();
 
-    Request* TimeBasedGeneration();
     Request* ReqNumberBasedGeneration();
 
     bool IsEndOfFlow();

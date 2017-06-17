@@ -5,32 +5,19 @@
 #pragma once
 #include "Cache.h"
 #include "../Utils/DefinedConstants.h"
+#include "../Loggers/Logger.h"
 
 class Lru : public Cache
 {
 public:
 
-    /// \brief
-    /// \param capacity []
+
     Lru(ByteSize capacity);
     ~Lru();
 
-    ///
-    /// \param newRequest []
+    void ShowCache(Logger *pLogger);
     void AddToCache(Request& newRequest);
-
-    ///
-    /// \param newRequest []
     void ReorganizeCache(const Request& newRequest);
-
-    ///
-    /// \param new_size
-    void Resize(ByteSize new_size);
-
-    ///
-    /// \param newRequest []
     void InsertNewRequest(const Request& newRequest);
-
-    ///
     void DeleteOldRequest();
 };

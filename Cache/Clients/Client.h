@@ -15,27 +15,24 @@ class Client {
 public:
 
     double required_qos;
-
+    ByteSize required_cache_size;
     Asu application_id;
-    int request_counter;
 
+    int request_counter;
     double avg_hit_rate;
     StackDist avg_stack_dist;
-
     double hits;
 
     /// Counter of preparing histograms
     int result_hist_counter;
 
-    ByteSize required_cache_size;
-
     /// File with results, for example: "App_1.txt"
     std::string output_file_name;
-
     std::string qos_file_name;
 
     Client(Asu asu, double qos);
     ~Client();
+    void Clear();
 
     HitRate CalculateHitRate();
     StackDist CalculateAvgStackDistance();
@@ -45,6 +42,8 @@ public:
     void SavePdfPlotDots(const std::string& file_path);
     void SaveCdfPlotDots(const std::string& file_path);
     void SaveQoSPlotDots(const std::string& file_path);
+
+    ByteSize GetRequiredSizeByQoS();
 
     void LoadPdfPlotDots(const std::string& file_path, ProportionalMap &pdf_map);
     void LoadCdfPlotDots(const std::string& file_path);

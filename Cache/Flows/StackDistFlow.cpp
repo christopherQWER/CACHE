@@ -4,165 +4,130 @@
 
 #include "StackDistFlow.h"
 using namespace std;
-UniformInt *uni_int_asu;
-deque<StackDistanceGen*> stack_dist_gen_queue;
 
 
-StackDistFlow::StackDistFlow(int client_count,
+StackDistFlow::StackDistFlow(Asu asu,
+                            Lba low_address,
                             const list<std::string>& input_pdf_paths,
-                            Limit type,
                             ByteSize limit_value,
                             double switcher)
 {
-    if (client_count > 0)
-    {
-        _app_count = client_count;
+    counter = 0;
+    _client_asu = asu;
 
-        _common_time = limit_value;
-        _curr_request_time = 0;
+    _low_address_bound = low_address;
+    //_common_time = limit_value;
+    //_curr_request_time = 0;
 
-        _switcher = switcher;
+    //needed if two or more sources of pdf
+    _switcher = switcher;
 
-        _common_request_num = limit_value;
-        _curr_request_num = 0;
+    _common_request_num = limit_value;
+    _curr_request_num = 0;
 
-        _specified_limit = type;
-        uni_int_asu = new UniformInt(1, client_count);
-    }
-
-    for (auto pdf_source : input_pdf_paths)
-    {
-        stack_dist_gen_queue.push_back(new StackDistanceGen(pdf_source));
-    }
+    // Because only one pdf source for one application
+    dist_gen = new StackDistanceGen(*input_pdf_paths.begin());
+    gen = new RequestGenerator();
 }
 
 StackDistFlow::~StackDistFlow()
 {
-    if (uni_int_asu != nullptr)
+    if (uni_int_asu != NULL)
     {
         delete uni_int_asu;
     }
-    for (std::deque<StackDistanceGen*>::iterator it = stack_dist_gen_queue.begin();
-         it != stack_dist_gen_queue.end(); ++it)
+    if (dist_gen != NULL)
     {
-        delete *it;
-    }
-    if (!stack_dist_gen_queue.empty())
-    {
-        stack_dist_gen_queue.clear();
+        delete dist_gen;
     }
 }
 
 Request* StackDistFlow::GetRequest()
 {
-    switch (_specified_limit)
-    {
-        case TIME:
-        {
-            return TimeBasedGeneration();
-        }
-        case REQUEST_NUMBER:
-        {
-            return ReqNumberBasedGeneration();
-        }
-    }
+    return ReqNumberBasedGeneration();
 }
 
-Request* StackDistFlow::TimeBasedGeneration()
-{
-    Request* req = new Request();
-    if (_curr_request_time < _common_time)
-    {
-        if ( _request_queue.empty() )
-        {
-            list<Request> tmp;
-            for (int i = 0; i < _app_count; i++)
-            {
-                Request request = RequestGenerator::GenerateRequest(GenerateAsu(),
-                        GenerateStackDistance());
-                tmp.push_back(request);
-            }
-            tmp.sort();
-            for (auto request : tmp)
-            {
-                _request_queue.push_back(request);
-            }
-        }
-        _curr_request_time = _request_queue.front()._timestamp;
-        *req = _request_queue.front();
-        _request_queue.pop_front();
-        return req;
-    }
-    else
-    {
-        return nullptr;
-    }
-}
+//Request* StackDistFlow::TimeBasedGeneration()
+//{
+//    Request* req = new Request();
+//    if (_curr_request_time < _common_time)
+//    {
+//        if ( _request_queue.empty() )
+//        {
+//            list<Request> tmp;
+////            for (int i = 0; i < _app_count; i++)
+////            {
+//                Request request = gen->GenerateRequest(GenerateAsu(),
+//                        GenerateStackDistance());
+//                tmp.push_back(request);
+//            //}
+//            tmp.sort();
+//            for (auto request : tmp)
+//            {
+//                _request_queue.push_back(request);
+//            }
+//        }
+//        _curr_request_time = _request_queue.front()._timestamp;
+//        *req = _request_queue.front();
+//        _request_queue.pop_front();
+//        return req;
+//    }
+//    else
+//    {
+//        return nullptr;
+//    }
+//}
 
 Request* StackDistFlow::ReqNumberBasedGeneration()
 {
     Request* req = new Request();
     if (_curr_request_num < _common_request_num)
     {
-        if ( _request_queue.empty() )
-        {
-            list<Request> tmp;
-            for (int i = 0; i < _app_count; i++)
-            {
-                Request request = RequestGenerator::GenerateRequest(GenerateAsu(),
-                        GenerateStackDistance());
-                tmp.push_back(request);
-            }
-            tmp.sort();
-            for (auto request : tmp)
-            {
-                _request_queue.push_back(request);
-            }
-        }
-        *req = _request_queue.front();
-        _request_queue.pop_front();
+        StackDist st_dst = GenerateStackDistance();
+        *req = gen->GenerateRequest(_client_asu, st_dst, _low_address_bound);
+
+        _curr_request_time += req->_timestamp;
+        req->_timestamp = _curr_request_time;
+
         _curr_request_num++;
         return req;
     }
     else
     {
-        return nullptr;
+        return NULL;
     }
 }
 
 
-Asu StackDistFlow::GenerateAsu()
-{
-    return static_cast<Asu>(uni_int_asu->GetRandomValue());
-}
+//Asu StackDistFlow::GenerateAsu()
+//{
+//    Asu asu = static_cast<Asu>(uni_int_asu->GetRandomValue());
+//    return asu;
+//}
 
 StackDist StackDistFlow::GenerateStackDistance()
 {
-    if (_switcher != 0)
-    {
-        if (_curr_request_time >= _switcher)
-        {
-            StackDistanceGen* st_dst_gen = stack_dist_gen_queue.front();
-            stack_dist_gen_queue.pop_front();
-            stack_dist_gen_queue.push_back(st_dst_gen);
-        }
-    }
-    return static_cast<StackDist>(stack_dist_gen_queue.front()->GetRandomValue());
+    StackDist st_dst = dist_gen->GetRandomValue();
+    return static_cast<StackDist>(st_dst);
 }
 
 bool StackDistFlow::IsEndOfFlow()
 {
-    if (_specified_limit == TIME)
+    bool flag = _curr_request_num >= _common_request_num;
+    if (flag)
     {
-        return _curr_request_time > _common_time;
+        return flag;
     }
-    else
-    {
-        return _curr_request_num > _common_request_num;
-    }
+    return flag;
 }
 
 StackDistFlow::StackDistFlow()
 {
 
+}
+
+void StackDistFlow::SaveTestPdf()
+{
+    dist_gen->WritePairsToFile(Utils::PathCombine(string("//home//cat//Documents//CACHE//Inputs//Flows"),
+            string("Uniform_PDF_test.txt")));
 }

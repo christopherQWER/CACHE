@@ -7,7 +7,6 @@
 #include <ctime>
 #include "../Utils/Types.h"
 
-
 class Request
 {
 public:
@@ -46,5 +45,10 @@ public:
     bool operator < (Request x)
     {
         return _timestamp < x._timestamp;
+    }
+
+    bool operator > (Request x)
+    {
+        return _timestamp > x._timestamp;
     }
 };

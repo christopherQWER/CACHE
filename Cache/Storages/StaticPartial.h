@@ -9,7 +9,7 @@ typedef std::map<Asu, Lru*>StorageMap;
 
 class StaticPartial : public Storage {
 public:
-    StaticPartial(double commonSize,
+    StaticPartial(ByteSize commonSize,
                     const std::string &algorithm_dir,
                     double time_step,
                     ByteSize experiments_number);
@@ -23,6 +23,7 @@ public:
         {
             case EQUAL:          return "EQUAL";
             case BY_QOS:         return "BY_QOS";
+            case STATISTICAL:      return "STATISTICAL";
             default:             return "Unknown division type.";
         }
     }
@@ -33,6 +34,8 @@ public:
             return EQUAL;
         else if (strcmp(str_repr, "BY_QOS") == 0)
             return BY_QOS;
+        else if (strcmp(str_repr, "STATISTICAL") == 0)
+            return STATISTICAL;
     }
 
 protected:

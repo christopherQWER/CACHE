@@ -7,7 +7,7 @@
 #define LEVEL DEBUG
 using namespace std;
 
-DynamicPartial::DynamicPartial(double commonSize,
+DynamicPartial::DynamicPartial(ByteSize commonSize,
                                         const string& algorithm_dir,
                                         double time_step,
                                         ByteSize experiments_number) :

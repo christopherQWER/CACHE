@@ -33,6 +33,11 @@ static const char* toString(Mode mode)
     }
 }
 
+//static bool operator == ( const XmlClient &n1, const XmlClient &n2)
+//{
+//    return n1.asu == n2.asu;
+//}
+
 void RunTraceAnalyseMode(Config my_config);
 void RunSimulateMode(Config my_config);
 void RunGenerateMode(Config my_config);

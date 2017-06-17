@@ -3,6 +3,7 @@
 //
 
 #include "ModeRunner.h"
+#define LEVEL DEBUG
 using namespace std;
 
 void RunGenerateMode(Config my_config)
@@ -21,15 +22,14 @@ void RunGenerateMode(Config my_config)
     list<Flow*> flow_list;
     for (auto source_struct : xmlGenerator.source_for_apps)
     {
-        flow_list.push_back(new StackDistFlow(xmlGenerator.flow.app_count,
+        flow_list.push_back(new StackDistFlow(source_struct.asu,
+                                              source_struct.low_address,
                                               source_struct.input_pdf_dirs,
-                                              xmlGenerator.limit.limit_type,
-                                              xmlGenerator.limit.limit_value,
+                                              source_struct.request_num,
                                               source_struct.switcher));
     }
-
     // Create temp list with requests from different apps
-    list<Request*> req_tmp;
+    //list<Request*> req_tmp;
 
     switch(xmlGenerator.limit.limit_type)
     {
@@ -68,31 +68,27 @@ void RunGenerateMode(Config my_config)
         {
             ByteSize req_number = 0;
             Timestamp temp_time = 0;
+            map<Timestamp, Request*> req_tmp;
             while (xmlGenerator.limit.limit_value > req_number)
             {
-                list<Request*> req_tmp;
-                for (auto flow : flow_list)
+                for (auto& flow : flow_list)
                 {
-                    Request *req = flow->GetRequest();
-                    temp_time += req->_timestamp;
-                    req->_timestamp = temp_time;
-                    req_tmp.push_back(req);
-                }
-
-                for (auto request : req_tmp)
-                {
-                    if (req_number < xmlGenerator.limit.limit_value)
+                    Request *req;
+                    if (!flow->IsEndOfFlow())
                     {
-                        string request_string = RequestParser::GetStringFromRequest(*request);
-                        Utils::AppendToFile(output_trace_file, request_string);
+                        req = flow->GetRequest();
+                        req_tmp.insert(pair<Timestamp, Request*>(req->_timestamp, req));
                         req_number++;
                     }
-                    else
-                    {
-                        break;
-                    }
                 }
-                req_tmp.clear();
+            }
+            for (auto request : req_tmp)
+            {
+                logger->ShowRequestInfo(LEVEL, req_number, request.second->_asu,
+                        request.second->_lba,
+                        request.second->_timestamp);
+                string request_string = RequestParser::GetStringFromRequest(*request.second);
+                Utils::AppendToFile(output_trace_file, request_string);
             }
             break;
         }

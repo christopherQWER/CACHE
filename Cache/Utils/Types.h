@@ -17,3 +17,4 @@ typedef double Timestamp;
 typedef long double StackDist;
 typedef double HitRate;
 typedef std::map<double, StackDist> ProportionalMap;
+typedef std::map<StackDist, double> PairStorage;

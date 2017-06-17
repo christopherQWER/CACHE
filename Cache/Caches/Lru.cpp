@@ -3,8 +3,7 @@
 //
 
 #include "Lru.h"
-#include "../Loggers/Logger.h"
-#define LEVEL INFO
+#define LEVEL DEBUG
 #define TYPE LCONSOLE
 using namespace std;
 
@@ -14,6 +13,14 @@ Lru::Lru(ByteSize capacity) : Cache(capacity)
 
 Lru::~Lru()
 {
+    _list_store.clear();
+    _map_store.clear();
+    _max_capacity = 0;
+    _hit = 0;
+    _miss = 0;
+    _request_counter = 0;
+    _curr_capacity = 0;
+    _curr_size = 0;
 }
 
 void Lru::AddToCache(Request& newRequest)
@@ -28,8 +35,8 @@ void Lru::AddToCache(Request& newRequest)
         ReorganizeCache(newRequest);
         _hit++;
         newRequest._is_Hit = true;
-        pLogger->ShowLogText(LEVEL, "Hit to cache. Time: " +
-                to_string(newRequest._timestamp) + "\n" );
+//        pLogger->ShowLogText(LEVEL, "Hit to cache. Time: " +
+//                to_string(newRequest._timestamp) + "\n" );
     }
     else
     {
@@ -38,20 +45,22 @@ void Lru::AddToCache(Request& newRequest)
             stack_dist = _curr_size + 1;
             DeleteOldRequest();
             _miss++;
-            pLogger->ShowLogText(LEVEL, "\n\tCache is full...clear... ");
+            //pLogger->ShowLogText(LEVEL, "\n\tCache is full...clear... ");
         }
         else
         {
-            stack_dist = 1;
+            stack_dist = 0;
         }
         InsertNewRequest(newRequest);
         _curr_capacity += newRequest._size;
-        pLogger->ShowLogText(LEVEL, "Request added to cache! Time: " +
-                to_string(newRequest._timestamp) + "\n");
+//        pLogger->ShowLogText(LEVEL, "Request added to cache! Time: " +
+//                to_string(newRequest._timestamp) + "\n");
     }
     _request_counter++;
     newRequest._stack_distance = stack_dist;
-    //_avg_stack_dist += stack_dist;
+//    pLogger->ShowLogText(LEVEL, "Current asu: " + to_string(newRequest._asu));
+//    ShowCache(pLogger);
+//    pLogger->ShowLogText(LEVEL, "Current stack dist: " + to_string(stack_dist));
 }
 
 
@@ -60,29 +69,6 @@ void Lru::ReorganizeCache(const Request &newRequest)
     _list_store.erase(_map_store[newRequest._lba]);
     _list_store.push_front(newRequest);
     _map_store[newRequest._lba] = _list_store.begin();
-}
-
-
-void Lru::Resize(ByteSize new_size)
-{
-    _max_capacity = new_size;
-    if (_curr_capacity > _max_capacity)
-    {
-        ByteSize diff = _curr_capacity - _max_capacity;
-        ByteSize number_of_pos = 0;
-        if( (diff % _CELL_SIZE_) == 0)
-        {
-            number_of_pos = diff / _CELL_SIZE_;
-        }
-        else
-        {
-            number_of_pos = diff / _CELL_SIZE_ + 1;
-        }
-        for (int i = 0; i < number_of_pos; i++)
-        {
-            DeleteOldRequest();
-        }
-    }
 }
 
 
@@ -104,4 +90,12 @@ void Lru::DeleteOldRequest()
     _map_store.erase(it_last->_lba);
     _list_store.pop_back();
     _curr_size--;
+}
+
+void Lru::ShowCache(Logger *pLogger)
+{
+    for (Request& request_it : _list_store)
+    {
+        pLogger->ShowLogText(LEVEL, to_string(request_it._lba));
+    }
 }

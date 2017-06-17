@@ -15,7 +15,7 @@
 class Storage {
 public:
 
-    Storage(double commonSize,
+    Storage(ByteSize commonSize,
             const std::string &algorithm_dir,
             double _time_step,
             ByteSize experiments_number);
@@ -28,7 +28,10 @@ public:
     void PreparePDF(ClientMap& clients_map, const std::string& pdf_dir_path);
     void PrepareCDF(ClientMap& clients_map, const std::string& cdf_dir_path);
     void PrepareQoS(ClientMap& clients_map, const std::string& pdf_dir_path);
+    void PrepareHrVSSize(ClientMap& clients_map, Logger *logger);
     void GetOutputDirs(const Flow* &flow, std::string& pdf_dir, std::string& cdf_dir);
+
+    void SaveForPlots(ClientsManager& clients_manager, Logger *logger);
 
     double BytesToGb(ByteSize byteSize);
 
@@ -52,7 +55,6 @@ public:
             return DYNAMIC;
     }
 
-protected:
     ///
     ByteSize        _experiments_number;
 

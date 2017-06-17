@@ -1,4 +1,5 @@
 #include "TestStaticPartial.h"
+
 #define TYPE LCONSOLE
 using namespace std;
 
@@ -18,10 +19,10 @@ void TestStaticPartial::SameRequests(int experiments_count, ByteSize cache_capas
     Request *request;
     Logger *logger = Logger::CreateLogger(LCONSOLE);
 
-    XmlClient client_1 = XmlClient();
+    XmlClient client_1 = XmlClient(0, false);
     client_1.asu = 1;
     client_1.qos = 0.5;
-    XmlClient client_2 = XmlClient();
+    XmlClient client_2 = XmlClient(0, false);
     client_2.asu = 2;
     client_2.qos = 0.5;
     list<XmlClient> app_list;
@@ -33,7 +34,7 @@ void TestStaticPartial::SameRequests(int experiments_count, ByteSize cache_capas
     StaticPartial *cache = new StaticPartial(0.1, "//home//cat//Documents//CACHE//Results//PlotData", 60, 0);
     cache->CreateStorage(BY_QOS, manager->clients_map);
 
-    Flow *flow = new StackDistFlow(2, "//home//cat//Documents//CACHE//Inputs//Flows//Same_Requests.txt", 60);
+    Flow *flow /*= new StackDistFlow(2, "//home//cat//Documents//CACHE//Inputs//Flows//Same_Requests.txt", 60)*/;
     for (int i = 0; i < experiments_count; i++)
     {
         cache->Run(*manager, logger, flow, true);
@@ -59,7 +60,7 @@ void TestStaticPartial::HalfPartSameRequests(int experiments_count, ByteSize cac
     StackDist stack_dist = experiments_count / 2 + 1;
     Request *request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow(1, _READY_PDF, 30);
+    StackDistFlow flow /*= StackDistFlow(1, _READY_PDF, 30)*/;
 
     for (int i = 0; i < experiments_count; i++)
     {
@@ -67,8 +68,8 @@ void TestStaticPartial::HalfPartSameRequests(int experiments_count, ByteSize cac
         cache->AddToCache(*request);
     }
 
-    hit_rate = cache->CalculateHitRate();
-    stack_dist = cache->CalculateAvgStackDistance();
+//    hit_rate = cache->CalculateHitRate();
+//    stack_dist = cache->CalculateAvgStackDistance();
 
     if (hit_rate >= 0.49 && stack_dist >= experiments_count / 2)
     {
@@ -90,7 +91,7 @@ void TestStaticPartial::DifferentRequests(int experiments_count, ByteSize cache_
     StackDist stack_dist = experiments_count;
     Request *request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow(1, _READY_PDF, 30);
+    StackDistFlow flow /*= StackDistFlow(1, _READY_PDF, 30)*/;
 
     for (int i = 0; i < experiments_count; i++)
     {
@@ -98,8 +99,8 @@ void TestStaticPartial::DifferentRequests(int experiments_count, ByteSize cache_
         cache->AddToCache(*request);
     }
 
-    hit_rate = cache->CalculateHitRate();
-    stack_dist = cache->CalculateAvgStackDistance();
+//    hit_rate = cache->CalculateHitRate();
+//    stack_dist = cache->CalculateAvgStackDistance();
 
     if (hit_rate == 0 && stack_dist == -1)
     {
@@ -117,11 +118,13 @@ void TestStaticPartial::GetPDFFlow(int experiments_count, ByteSize cache_capasit
 
     double hit_rate = 0;
     StackDist stack_dist = 0;
-    string pdf_path = Utils::PathCombine(string(_READY_PDF), string("pdf.txt"));
-    StackDistanceGen pdf_generator = StackDistanceGen(pdf_path);
+    string pdf_path = Utils::PathCombine(string(_READY_PDF), string("Uniform_PDF.txt"));
+    //StackDistanceGen pdf_generator = StackDistanceGen(pdf_path);
     Request *request;
     Lru *cache = new Lru(cache_capasity);
-    StackDistFlow flow = StackDistFlow(1, _READY_PDF, 30);
+    list<string> str_list;
+    str_list.push_back( pdf_path);
+    StackDistFlow flow = StackDistFlow(1, 40000, str_list, experiments_count);
 
     for (int i = 0; i < experiments_count; i++)
     {
@@ -129,21 +132,20 @@ void TestStaticPartial::GetPDFFlow(int experiments_count, ByteSize cache_capasit
         cache->AddToCache(*request);
     }
 
-    hit_rate = cache->CalculateHitRate();
-    stack_dist = cache->CalculateAvgStackDistance();
+//    hit_rate = cache->CalculateHitRate();
+//    stack_dist = cache->CalculateAvgStackDistance();
 
-    pdf_generator.WritePairsToFile(Utils::PathCombine(string(_READY_PDF),
-            string("pdf_test.txt")));
+    flow.SaveTestPdf();
 }
 
 void TestStaticPartial::MainTester()
 {
-    ByteSize cache_capasity = _1_GB_IN_BYTES_ / 2;
-    int request_number = 400;
+    ByteSize cache_capasity = 1000;
+    int request_number = 10000;
 
     // Initialize test environment
     //DifferentRequests(request_number, cache_capasity);
-    SameRequests(request_number, cache_capasity);
+    //SameRequests(request_number, cache_capasity);
     //HalfPartSameRequests(request_number, cache_capasity);
-    //GetPDFFlow(request_number, cache_capasity);
+    GetPDFFlow(request_number, cache_capasity);
 }

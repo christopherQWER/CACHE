@@ -6,7 +6,8 @@
 
 enum DivisionType {
     EQUAL = 0,
-    BY_QOS
+    BY_QOS,
+    STATISTICAL
 };
 
 enum StorageType {

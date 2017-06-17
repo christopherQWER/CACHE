@@ -23,10 +23,6 @@ bool Cache::IsInCache(Lba cell_address, MapStorage::iterator &it)
 
 bool Cache::IsCacheFull(ByteSize request_size) const
 {
-    return _curr_capacity + request_size > _max_capacity;
-}
-
-void Cache::ChangeCacheCapasity(ByteSize new_capasity)
-{
-    _max_capacity = new_capasity;
+    bool flag = (_curr_capacity + request_size) > _max_capacity;
+    return flag;
 }

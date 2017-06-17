@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<Simulate Type="SHARED" Division="BY_QOS" AppCount="2" CommonSize="0" RequestNum="0" WithPlots="true">
-    <Logs Type="LFILE">1496844671.txt</Logs>
-    <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//Generated//1496844671.spc</Flow>
-    <Limit Type="REQUEST_NUMBER">499</Limit>
-    <PlotDir>//home//cat//Documents//CACHE//Results//PlotData</PlotDir>
+<Simulate Type="PARTIAL" Division="STATISTICAL" AppCount="2" CommonSize="50000" RequestNum="0" WithPlots="true">
+    <Logs Type="LFILE">Uni_Chi_2.txt</Logs>
+    <Flow Type="FFILE">//home//cat//Documents//CACHE//Inputs//Traces//Generated//Uni_Chi_2.spc</Flow>
+    <Limit Type="REQUEST_NUMBER">200</Limit>
+    <PlotDir>//home//cat//Documents//Results//PlotData</PlotDir>
     <Applications>
-        <App Asu="1" QoS="0.85"/>
-        <App Asu="2" QoS="0.8"/>
+    	<App Asu="1" QoS="0.5" RequiredSize="4096"/>
+    	<App Asu="2" QoS="0.5" RequiredSize="1024"/>
     </Applications>
 </Simulate>

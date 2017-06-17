@@ -30,7 +30,11 @@ double Pareto::GetRandom()
     while (pareto_value == 0)
     {
         //get uniform number
-        uniform_number = uniform_gen->GetRandom();
+        while(uniform_number == 0)
+        {
+            uniform_number = uniform_gen->GetRandom();
+        }
+
         //get pareto value
         pareto_value = static_cast<double>(_location_param) / pow(uniform_number, 1.0 / _shape_param);
     }

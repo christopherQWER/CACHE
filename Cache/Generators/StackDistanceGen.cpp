@@ -3,10 +3,8 @@
 //
 
 #include "StackDistanceGen.h"
-#include "UniformReal.h"
 #include "../Utils/Utils.h"
 using namespace std;
-UniformReal uniform_real_gen = UniformReal(0.0, 1.0);
 
 StackDistanceGen::StackDistanceGen(const std::string& pdf_file_path)
         : _exp_counter(0)
@@ -21,6 +19,8 @@ StackDistanceGen::StackDistanceGen(const std::string& pdf_file_path)
         _pdf_storage.insert(parsed_pair);
     }
     pdf_file.close();
+    CreateCdfStorage();
+    uniform_real_gen = new UniformReal(0.0, 1.0);
 }
 
 StackDistanceGen::~StackDistanceGen()
@@ -33,30 +33,54 @@ StackDistanceGen::~StackDistanceGen()
     {
         _pdf_storage.clear();
     }
+    if (uniform_real_gen != NULL)
+    {
+        delete uniform_real_gen;
+    }
+}
+
+ProportionalMap::iterator StackDistanceGen::CustomLowerBound(double uniformNumber )
+{
+    ProportionalMap::iterator prev = _cdf_storage.end();
+
+    for( ProportionalMap::iterator it = _cdf_storage.begin();
+            it != _cdf_storage.end(); prev = it, ++it )
+    {
+        if ( uniformNumber >= prev->first && uniformNumber < it->first )
+        {
+            break;
+        }
+    }
+
+    return prev;
 }
 
 StackDist StackDistanceGen::GetRandomValue()
 {
-    CreateCdfStorage();
-
     double uniform_number = 0;
-    uniform_number = uniform_real_gen.GetRandom();
+    while (uniform_number < _cdf_storage.begin()->first)
+    {
+        uniform_number = uniform_real_gen->GetRandom();
+    }
 
-    map<double, StackDist>::iterator it = _cdf_storage.lower_bound(uniform_number);
+    ProportionalMap::iterator it = CustomLowerBound( uniform_number );
     if (it != _cdf_storage.end())
     {
-//        if (_cdf_storage.find(it->second) != _cdf_storage.end())
-//        {
-//            _cdf_storage[it->second]++;
-//        }
-//        else
-//        {
-//            _experimental_pdf.insert(pair<StackDist, double>(it->second, 1));
-//        }
-//        _exp_counter++;
+        // Shit for test =========================================================
+        if (_experimental_pdf.find(it->second) != _experimental_pdf.end())
+        {
+            _experimental_pdf[it->second]++;
+        }
+        else
+        {
+            _experimental_pdf.insert(pair<StackDist, double>(it->second, 1));
+        }
+        _exp_counter++;
+        // =======================================================================
         return it->second;
     }
-    return 0;
+    ProportionalMap::reverse_iterator it_rev = _cdf_storage.rbegin();
+    return it_rev->second;
 }
 
 pair<StackDist, double> StackDistanceGen::ParsePairs(const std::string& line_to_parse)
@@ -84,21 +108,22 @@ pair<StackDist, double> StackDistanceGen::ParsePairs(const std::string& line_to_
 void StackDistanceGen::CreateCdfStorage()
 {
     double sum = 0;
+
     for(auto& pdf_pair : _pdf_storage)
     {
         sum += pdf_pair.second;
         _cdf_storage.insert(pair<double, StackDist>(sum, pdf_pair.first));
+        Utils::AppendToFile("//home//cat//Documents//CACHE//Inputs//Flows//Uniform_CDF.txt",
+                sum, pdf_pair.first);
     }
 }
 
 double StackDistanceGen::WritePairsToFile(const string& path)
 {
-    int count = 0;
     // Write "stack_dist/hit_rate" files for every application unit
     for (PairStorage::iterator it = _experimental_pdf.begin(); it != _experimental_pdf.end(); ++it)
     {
         double value = it->second / static_cast<double>(_exp_counter);
         Utils::AppendToFile(path, it->first, value);
-        count++;
     }
 }

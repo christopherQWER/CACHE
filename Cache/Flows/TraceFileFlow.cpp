@@ -24,6 +24,11 @@ TraceFileFlow::TraceFileFlow(const std::string& source_path, Limit limit_type,
 TraceFileFlow::~TraceFileFlow()
 {
     trace_file.close();
+    _request_queue.clear();
+    _current_request_num = 0;
+    _current_time = 0;
+    _limit_value = 0;
+    _is_eof = false;
 }
 
 Request* TraceFileFlow::GetRequest()
@@ -36,6 +41,7 @@ Request* TraceFileFlow::GetRequest()
         if (getline(trace_file, buffer))
         {
             RequestParser::ParseRequest(buffer, _request_queue);
+            _current_time = _request_queue.front()._timestamp;
         }
         else
         {
@@ -47,7 +53,6 @@ Request* TraceFileFlow::GetRequest()
     *request = _request_queue.front();
     _request_queue.pop_front();
     _current_request_num++;
-    _current_time += request->_timestamp;
     return request;
 }
 
@@ -55,10 +60,12 @@ bool TraceFileFlow::IsEndOfFlow()
 {
     if (_specified_limit == TIME)
     {
-        return ( (_current_time > _limit_value) || _is_eof  );
+        if ((_current_time > _limit_value) || _is_eof)
+            return true;
     }
-    if (_specified_limit == REQUEST_NUMBER)
+    else if (_specified_limit == REQUEST_NUMBER)
     {
-        return ((_current_request_num > _limit_value) || _is_eof );
+        if ( (_current_request_num > _limit_value) || _is_eof)
+            return true;
     }
 }

@@ -31,6 +31,7 @@ void XmlSimulateMode::Serialize(const XmlSimulate& sim_cnf, pugi::xml_document& 
         pugi::xml_node cache_node = clients.append_child(sApplication.c_str());
         cache_node.append_attribute(sXmlAsu.c_str()).set_value(client.asu);
         cache_node.append_attribute(sQoS.c_str()).set_value(client.qos);
+        cache_node.append_attribute(sRequiredSize.c_str()).set_value(static_cast<unsigned long>(client.required_size));
     }
 }
 
@@ -41,7 +42,7 @@ void XmlSimulateMode::Deserialize(const pugi::xml_document& doc, XmlSimulate& si
     sim_cnf.stor_type = Storage::toType(simulation_node.attribute(sType.c_str()).as_string(""));
     sim_cnf.div_type = StaticPartial::toType(simulation_node.attribute(sDivision.c_str()).as_string(""));
     sim_cnf.app_count = simulation_node.attribute(sAppCount.c_str()).as_uint(0);
-    sim_cnf.request_num = simulation_node.attribute(sRequestNum.c_str()).as_uint(1000000);
+    sim_cnf.request_num = simulation_node.attribute(sRequestNum.c_str()).as_uint(100000);
     sim_cnf.common_size = static_cast<ByteSize>(simulation_node.attribute(sCommonSize.c_str()).as_int(1));
     sim_cnf.with_plots = simulation_node.attribute(sWithPlots.c_str()).as_bool(false);
 
@@ -58,9 +59,11 @@ void XmlSimulateMode::Deserialize(const pugi::xml_document& doc, XmlSimulate& si
     for (pugi::xml_node child = caches_node.child(sApplication.c_str()); child;
                         child = child.next_sibling(sApplication.c_str()))
     {
-        XmlClient client_obj = XmlClient();
+        XmlClient client_obj = XmlClient(0, false);
         client_obj.asu = child.attribute(sXmlAsu.c_str()).as_uint(0);
         client_obj.qos = child.attribute(sQoS.c_str()).as_double(0.2);
+        client_obj.required_size = static_cast<ByteSize>
+                                    (child.attribute(sRequiredSize.c_str()).as_int(1));
         sim_cnf.app_list.push_back(client_obj);
     }
 }

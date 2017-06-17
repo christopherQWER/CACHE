@@ -25,6 +25,27 @@ Client::Client(Asu asu, double qos)
 Client::~Client()
 {
     _stack_dist_map.clear();
+    avg_hit_rate = 0;
+    avg_stack_dist = 0;
+    hits = 0;
+
+    request_counter = 0;
+    result_hist_counter = 0;
+
+    output_file_name = "";
+    qos_file_name = "";
+
+    application_id = 0;
+    required_qos = 0;
+}
+
+void Client::Clear()
+{
+    request_counter = 0;
+    avg_hit_rate = 0;
+    avg_stack_dist = 0;
+    hits = 0;
+    _stack_dist_map.clear();
 }
 
 HitRate Client::CalculateHitRate()
@@ -33,7 +54,7 @@ HitRate Client::CalculateHitRate()
     {
         return -1;
     }
-    avg_hit_rate = hits / request_counter;
+    avg_hit_rate = hits / static_cast<double>(request_counter);
     return avg_hit_rate;
 }
 
@@ -92,6 +113,38 @@ void Client::SaveCdfPlotDots(const string& file_path)
         common_val += curr_val;
     }
     result_hist_counter++;
+}
+
+ByteSize Client::GetRequiredSizeByQoS()
+{
+    ProportionalMap revert_map;
+    double common_val = 0;
+    for (StackDistMap::iterator it = _stack_dist_map.begin(); it != _stack_dist_map.end(); ++it)
+    {
+        double curr_val = static_cast<double>(it->second) / static_cast<double>(request_counter);
+        revert_map.insert(pair<double, StackDist>(common_val + curr_val, it->first));
+        common_val += curr_val;
+    }
+    ProportionalMap::iterator needed_it = revert_map.upper_bound(required_qos);
+    //++(needed_it);
+    if (needed_it == revert_map.end())
+    {
+        if (required_qos < revert_map.begin()->first)
+        {
+            required_cache_size = revert_map.begin()->second * _CELL_SIZE_;
+            return required_cache_size;
+        }
+        else
+        {
+            ProportionalMap::reverse_iterator reverse_it = revert_map.rbegin();
+            required_cache_size = reverse_it->second * _CELL_SIZE_;
+            return required_cache_size;
+        }
+    }
+
+    // Because stack distance shows number of requests with 512 bytes size
+    required_cache_size = needed_it->second * _CELL_SIZE_;
+    return required_cache_size;
 }
 
 StackDist Client::GetMinStackDistance()

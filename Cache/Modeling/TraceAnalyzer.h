@@ -11,7 +11,7 @@
 #include "../Utils/Types.h"
 #include "../Xml/AnalyzeConfig.h"
 
-enum AnalyzerType{COMMON = 0, DETAILED, ALL};
+enum AnalyzerType{COMMON = 0, DETAILED, ALL, ANALYZE_LOG};
 
 class TraceAnalyzer {
 public:
@@ -28,6 +28,7 @@ public:
             case COMMON:       return "COMMON";
             case DETAILED:     return "DETAILED";
             case ALL:          return "ALL";
+            case ANALYZE_LOG:  return "ANALYZE_LOG";
             default:           return "UNKNOWN";
         }
     }
@@ -40,6 +41,8 @@ public:
             return DETAILED;
         else if (strcmp(str_repr, "ALL") == 0)
             return ALL;
+        else if (strcmp(str_repr, "ANALYZE_LOG") == 0)
+            return ANALYZE_LOG;
     }
 
 private:

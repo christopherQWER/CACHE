@@ -11,13 +11,13 @@ set(SOURCE_FILES
                  Modes/AnalyzeMode.cpp
                  Modes/GenerateMode.cpp
                  Modes/SimulateMode.cpp
+                 Modes/Gears.cpp
 
                  Math/LeastSquareMethod.cpp
 
                  Storages/Storage.cpp
                  Storages/SharedStorage.cpp
                  Storages/StaticPartial.cpp
-                 Storages/DynamicPartial.cpp
 
                  Caches/Cache.cpp
                  Caches/Lru.cpp
@@ -65,13 +65,13 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
                  Modes/ModeRunner.h
+                 Modes/Gears.h
 
                  Math/LeastSquareMethod.h
 
                  Storages/Storage.h
                  Storages/SharedCache.h
                  Storages/StaticPartial.h
-                 Storages/DynamicPartial.h
 
                  Caches/Cache.h
                  Caches/Lru.h
