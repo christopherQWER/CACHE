@@ -66,31 +66,71 @@ void StaticPartial::CreateStorage(DivisionType type, ClientMap client_map)
             }
             case STATISTICAL:
             {
-                ByteSize sum = 0;
-                for (const auto &client : client_map)
-                {
-                    sum += client.second->required_cache_size;
-                }
-                double x = _common_size / static_cast<double>(sum);
-//                if (sum > _common_size)
-//                {
-                    for (const auto &client : client_map)
-                    {
-                        ByteSize part_size = x * client.second->required_cache_size;
-                        Lru *cache = new Lru(part_size);
-                        _inner_storage.insert(pair<Asu, Lru *>(client.first, cache));
-                    }
-//                }
-//                else
-//                {
-//                    for (const auto &client : client_map)
-//                    {
-//                        Lru *cache = new Lru(client.second->required_cache_size);
-//                        _inner_storage.insert(pair<Asu, Lru *>(client.first, cache));
-//                    }
-//                }
+                DevideStatistically(client_map);
             }
         }
+    }
+}
+
+void StaticPartial::DevideStatistically(ClientMap client_map)
+{
+    // Map for store new sizes values for clients
+    map<Asu, ByteSize> new_sizez;
+
+    ByteSize sum_or_required_caches = 0;
+    for (const auto &client : client_map)
+    {
+        sum_or_required_caches += client.second->required_cache_size;
+
+        // initialize map with client's id and null value of cache size
+        new_sizez.insert(pair<Asu, ByteSize>(client.first, 0));
+    }
+    double x1 = _common_size / static_cast<double>(sum_or_required_caches);
+
+    // If needed sum bigger than all cache space
+    if (sum_or_required_caches > _common_size)
+    {
+        for (const auto &client : client_map)
+        {
+            ByteSize part_size = x1 * client.second->required_cache_size;
+            new_sizez[client.first] = part_size;
+//            Lru *cache = new Lru(part_size);
+//            _inner_storage.insert(pair<Asu, Lru *>(client.first, cache));
+        }
+    }
+    else
+    {
+        // If needed space lower than all cache
+        // set cache from previous experience
+        for (const auto &client : client_map)
+        {
+            new_sizez[client.first] = client.second->required_cache_size;
+//            Lru *cache = new Lru(client.second->required_cache_size);
+//            _inner_storage.insert(pair<Asu, Lru *>(client.first, cache));
+        }
+
+        //If we have surpluses
+        ByteSize diff = _common_size - sum_or_required_caches;
+        double sum_of_qoses = 0;
+        for (const auto &client : client_map)
+        {
+            sum_of_qoses += client.second->required_qos;
+        }
+
+        double x2 = _common_size / sum_of_qoses;
+        for (const auto &client : client_map)
+        {
+            ByteSize part_size = x2 * client.second->required_qos;
+            new_sizez[client.first] += part_size;
+//            Lru* cache = new Lru(part_size);
+//            _inner_storage.insert(pair<Asu, Lru*>(client.first, cache));
+        }
+    }
+
+    for (const auto &client_sizez : new_sizez)
+    {
+        Lru *cache = new Lru(client_sizez.second);
+        _inner_storage.insert(pair<Asu, Lru *>(client_sizez.first, cache));
     }
 }
 

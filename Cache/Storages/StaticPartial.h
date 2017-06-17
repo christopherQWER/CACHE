@@ -40,4 +40,7 @@ public:
 
 protected:
     StorageMap _inner_storage;
+
+private:
+    void DevideStatistically(ClientMap client_map);
 };
